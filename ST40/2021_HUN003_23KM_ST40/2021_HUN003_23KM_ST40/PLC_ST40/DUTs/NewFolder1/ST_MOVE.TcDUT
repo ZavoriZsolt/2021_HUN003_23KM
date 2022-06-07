@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_MOVE" Id="{3d101bce-fe7b-4523-b723-374deb0939e2}">
+    <Declaration><![CDATA[TYPE ST_MOVE :
+STRUCT
+	Target:					ST_COORDINATE;
+	Override:				LREAL;
+	Comment:				STRING(255);
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

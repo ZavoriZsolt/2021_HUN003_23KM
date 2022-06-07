@@ -1,0 +1,562 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_KRC4" Id="{a07028dd-53f4-4ea4-9382-7b1703fce4dd}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_KRC4
+VAR_INPUT
+	sName				:STRING;
+	bEn					:BOOL;				(* Engedély jel *)
+	bZoneEnable			:BOOL;				(* Zóna engedély *)
+	bAutoCycle			:BOOL;				(* Automa teljes ciklus *)	
+	bExecuteProg		:BOOL;				(* Csakegy program végrehajtása *)
+	nProgNr				:BYTE;				(* Program szám *)
+	timBaseState		:TIME:=T#15S;		(* Alaphelyzet felvételi idő*)
+	bAck				:BOOL; 				(* Hibanyugta *)
+	stEventArray		:ARRAY [0..7] OF TcEventEntry;		(* Event array definition *)
+END_VAR
+VAR_OUTPUT
+	bReady				:BOOL;				(* Folyamat üzemkész *)
+	bBusy				:BOOL;				(* Folyamat aktív *)
+	bDone				:BOOL;				(* Folyamat kész *)
+	bPendantMode		:BOOL;				(* Teach pendant mód aktív *)
+	bError				:BOOL;				(* Hiba bit*)
+	sError				:STRING(255);		(* Hiba string*)
+END_VAR
+VAR
+	tBaseState			:TON;
+	RobotIn				:U_KRC_Input;
+	RobotOut			:U_KRC_Output;
+	bErrNotReady		:BOOL;
+	bErrBaseTimeout		:BOOL;
+	nState				:UDINT;
+	nStateLast			:UDINT;
+	sState				:STRING;
+	aErrorDesc			:ARRAY [0..7] OF STRING := [
+	' Kuka KRC rendszerhiba : - Információ a "pendant"-on ', 
+	' Kuka KRC programhiba : - A kiválasztott program nem hajtható végre ', 
+	' Kuka KRC  pozícióhiba : - A kiválasztott pozíció nem elérhető ', 
+	' Kuka KRC  paraméterhiba : - Hibás paraméter ', 
+	' Kuka KRC  vákuumhiba : - A vákuum nem épült fel ', 
+	' Kuka KRC  darabvesztés hiba : - A vákuumfejről leesett az alkatrész ',
+	' Kuka KRC  üzemzavar : - Üzem közben a "Ready" jel megszűnt ',
+	' Kuka KRC  üzemzavar : - A robot nem tud alaphelyzetbe mozogni '];
+	sEmpty				:STRING:='';
+	bIsInitalized		:BOOL;
+	fbAlarmArray		:ARRAY [0..7] OF FB_TcAlarm;
+	arrAlarms			:ARRAY [0..7] OF BOOL;
+	i					:INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*Időzítők***************************************************)
+tBaseState(IN:= (nState > 0 AND nState < 10000), PT:= timBaseState);
+(*Triggerek**************************************************)
+
+(*Hibakezelés************************************************)
+IF nState >= 120 AND nState < 150000 AND NOT RobotIn.Status.bReady THEN
+	bErrNotReady := TRUE;
+END_IF
+IF tBaseState.Q AND NOT bErrBaseTimeout THEN
+	bErrBaseTimeout := TRUE;
+END_IF
+
+bError := (nState > 10000) AND	(NOT RobotIn.Status.bAlarm OR
+							RobotIn.Status.bProgramError OR
+							RobotIn.Status.bPositionError OR
+							RobotIn.Status.bParameterError OR
+							RobotIn.Status.bVacuumError OR
+							RobotIn.Status.bWorpieceError OR 
+							bErrNotReady OR
+							bErrBaseTimeout);
+
+arrAlarms[0] := NOT RobotIn.Status.bAlarm;
+arrAlarms[1] := RobotIn.Status.bProgramError;
+arrAlarms[2] := RobotIn.Status.bPositionError;
+arrAlarms[3] := RobotIn.Status.bParameterError;
+arrAlarms[4] := RobotIn.Status.bVacuumError;
+arrAlarms[5] := RobotIn.Status.bWorpieceError;
+arrAlarms[6] := bErrNotReady;
+arrAlarms[7] := bErrBaseTimeout;
+
+					
+IF nState > 0 AND nState < 150000 THEN
+	nStateLast := nState;
+	IF	bError THEN
+			nState := 200000;
+	END_IF
+END_IF
+
+(*Pendant mód ************************************************)
+bPendantMode := RobotIn.Status.bT1 OR RobotIn.Status.bT2;
+IF bPendantMode THEN
+	nState := 150000;
+END_IF
+
+(*Engedélyek *************************************************)
+IF 	(NOT bEn AND NOT bPendantMode) OR								// nincs engedély, és pendantról sem szeretnék használni
+	(NOT RobotIn.Status.bUserSAF AND NOT bPendantMode) THEN			// nincs ajtókör, és pendantról sem szeretnék használni
+		nState := 0;
+END_IF
+RobotOut.Control.bEnableMoveInPalettZone := RobotIn.Status.bReqMoveInPalettZone AND bZoneEnable;
+
+(*Automata üzem *********************************************)
+CASE nState OF
+	0:		sState := CONCAT(UDINT_TO_STRING(nState) ,' - Vészkör vagy ajtókör bontva - Működtetések törlése');
+			RobotOut.Control.bPgnoParity := FALSE;
+			RobotOut.Control.bPgnoValid := FALSE;
+			RobotOut.Control.bExtStart := FALSE;
+			RobotOut.Control.bMoveEnable := FALSE;
+			RobotOut.Control.bConfMess := FALSE;
+			RobotOut.Control.bDrivesOff := FALSE;
+			RobotOut.Control.bDrivesOn := FALSE;
+			RobotOut.Control.bIOAct := FALSE;
+			RobotOut.Control.bVacuumErrorClear := FALSE;
+			bErrNotReady := FALSE;
+			bErrBaseTimeout := FALSE;
+			bReady := FALSE;
+			bBusy := FALSE;	
+			IF	bEn AND
+				RobotIn.Status.bAlarm AND
+				RobotIn.Status.bIntEStop AND
+				RobotIn.Status.bUserSAF THEN
+					bBusy := TRUE;
+					nState := nState + 20;
+			END_IF
+			
+	20:		sState := CONCAT(UDINT_TO_STRING(nState) ,' - Alaphelyzetfelvétel - "STOP_MESS" ellenőrzése');
+			IF RobotIn.Status.bStopMess THEN
+				RobotOut.Control.bMoveEnable := TRUE;
+				nState := nState + 20;
+			END_IF
+
+	40:		sState := CONCAT(UDINT_TO_STRING(nState) ,' - Alaphelyzetfelvétel - "DRIVES_ON"');
+			RobotOut.Control.bDrivesOn := TRUE;
+			IF RobotIn.Status.bPeriReday THEN
+				RobotOut.Control.bDrivesOn := FALSE;
+				nState := nState + 20;
+			END_IF
+
+	60:		sState := CONCAT(UDINT_TO_STRING(nState) ,' - Alaphelyzetfelvétel - "CONF_MESS"');
+			RobotOut.Control.bConfMess := TRUE;
+			IF NOT RobotIn.Status.bStopMess THEN
+				RobotOut.Control.bConfMess := FALSE;
+				nState := nState + 20;
+			END_IF
+
+	80:		sState := CONCAT(UDINT_TO_STRING(nState) ,' - Alaphelyzetfelvétel - "EXT_START"');
+			RobotOut.Control.bExtStart := TRUE;
+			IF RobotIn.Status.bPgnoReq THEN
+				RobotOut.Control.bExtStart := FALSE;
+				nState := nState + 20;
+			END_IF
+
+	100:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Alaphelyzetfelvétel - "Home" program betöltése');
+			RobotOut.Control.nProgNr := 1;
+			IF RobotIn.Status.nProgNr = RobotOut.Control.nProgNr THEN
+				RobotOut.Control.bPgnoParity := TRUE;
+				RobotOut.Control.bPgnoValid := TRUE;
+				nState := nState + 20;
+			END_IF
+
+	120:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Alaphelyzetfelvétel - várakozás "Home" program indítására');
+			IF RobotIn.Status.bApplRun THEN
+				RobotOut.Control.bPgnoParity := FALSE;
+				RobotOut.Control.bPgnoValid := FALSE;
+				nState := nState + 20;
+			END_IF
+
+	140:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Alaphelyzetfelvétel - várakozás "Home" program befejezésére');
+			IF NOT RobotIn.Status.bApplRun THEN
+				nState := nState + 20;
+			END_IF
+		
+	160:	nState := 10000;
+
+(* Alaphelyzet *********************************************************************)
+	10000:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Alaphelyzet - Várakozás parancsra');
+			IF		bAutoCycle AND NOT bExecuteProg THEN							// Automata ciklus kérés
+						bReady := TRUE;
+						bBusy := TRUE;
+						bDone := FALSE;
+						nState := 11000;
+			ELSIF	NOT bAutoCycle AND bExecuteProg THEN							// Egyszeri program végrehajtás
+						bReady := TRUE;
+						bBusy := TRUE;
+						bDone := FALSE;
+						nState := 12000;
+			ELSIF	NOT bAutoCycle AND NOT bExecuteProg THEN						// Nincs parancs
+						bReady := TRUE;
+						bBusy := FALSE;
+						bDone := FALSE;		
+			END_IF
+
+	(*-----=== Teljes automata ciklus ===-----*)
+	11000:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - "PCBA felvétel" 10. program betöltése');
+			RobotOut.Control.nProgNr := 10;
+			IF RobotIn.Status.nProgNr = RobotOut.Control.nProgNr THEN
+				RobotOut.Control.bPgnoParity := TRUE;
+				RobotOut.Control.bPgnoValid := TRUE;
+				nState := nState + 20;
+			END_IF
+
+	11020:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - "PCBA felvétel" 10. program indítására');
+			IF RobotIn.Status.bApplRun THEN
+				RobotOut.Control.bPgnoParity := FALSE;
+				RobotOut.Control.bPgnoValid := FALSE;
+				nState := nState + 20;
+			END_IF
+
+	11040:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Várakozás "PCBA felvétel" 10. program befejezésére');
+			IF NOT RobotIn.Status.bApplRun THEN
+				nState := nState + 20;
+			END_IF			
+
+	11060:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - "PCBA behelyezése" 11. program betöltése');
+			RobotOut.Control.nProgNr := 11;
+			IF RobotIn.Status.nProgNr = RobotOut.Control.nProgNr THEN
+				RobotOut.Control.bPgnoParity := TRUE;
+				RobotOut.Control.bPgnoValid := TRUE;
+				nState := nState + 20;
+			END_IF
+
+	11080:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - "PCBA behelyezése" 11. program indítására');
+			IF RobotIn.Status.bApplRun THEN
+				RobotOut.Control.bPgnoParity := FALSE;
+				RobotOut.Control.bPgnoValid := FALSE;
+				nState := nState + 20;
+			END_IF
+
+	11100:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Várakozás "PCBA behelyezése" 11. program befejezésére');
+			IF NOT RobotIn.Status.bApplRun THEN
+				nState := nState + 20;
+			END_IF				
+
+	11120:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - "Cover felvétel" 12. program betöltése');
+			RobotOut.Control.nProgNr := 12;
+			IF RobotIn.Status.nProgNr = RobotOut.Control.nProgNr THEN
+				RobotOut.Control.bPgnoParity := TRUE;
+				RobotOut.Control.bPgnoValid := TRUE;
+				nState := nState + 20;
+			END_IF
+
+	11140:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - "Cover felvétel" 12. program indítására');
+			IF RobotIn.Status.bApplRun THEN
+				RobotOut.Control.bPgnoParity := FALSE;
+				RobotOut.Control.bPgnoValid := FALSE;
+				nState := nState + 20;
+			END_IF
+
+	11160:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Várakozás "Cover felvétel" 12. program befejezésére');
+			IF NOT RobotIn.Status.bApplRun THEN
+				nState := nState + 20;
+			END_IF			
+
+	11180:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - "Cover behelyezése" 13. program betöltése');
+			RobotOut.Control.nProgNr := 13;
+			IF RobotIn.Status.nProgNr = RobotOut.Control.nProgNr THEN
+				RobotOut.Control.bPgnoParity := TRUE;
+				RobotOut.Control.bPgnoValid := TRUE;
+				nState := nState + 20;
+			END_IF
+
+	11200:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - "Cover behelyezése" 13. program indítására');
+			IF RobotIn.Status.bApplRun THEN
+				RobotOut.Control.bPgnoParity := FALSE;
+				RobotOut.Control.bPgnoValid := FALSE;
+				nState := nState + 20;
+			END_IF
+
+	11220:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Várakozás "Cover behelyezése" 13. program befejezésére');
+			IF NOT RobotIn.Status.bApplRun THEN
+				nState := nState + 20;
+			END_IF
+
+	11240:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Várakozás indítójel törlésére');
+			bBusy := FALSE;
+			bDone := TRUE;
+			IF NOT bAutoCycle THEN
+				bDone := FALSE;
+				nState := 10000;
+			END_IF
+
+	(*-----=== Egy program végrehajtása ===-----*)
+	12000:	sState := CONCAT(UDINT_TO_STRING(nState) ,CONCAT(' - ',CONCAT(BYTE_TO_STRING(nProgNr),'. program betöltése')));
+			RobotOut.Control.nProgNr := nProgNr;
+			IF RobotIn.Status.nProgNr = RobotOut.Control.nProgNr THEN
+				RobotOut.Control.bPgnoParity := TRUE;
+				RobotOut.Control.bPgnoValid := TRUE;
+				nState := nState + 20;
+			END_IF
+
+	12020:	sState := CONCAT(UDINT_TO_STRING(nState) ,CONCAT(' - ',CONCAT(BYTE_TO_STRING(nProgNr),'. program indítása')));
+			IF RobotIn.Status.bApplRun THEN
+				RobotOut.Control.bPgnoParity := FALSE;
+				RobotOut.Control.bPgnoValid := FALSE;
+				nState := nState + 20;
+			END_IF
+
+	12040:	sState := CONCAT(UDINT_TO_STRING(nState) ,CONCAT(' - Várakozás a ',CONCAT(BYTE_TO_STRING(nProgNr),'. program befejezésére')));
+			IF NOT RobotIn.Status.bApplRun THEN
+				nState := nState + 20;
+			END_IF			
+
+	12060:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Várakozás indítójel törlésére');
+			bBusy := FALSE;
+			bDone := TRUE;
+			IF NOT bExecuteProg THEN
+				bDone := FALSE;
+				nState := 10000;
+			END_IF
+
+(* Pendant mód *********************************************************************)
+	150000:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Pendant mód');
+			IF NOT bPendantMode THEN
+				nState := 0;
+			ELSE
+				RobotOut.Control.bPgnoParity := FALSE;
+				RobotOut.Control.bPgnoValid := FALSE;
+				RobotOut.Control.bExtStart := FALSE;
+				RobotOut.Control.bMoveEnable := TRUE;
+				RobotOut.Control.bConfMess := FALSE;
+				RobotOut.Control.bDrivesOff := FALSE;
+				RobotOut.Control.bDrivesOn := FALSE;
+				RobotOut.Control.bIOAct := FALSE;
+				RobotOut.Control.bVacuumErrorClear := FALSE;	
+			END_IF
+			
+(* Hibakezelés *********************************************************************)
+	200000:	sState := CONCAT(UDINT_TO_STRING(nState) ,CONCAT(' - Hiba, ebből az állapotból: ' ,sState));
+			RobotOut.Control.bPgnoParity := FALSE;
+			RobotOut.Control.bPgnoValid := FALSE;
+			RobotOut.Control.bExtStart := FALSE;
+			RobotOut.Control.bMoveEnable := FALSE;
+			RobotOut.Control.bConfMess := FALSE;
+			RobotOut.Control.bDrivesOff := FALSE;
+			RobotOut.Control.bDrivesOn := FALSE;
+			RobotOut.Control.bIOAct := FALSE;
+			RobotOut.Control.bVacuumErrorClear := FALSE;
+			bReady := FALSE;
+			bBusy := FALSE;	
+			nState := nState + 20;
+
+(* Hibakezelés *********************************************************************)
+	200020:	IF bAck THEN
+				bErrNotReady := FALSE;
+				bErrBaseTimeout := FALSE;
+				FOR i:=0 TO 7 DO
+					IF fbAlarmArray[i].eConfirmationState = 2 THEN
+						fbAlarmArray[i].Confirm(0);
+					END_IF
+				END_FOR					
+				nState := nState + 20;
+			END_IF
+			
+	200040:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Hibatörlés - "STOP_MESS" ellenőrzése');
+			IF RobotIn.Status.bStopMess THEN
+				RobotOut.Control.bMoveEnable := TRUE;
+				nState := nState + 20;
+			END_IF
+
+	200060:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Hibatörlés - "DRIVES_ON"');
+			RobotOut.Control.bDrivesOn := TRUE;
+			IF RobotIn.Status.bPeriReday THEN
+				RobotOut.Control.bDrivesOn := FALSE;
+				nState := nState + 20;
+			END_IF
+
+	200080:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Hibatörlés - "CONF_MESS"');
+			RobotOut.Control.bConfMess := TRUE;
+			IF NOT RobotIn.Status.bStopMess THEN
+				RobotOut.Control.bConfMess := FALSE;
+				nState := nState + 20;
+			END_IF
+	
+	200100:	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Alaphelyzetfelvétel - "EXT_START"');
+			RobotOut.Control.bExtStart := TRUE;
+			IF RobotIn.Status.bPgnoReq THEN
+				RobotOut.Control.bExtStart := FALSE;
+				nState := 100;
+			END_IF
+ELSE
+	sState := CONCAT(UDINT_TO_STRING(nState) ,' - Nem használt állapot');
+END_CASE	
+
+
+(*Hiba string*)
+IF bError THEN
+	sError := sName;
+	FOR i:=0 TO 7 DO
+		IF arrAlarms[i] THEN
+			sError :=  CONCAT(sError, aErrorDesc[i]);
+			IF (fbAlarmArray[i].eConfirmationState <> 2 AND fbAlarmArray[i].nTimeCleared <> 0 AND fbAlarmArray[i].nTimeConfirmed <> 0) OR //Ha már volt alarm, akkor van bennük érték
+				(fbAlarmArray[i].eConfirmationState = 1 AND fbAlarmArray[i].nTimeCleared = 0 AND fbAlarmArray[i].nTimeConfirmed = 0)	//Első futás esetén
+			THEN
+				fbAlarmArray[i].Raise(0);
+			END_IF
+		END_IF
+	END_FOR 
+ELSE
+	sError := sEmpty;
+END_IF
+
+(*Hiba kezelés Tc3_EventLogger*)
+IF NOT bIsInitalized THEN
+	bIsInitalized := TRUE;
+	FOR i:=0 TO 7 DO
+		fbAlarmArray[i].CreateEx(stEventArray[i], TRUE, 0);
+	END_FOR
+END_IF
+
+(*Hiba törlés (nyugtázott és megszűnt)*)
+FOR i:=0 TO 7 DO
+	IF fbAlarmArray[i].eConfirmationState = 3 AND NOT bError THEN
+		fbAlarmArray[i].Clear(0, FALSE);
+	END_IF
+END_FOR	]]></ST>
+    </Implementation>
+    <LineIds Name="FB_KRC4">
+      <LineId Id="109" Count="0" />
+      <LineId Id="113" Count="1" />
+      <LineId Id="122" Count="1" />
+      <LineId Id="730" Count="2" />
+      <LineId Id="737" Count="2" />
+      <LineId Id="733" Count="0" />
+      <LineId Id="567" Count="1" />
+      <LineId Id="547" Count="3" />
+      <LineId Id="721" Count="0" />
+      <LineId Id="740" Count="0" />
+      <LineId Id="823" Count="0" />
+      <LineId Id="820" Count="0" />
+      <LineId Id="824" Count="6" />
+      <LineId Id="822" Count="0" />
+      <LineId Id="551" Count="0" />
+      <LineId Id="124" Count="1" />
+      <LineId Id="298" Count="0" />
+      <LineId Id="132" Count="3" />
+      <LineId Id="539" Count="4" />
+      <LineId Id="538" Count="0" />
+      <LineId Id="330" Count="0" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="682" Count="0" />
+      <LineId Id="143" Count="1" />
+      <LineId Id="358" Count="0" />
+      <LineId Id="160" Count="3" />
+      <LineId Id="360" Count="7" />
+      <LineId Id="255" Count="0" />
+      <LineId Id="903" Count="1" />
+      <LineId Id="376" Count="1" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="265" Count="2" />
+      <LineId Id="379" Count="0" />
+      <LineId Id="174" Count="0" />
+      <LineId Id="176" Count="1" />
+      <LineId Id="259" Count="0" />
+      <LineId Id="261" Count="3" />
+      <LineId Id="258" Count="0" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="227" Count="0" />
+      <LineId Id="229" Count="0" />
+      <LineId Id="231" Count="0" />
+      <LineId Id="230" Count="0" />
+      <LineId Id="228" Count="0" />
+      <LineId Id="232" Count="0" />
+      <LineId Id="236" Count="2" />
+      <LineId Id="240" Count="2" />
+      <LineId Id="233" Count="0" />
+      <LineId Id="243" Count="5" />
+      <LineId Id="268" Count="0" />
+      <LineId Id="274" Count="2" />
+      <LineId Id="280" Count="0" />
+      <LineId Id="282" Count="0" />
+      <LineId Id="277" Count="0" />
+      <LineId Id="279" Count="0" />
+      <LineId Id="271" Count="0" />
+      <LineId Id="284" Count="0" />
+      <LineId Id="286" Count="4" />
+      <LineId Id="272" Count="0" />
+      <LineId Id="292" Count="1" />
+      <LineId Id="296" Count="1" />
+      <LineId Id="273" Count="0" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="300" Count="0" />
+      <LineId Id="235" Count="0" />
+      <LineId Id="301" Count="1" />
+      <LineId Id="386" Count="0" />
+      <LineId Id="389" Count="0" />
+      <LineId Id="391" Count="0" />
+      <LineId Id="397" Count="0" />
+      <LineId Id="381" Count="0" />
+      <LineId Id="395" Count="1" />
+      <LineId Id="387" Count="0" />
+      <LineId Id="612" Count="0" />
+      <LineId Id="384" Count="0" />
+      <LineId Id="388" Count="0" />
+      <LineId Id="385" Count="0" />
+      <LineId Id="392" Count="0" />
+      <LineId Id="382" Count="0" />
+      <LineId Id="401" Count="0" />
+      <LineId Id="398" Count="0" />
+      <LineId Id="402" Count="17" />
+      <LineId Id="368" Count="0" />
+      <LineId Id="420" Count="18" />
+      <LineId Id="399" Count="0" />
+      <LineId Id="439" Count="0" />
+      <LineId Id="441" Count="37" />
+      <LineId Id="440" Count="0" />
+      <LineId Id="480" Count="0" />
+      <LineId Id="479" Count="0" />
+      <LineId Id="496" Count="0" />
+      <LineId Id="495" Count="0" />
+      <LineId Id="484" Count="0" />
+      <LineId Id="488" Count="0" />
+      <LineId Id="491" Count="0" />
+      <LineId Id="490" Count="0" />
+      <LineId Id="613" Count="0" />
+      <LineId Id="637" Count="0" />
+      <LineId Id="619" Count="17" />
+      <LineId Id="614" Count="1" />
+      <LineId Id="638" Count="5" />
+      <LineId Id="616" Count="0" />
+      <LineId Id="400" Count="0" />
+      <LineId Id="304" Count="3" />
+      <LineId Id="337" Count="1" />
+      <LineId Id="341" Count="1" />
+      <LineId Id="345" Count="0" />
+      <LineId Id="348" Count="3" />
+      <LineId Id="354" Count="0" />
+      <LineId Id="310" Count="3" />
+      <LineId Id="556" Count="9" />
+      <LineId Id="555" Count="0" />
+      <LineId Id="316" Count="3" />
+      <LineId Id="728" Count="0" />
+      <LineId Id="741" Count="0" />
+      <LineId Id="853" Count="0" />
+      <LineId Id="851" Count="1" />
+      <LineId Id="849" Count="0" />
+      <LineId Id="854" Count="0" />
+      <LineId Id="577" Count="2" />
+      <LineId Id="583" Count="18" />
+      <LineId Id="605" Count="0" />
+      <LineId Id="607" Count="4" />
+      <LineId Id="606" Count="0" />
+      <LineId Id="326" Count="0" />
+      <LineId Id="328" Count="0" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="45" Count="2" />
+      <LineId Id="832" Count="0" />
+      <LineId Id="839" Count="7" />
+      <LineId Id="837" Count="0" />
+      <LineId Id="63" Count="3" />
+      <LineId Id="789" Count="2" />
+      <LineId Id="847" Count="0" />
+      <LineId Id="792" Count="0" />
+      <LineId Id="848" Count="0" />
+      <LineId Id="793" Count="0" />
+      <LineId Id="84" Count="1" />
+      <LineId Id="855" Count="0" />
+      <LineId Id="86" Count="2" />
+      <LineId Id="858" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

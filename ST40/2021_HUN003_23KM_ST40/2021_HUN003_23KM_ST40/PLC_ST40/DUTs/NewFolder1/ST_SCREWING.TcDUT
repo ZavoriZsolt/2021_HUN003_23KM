@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_SCREWING" Id="{468001b0-a355-4de7-b242-e3ac9772056a}">
+    <Declaration><![CDATA[TYPE ST_SCREWING :
+STRUCT
+	Target:					ST_COORDINATE;
+	Override:				LREAL;
+	Feeder:					ENUM_SCREW_FEEDER;
+	Comment:				STRING(255);
+	PositionNumber:			INT;
+	ScrewingProgramId:		INT;
+	PreScrewingOn:			BOOL;
+	PreScrewingProgramId:	INT;
+	LastPosition:			BOOL:=TRUE;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

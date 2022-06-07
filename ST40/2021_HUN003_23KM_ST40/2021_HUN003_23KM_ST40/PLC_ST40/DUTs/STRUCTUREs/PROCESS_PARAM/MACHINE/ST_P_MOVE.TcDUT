@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_P_MOVE" Id="{4ccc0e00-61c6-4e83-8648-672f604ab9a1}">
+    <Declaration><![CDATA[TYPE ST_P_MOVE :
+STRUCT
+	Override:			LREAL;
+	X:					LREAL;
+	Y:					LREAL;
+	Z:					LREAL;
+	C:					LREAL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

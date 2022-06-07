@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_SLOT_VISUALISATION" Id="{d1d00080-369f-4e05-9af4-d1ad621cf61f}">
+    <Declaration><![CDATA[TYPE ST_SLOT_VISUALISATION :
+STRUCT
+	CurrentStep:		STRING(255);
+	Comment:			STRING(255);
+	State:				INT;
+	Progress:			LREAL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

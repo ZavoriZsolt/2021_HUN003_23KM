@@ -1,0 +1,3696 @@
+{
+    "ANALYZE_MAPPINGUSAGE": false,
+    "AUTHCLIENTCERTIFICATE": false,
+    "AUTO_LOGINUSER": "Operator",
+    "AUTO_LOGOFF": "P30D",
+    "CACHEENABLED": true,
+    "CACHEMAXAGE": "P30D",
+    "CACHEMAXENTRYSIZE": 1048576,
+    "CACHEMAXSIZE": 2097152,
+    "CERTIFICATE": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUQrakNDQXVLZ0F3SUJBZ0lKQVBKQ2RnODZDMDFJTUEwR0NTcUdTSWIzRFFFQkN3VUFNRWd4Q3pBSkJnTlYKQkFZVEFrUkZNUnN3R1FZRFZRUUtEQkpVZDJsdVEwRlVJRWhOU1NCVFpYSjJaWEl4SERBYUJnTlZCQU1NRTFaRgpVMXBOVDA1VU1UY3pMVTVDWDNKdmIzUXdIaGNOTWpBd05EQXlNVEl4T0RRMVdoY05NakV3TkRBeU1USXhPRFExCldqQkRNUXN3Q1FZRFZRUUdFd0pFUlRFYk1Ca0dBMVVFQ2d3U1ZIZHBia05CVkNCSVRVa2dVMlZ5ZG1WeU1SY3cKRlFZRFZRUUREQTVXUlZOYVRVOU9WREUzTXkxT1FqQ0NBU0l3RFFZSktvWklodmNOQVFFQkJRQURnZ0VQQURDQwpBUW9DZ2dFQkFPR2hoT2grbXhiN0JMMGQ3UTNKcHpjYnp0b01idGJTL2dTUGljN1FqdHhOenVnMWthT2dMbWE2CjJaalk0NFBzMzl2N3M0NGlHYXNqbE5PcXpoN0N6WC9JOU8zd09Pd0xmZWpKdDk2UHRIWThUMTUwWGxmS0ZMMGwKekJ6MXQ5VXg4bEJ5SmNyS2J2azE1b0plck5Sbmc0dFQ5S0lQT2Y2b2xmOFluNlBmZTJ3ZkJxUHNLZ0orV2JlZgpRZ3JYVWY4N3lxY3hmeUNCaGIvRGJGWTZPZHlOQWxpdzg1TG9uSXlUZzNKcDNGK2g1aDBhakYxQkk3bW1Ma0c0CjdPY21EWEV5WXNTc05DcmdhQ0YzNXp1L3pVUVQyejNiUDRYRm92Um5ReDNUdE12dWpEdG9yT29oYlFpV3FjYjQKMHhKeWw3c2NZcFphY2w2WC9LZGppTm1HUy9hNmtGc0NBd0VBQWFPQjZ6Q0I2RENCdUFZRFZSMFJCSUd3TUlHdApnZ2xzYjJOaGJHaHZjM1NIQkg4QUFBR0hFQUFBQUFBQUFBQUFBQUFBQUFBQUFBR0NEbFpGVTFwTlQwNVVNVGN6CkxVNUNnaDVXUlZOYVRVOU9WREUzTXkxT1FpNTJaWE42TFcxdmJuUXViRzlqWVd5SEJLbitQVE9IQk1Db1pQcUgKQk1Db0FYQ0hCS24rbXFTSEJLbitrQVNIQktuKys5dUhCS24rSUoySEJLbitjUCtIQk1Db3hBR0hCTUNvYndHSApCS24rbS82SEVBQUFBQUFBQUFBQUFBQUFBQUFBQUFHSEJIOEFBQUV3SFFZRFZSME9CQllFRk9YcHNIdWtXUWxPClFIT001U1ZWWEpsa25NTWNNQXdHQTFVZEV3RUIvd1FDTUFBd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFNQVcKOEFidGVtZkRlZHRYVmNuM0hLanhrak14TWFWZDJvNTcxcy9VVG90Nk1pbGkxRVllNjg2Wkk5UGVFY3E0WGw2UQpobVdpMkNzQjIyd0lBUmQxQXpjcUxWZE9QRk8zcmRqVkdWckxNQWh4VXJZS01UWWl1T2xTMjFwVkY0MEt1UkJhCk51emtmWVZlbDViQk1XVkZ1Y296dWZyMlB0SmJhL2prNlRNYXd5TFk5WXY5dXlQTEJPRElCc1JUaEFGUEdDT0IKV3RFOEFPS3BxZWhyaDNnUTRYVjc3eEZXdCt6cUtxeWpqMytZMkJEMnFiK1JNTFFYMzNBWERWWW5laVdGSWZicQpwa08yOG5MU2o3TUhNamJxRTE0UGljZ0dGa3plRmJndEhOY05nR1dRdmltaHJiRE5ZRzlXY3E5UjdaN1RWS0lJClYrOEhPTkpVUnE3UGs0OTJRbE09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0KLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVBakNDQXVxZ0F3SUJBZ0lKQVBQRWl4VFdqZHB3TUEwR0NTcUdTSWIzRFFFQkN3VUFNRWd4Q3pBSkJnTlYKQkFZVEFrUkZNUnN3R1FZRFZRUUtEQkpVZDJsdVEwRlVJRWhOU1NCVFpYSjJaWEl4SERBYUJnTlZCQU1NRTFaRgpVMXBOVDA1VU1UY3pMVTVDWDNKdmIzUXdIaGNOTWpBd05EQXlNVEl4T0RRMVdoY05NakV3TkRBeU1USXhPRFExCldqQklNUXN3Q1FZRFZRUUdFd0pFUlRFYk1Ca0dBMVVFQ2d3U1ZIZHBia05CVkNCSVRVa2dVMlZ5ZG1WeU1Sd3cKR2dZRFZRUUREQk5XUlZOYVRVOU9WREUzTXkxT1FsOXliMjkwTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQwpBUThBTUlJQkNnS0NBUUVBelFLcWtZazF3M05qamhSazlJaVpxZWdVRTJrUWUxTVpsVGMwMDhLRXBRaUJhZnZSCkRxTmRkdEkrN2ZnSnNnRy8wdm9lNFJqMU9LUmRRb0xHZE1uR2Z0dzhqYXJaQWxESUNZOU9VUXd0dHo3Z1Q5aGsKZlFhOFhwcEZjTi9GL3RnTGM3aldZdFdHeHlEMVRZeTA1dXNlVzJUV0NKL0tnRTRtWUhhWG5KdGVkNzlQR0J3Vwp4YlBkZm1vWXk3Z3Y0M0ZxVHEyQjlyOFNVN1BRZXNMQ01oUjRzaDZ1aE9JVGYwbmxaVEZISnVwYVB6TVBKSDdRCnhZbEQ2WC9HZEZBWndZQWxKRjFPVllLZkExUlN6ODNvUmx3blhlR1cyOU5qeEtocGwzeWUvZHc4aTNRbHlJNmYKeG5SeHRoUjVqSFhaN2c5RmNtbmUrSE5sSElib0NYTVZHT1FLeXdJREFRQUJvNEh1TUlIck1JRzRCZ05WSFJFRQpnYkF3Z2EyQ0NXeHZZMkZzYUc5emRJY0Vmd0FBQVljUUFBQUFBQUFBQUFBQUFBQUFBQUFBQVlJT1ZrVlRXazFQClRsUXhOek10VGtLQ0hsWkZVMXBOVDA1VU1UY3pMVTVDTG5abGMzb3RiVzl1ZEM1c2IyTmhiSWNFcWY0OU00Y0UKd0toaytvY0V3S2dCY0ljRXFmNmFwSWNFcWY2UUJJY0VxZjc3MjRjRXFmNGduWWNFcWY1dy80Y0V3S2pFQVljRQp3S2h2QVljRXFmNmIvb2NRQUFBQUFBQUFBQUFBQUFBQUFBQUFBWWNFZndBQUFUQWRCZ05WSFE0RUZnUVVsamIvCmdJZGFlWml1TzRScXpRZ25tY1ZUUmw4d0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBTkJna3Foa2lHOXcwQkFRc0YKQUFPQ0FRRUFzUGI1NGxwbDdFdThHWWdNeFRUalB2N2pXSStNdWxGMURxTG02MnZFZ0hNeE1BNmhJeTlQV1plQwplNllZODkzeEtjN1lJd2E4WFVsYnd4VUJiK05jUk9XYjBLQTI3TElER1owbDdRT0tOdlBDT3VwczdUb0hSTWZpClAxa3Y5eGxxeVZBZFJqTzdGMFZlT1MycTFhdnV1Z2JHT2FZS2pQQ2IyVUd1S3l1RGY1SjVnTGhmT2szVmJpY20KNDIzRGh3bzgwaWxOZ25VRDI2QkNXeVZGdFEya0NPK2dkdkpFdkNOTHVUZGFkNTNObzkrZ3ZMUDBKMHFXL3dRVwpSY2Q5UzZmb0lqZmh6MkIxb1A3SDkxdnhacTNaRDNaZ2FzSUlXWlhkbmdXbHByMWJ4ZHNTY1BIYzJ2b1NGZHJnCnhuNXFXYk44ZVhWVEQwL01CZlZWU1gzby9OenBRUT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K",
+    "CERTIFICATEEXPIRATION": "P365D",
+    "CHECKSUMENABLED": true,
+    "CHUNKSIZE": 1048576,
+    "CLIENTCERTIFICATES": [],
+    "CONFIGURATIONS": [
+        "remote"
+    ],
+    "COOKIEEXPIRATIONDATE": "P30D",
+    "DEFAULTAUTHEXTENSION": "TcHmiUserManagement",
+    "DEFAULTDOCUMENT": [
+        "Default.html"
+    ],
+    "DEFAULTLOCALE": "client",
+    "DEFAULTTIMEFORMATLOCALE": "client",
+    "DEFAULTTIMEZONE": "client",
+    "DEFAULTUSERGROUP": "__SystemUsers",
+    "DEFINITIONS": {
+        "PLC1.ARRAY (0..7) OF BYTE": {
+            "items": {
+                "$ref": "tchmi:general#/definitions/BYTE"
+            },
+            "maxItems": 8,
+            "minItems": 8,
+            "type": "array"
+        },
+        "PLC1.ARRAY (0..7) OF REAL": {
+            "items": {
+                "$ref": "tchmi:general#/definitions/REAL"
+            },
+            "maxItems": 8,
+            "minItems": 8,
+            "type": "array"
+        },
+        "PLC1.ARRAY (1..15) OF UINT": {
+            "items": {
+                "$ref": "tchmi:general#/definitions/UINT"
+            },
+            "maxItems": 15,
+            "minItems": 15,
+            "startOffset": 1,
+            "type": "array"
+        },
+        "PLC1.ARRAY (1..16) OF UINT": {
+            "items": {
+                "$ref": "tchmi:general#/definitions/UINT"
+            },
+            "maxItems": 16,
+            "minItems": 16,
+            "startOffset": 1,
+            "type": "array"
+        },
+        "PLC1.ARRAY (1..3) OF UINT": {
+            "items": {
+                "$ref": "tchmi:general#/definitions/UINT"
+            },
+            "maxItems": 3,
+            "minItems": 3,
+            "startOffset": 1,
+            "type": "array"
+        },
+        "PLC1.ARRAY (1..40) OF ST_DUT": {
+            "items": {
+                "$ref": "#/definitions/PLC1.ST_DUT"
+            },
+            "maxItems": 40,
+            "minItems": 40,
+            "startOffset": 1,
+            "type": "array"
+        },
+        "PLC1.ARRAY (1..7) OF UINT": {
+            "items": {
+                "$ref": "tchmi:general#/definitions/UINT"
+            },
+            "maxItems": 7,
+            "minItems": 7,
+            "startOffset": 1,
+            "type": "array"
+        },
+        "PLC1.ARRAY (1..8) OF BYTE": {
+            "items": {
+                "$ref": "tchmi:general#/definitions/BYTE"
+            },
+            "maxItems": 8,
+            "minItems": 8,
+            "startOffset": 1,
+            "type": "array"
+        },
+        "PLC1.ARRAY (1..8) OF ST_DUT": {
+            "items": {
+                "$ref": "#/definitions/PLC1.ST_DUT"
+            },
+            "maxItems": 8,
+            "minItems": 8,
+            "startOffset": 1,
+            "type": "array"
+        },
+        "PLC1.FB_Bistabil": {
+            "properties": {
+                "bAck": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bBasePosCmd": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bBasePosStab": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bDisableManualCmd": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bEHA": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bEn": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bErrBPWP": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bErrBasePos0": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bErrBasePos1": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bErrWorkPos0": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bErrWorkPos1": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bError": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bIsInitalized": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bWorkPosCmd": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bWorkPosStab": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "fbBasePosAlarm": {
+                    "$ref": "#/definitions/PLC1.Tc3_EventLogger.FB_TcAlarm"
+                },
+                "fbWorkPosAlarm": {
+                    "$ref": "#/definitions/PLC1.Tc3_EventLogger.FB_TcAlarm"
+                },
+                "i_bBasePos": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "i_bWorkPos": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "nEHMode": {
+                    "$ref": "tchmi:general#/definitions/BYTE"
+                },
+                "q_bBasePos": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "q_bWorkPos": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "sBasePosSensor": {
+                    "allOf": [
+                        {
+                            "maxLength": 10
+                        },
+                        {
+                            "$ref": "tchmi:general#/definitions/String"
+                        }
+                    ]
+                },
+                "sError": {
+                    "allOf": [
+                        {
+                            "maxLength": 255
+                        },
+                        {
+                            "$ref": "tchmi:general#/definitions/String"
+                        }
+                    ]
+                },
+                "sName": {
+                    "allOf": [
+                        {
+                            "maxLength": 30
+                        },
+                        {
+                            "$ref": "tchmi:general#/definitions/String"
+                        }
+                    ]
+                },
+                "sWorkPosSensor": {
+                    "allOf": [
+                        {
+                            "maxLength": 10
+                        },
+                        {
+                            "$ref": "tchmi:general#/definitions/String"
+                        }
+                    ]
+                },
+                "stBasePosEvent": {
+                    "$ref": "#/definitions/PLC1.TcEventEntry"
+                },
+                "stWorkPosEvent": {
+                    "$ref": "#/definitions/PLC1.TcEventEntry"
+                },
+                "tBP": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.TON"
+                },
+                "tBPS": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.TON"
+                },
+                "tDPWP": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.TON"
+                },
+                "tWP": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.TON"
+                },
+                "tWPS": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.TON"
+                },
+                "timBasePos": {
+                    "$ref": "tchmi:general#/definitions/TIME"
+                },
+                "timBasePosStab": {
+                    "$ref": "tchmi:general#/definitions/TIME"
+                },
+                "timWorkPos": {
+                    "$ref": "tchmi:general#/definitions/TIME"
+                },
+                "timWorkPosStab": {
+                    "$ref": "tchmi:general#/definitions/TIME"
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.FB_FeedIn": {
+            "properties": {
+                "bEMY": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bError": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bOutbyRobot": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bPickupRequest": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bPieceInEnabled": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bPieceOutPos": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bPieceReleased": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bPlaceRequest": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "fbConvFullTON": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.TON"
+                },
+                "fbConvStopRT": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.R_TRIG"
+                },
+                "fbConvStopTON": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.TON"
+                },
+                "fbPieceGoTON": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.TON"
+                },
+                "fbPositioner": {
+                    "$ref": "#/definitions/PLC1.FB_Bistabil"
+                },
+                "fbStopperInner": {
+                    "$ref": "#/definitions/PLC1.FB_Bistabil"
+                },
+                "fbStopperOuter": {
+                    "$ref": "#/definitions/PLC1.FB_Bistabil"
+                },
+                "fbTimeOutTON": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.TON"
+                },
+                "i_bConvFull": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "i_bInvErr": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "i_bPieceAtStopper": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "i_bPieceInInner": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "i_bPieceInOuter": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "i_bPieceOutPos": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "nState": {
+                    "$ref": "tchmi:general#/definitions/UDINT"
+                },
+                "nStatePrevious": {
+                    "$ref": "tchmi:general#/definitions/UDINT"
+                },
+                "q_bBannerBlue": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "q_bBannerGreen": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "q_bBannerRed": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "q_bInvBwd": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "q_bInvErrAck": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "q_bInvFwd": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "sState": {
+                    "allOf": [
+                        {
+                            "maxLength": 500
+                        },
+                        {
+                            "$ref": "tchmi:general#/definitions/String"
+                        }
+                    ]
+                },
+                "stEventEntry1": {
+                    "$ref": "#/definitions/PLC1.TcEventEntry"
+                },
+                "stEventEntry2": {
+                    "$ref": "#/definitions/PLC1.TcEventEntry"
+                },
+                "stEventEntry3": {
+                    "$ref": "#/definitions/PLC1.TcEventEntry"
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.FB_FeedOut": {
+            "properties": {
+                "bEMY": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bError": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bPieceInEnabled": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bPlaceRequest": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "fbConvFullTON": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.TON"
+                },
+                "fbConvStopRT": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.R_TRIG"
+                },
+                "fbConvStopTON": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.TON"
+                },
+                "fbPieceGoTON": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.TON"
+                },
+                "fbTimeOutTON": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.TON"
+                },
+                "fbWarningTON": {
+                    "$ref": "#/definitions/PLC1.Tc2_Standard.TON"
+                },
+                "i_bConvFull": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "i_bInvErr": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "i_bPieceInner": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "i_bPieceOpPos": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "i_bPieceRobotPos": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "nState": {
+                    "$ref": "tchmi:general#/definitions/UDINT"
+                },
+                "nStatePrevious": {
+                    "$ref": "tchmi:general#/definitions/UDINT"
+                },
+                "q_bBannerBlue": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "q_bBannerGreen": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "q_bBannerRed": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "q_bInvBwd": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "q_bInvErrAck": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "q_bInvFwd": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "sState": {
+                    "allOf": [
+                        {
+                            "maxLength": 500
+                        },
+                        {
+                            "$ref": "tchmi:general#/definitions/String"
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.GUID": {
+            "properties": {
+                "Data1": {
+                    "$ref": "tchmi:general#/definitions/DWORD"
+                },
+                "Data2": {
+                    "$ref": "tchmi:general#/definitions/WORD"
+                },
+                "Data3": {
+                    "$ref": "tchmi:general#/definitions/WORD"
+                },
+                "Data4": {
+                    "$ref": "#/definitions/PLC1.ARRAY (0..7) OF BYTE"
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.ST_DUT": {
+            "properties": {
+                "bClosed": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bDecided": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bEnabled": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bExecutable": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bFail": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bInserted": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bPass": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bRunning": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.ST_T2O_State": {
+            "properties": {
+                "bEmergency_stopped": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bFault": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bNormal_mode": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bPower_button_pressed": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bPower_on": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bProgram_running": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bProtective_stopped": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bRecovery_mode": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bReduced_mode": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bReserved10": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bReserved11": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bReserved12": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bReserved13": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bReserved14": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bReserved2": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bReserved3": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bReserved4": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bReserved5": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bRobot_emergency_stopped": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bSafeguard_stopped": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bStopped_due_safety": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bSystem_emergency_stopped": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bTeach_button_pressed": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "bViolation": {
+                    "$ref": "tchmi:general#/definitions/BIT"
+                },
+                "fRobot_current": {
+                    "$ref": "tchmi:general#/definitions/REAL"
+                },
+                "fSpeed_slider_fraction": {
+                    "$ref": "tchmi:general#/definitions/REAL"
+                },
+                "nController_major_version": {
+                    "$ref": "tchmi:general#/definitions/USINT"
+                },
+                "nController_minor_version": {
+                    "$ref": "tchmi:general#/definitions/USINT"
+                },
+                "nMachine_days": {
+                    "$ref": "tchmi:general#/definitions/UINT"
+                },
+                "nMachine_hours": {
+                    "$ref": "tchmi:general#/definitions/USINT"
+                },
+                "nMachine_milliseconds": {
+                    "$ref": "tchmi:general#/definitions/UINT"
+                },
+                "nMachine_minutes": {
+                    "$ref": "tchmi:general#/definitions/USINT"
+                },
+                "nMachine_seconds": {
+                    "$ref": "tchmi:general#/definitions/USINT"
+                },
+                "nReserved": {
+                    "$ref": "tchmi:general#/definitions/UINT"
+                },
+                "nReserved15": {
+                    "$ref": "tchmi:general#/definitions/UINT"
+                },
+                "nReserved6": {
+                    "$ref": "tchmi:general#/definitions/USINT"
+                },
+                "nReserved7": {
+                    "$ref": "tchmi:general#/definitions/UINT"
+                },
+                "nReserved8": {
+                    "$ref": "tchmi:general#/definitions/USINT"
+                },
+                "nReserved9": {
+                    "$ref": "tchmi:general#/definitions/UINT"
+                },
+                "nRobot_mode": {
+                    "$ref": "tchmi:general#/definitions/USINT"
+                },
+                "nSafety_mode": {
+                    "$ref": "tchmi:general#/definitions/USINT"
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.Tc2_Standard.R_TRIG": {
+            "properties": {
+                "CLK": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "M": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "Q": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.Tc2_Standard.TON": {
+            "properties": {
+                "ET": {
+                    "$ref": "tchmi:general#/definitions/TIME"
+                },
+                "IN": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "M": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "PT": {
+                    "$ref": "tchmi:general#/definitions/TIME"
+                },
+                "Q": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "StartTime": {
+                    "$ref": "tchmi:general#/definitions/TIME"
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.Tc3_EventLogger.FB_AsyncStrResult": {
+            "properties": {
+                "bBusy": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "bError": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "hrErrorCode": {
+                    "$ref": "tchmi:general#/definitions/HRESULT"
+                },
+                "nStringSize": {
+                    "$ref": "tchmi:general#/definitions/UDINT"
+                },
+                "sResult": {
+                    "allOf": [
+                        {
+                            "maxLength": 255
+                        },
+                        {
+                            "$ref": "tchmi:general#/definitions/String"
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.Tc3_EventLogger.FB_TcAlarm": {
+            "properties": {
+                "__FB_TCEVENTBASE__REQUESTEVENTCLASSNAME__BBUSY": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "__FB_TCEVENTBASE__REQUESTEVENTCLASSNAME__FBRESULT": {
+                    "$ref": "#/definitions/PLC1.Tc3_EventLogger.FB_AsyncStrResult"
+                },
+                "__FB_TCEVENTBASE__REQUESTEVENTTEXT__BBUSY": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "__FB_TCEVENTBASE__REQUESTEVENTTEXT__FBRESULT": {
+                    "$ref": "#/definitions/PLC1.Tc3_EventLogger.FB_AsyncStrResult"
+                },
+                "eConfirmationState": {
+                    "$ref": "#/definitions/PLC1.TcEventConfirmationState"
+                },
+                "eSeverity": {
+                    "$ref": "#/definitions/PLC1.TcEventSeverity"
+                },
+                "fbSourceInfo": {
+                    "$ref": "#/definitions/PLC1.Tc3_EventLogger.FB_TcSourceInfo"
+                },
+                "ipSourceInfo": {
+                    "$ref": "#/definitions/PLC1.Tc3_EventLogger.I_TcSourceInfo"
+                },
+                "nEventId": {
+                    "$ref": "tchmi:general#/definitions/UDINT"
+                },
+                "nTimeCleared": {
+                    "$ref": "tchmi:general#/definitions/ULINT"
+                },
+                "nTimeConfirmed": {
+                    "$ref": "tchmi:general#/definitions/ULINT"
+                },
+                "nTimeRaised": {
+                    "$ref": "tchmi:general#/definitions/ULINT"
+                },
+                "sEventClassName": {
+                    "allOf": [
+                        {
+                            "maxLength": 255
+                        },
+                        {
+                            "$ref": "tchmi:general#/definitions/String"
+                        }
+                    ]
+                },
+                "sEventText": {
+                    "allOf": [
+                        {
+                            "maxLength": 255
+                        },
+                        {
+                            "$ref": "tchmi:general#/definitions/String"
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.Tc3_EventLogger.FB_TcSourceInfo": {
+            "properties": {
+                "nId": {
+                    "$ref": "tchmi:general#/definitions/UDINT"
+                },
+                "sName": {
+                    "allOf": [
+                        {
+                            "maxLength": 255
+                        },
+                        {
+                            "$ref": "tchmi:general#/definitions/String"
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.Tc3_EventLogger.I_TcSourceInfo": {},
+        "PLC1.TcEventConfirmationState": {
+            "allOf": [
+                {
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4
+                    ],
+                    "options": [
+                        {
+                            "label": "NotSupported",
+                            "value": 0
+                        },
+                        {
+                            "label": "NotRequired",
+                            "value": 1
+                        },
+                        {
+                            "label": "WaitForConfirmation",
+                            "value": 2
+                        },
+                        {
+                            "label": "Confirmed",
+                            "value": 3
+                        },
+                        {
+                            "label": "Reset",
+                            "value": 4
+                        }
+                    ]
+                },
+                {
+                    "$ref": "tchmi:general#/definitions/INT16"
+                }
+            ]
+        },
+        "PLC1.TcEventEntry": {
+            "properties": {
+                "eSeverity": {
+                    "$ref": "#/definitions/PLC1.TcEventSeverity"
+                },
+                "nEventId": {
+                    "$ref": "tchmi:general#/definitions/UDINT"
+                },
+                "uuidEventClass": {
+                    "$ref": "#/definitions/PLC1.GUID"
+                }
+            },
+            "type": "object"
+        },
+        "PLC1.TcEventSeverity": {
+            "allOf": [
+                {
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4
+                    ],
+                    "options": [
+                        {
+                            "label": "TCEVENTSEVERITY_Verbose",
+                            "value": 0
+                        },
+                        {
+                            "label": "TCEVENTSEVERITY_Info",
+                            "value": 1
+                        },
+                        {
+                            "label": "TCEVENTSEVERITY_Warning",
+                            "value": 2
+                        },
+                        {
+                            "label": "TCEVENTSEVERITY_Error",
+                            "value": 3
+                        },
+                        {
+                            "label": "TCEVENTSEVERITY_Critical",
+                            "value": 4
+                        }
+                    ]
+                },
+                {
+                    "$ref": "tchmi:general#/definitions/INT16"
+                }
+            ]
+        }
+    },
+    "DEFLATECOMPRESSIONLEVEL": 5,
+    "DISCOVERY": 2,
+    "ENDPOINTS": [
+        "http://127.0.0.1:3005"
+    ],
+    "ETAGENABLED": true,
+    "EXTENSIONS": {
+        "ADS": {
+            "ENABLED": true,
+            "NAME": "TcHmiAds",
+            "REQUIRED": false,
+            "STARTUPTYPE": 1
+        },
+        "TcHmiEventLogger": {
+            "ENABLED": true,
+            "NAME": "TcHmiEventLogger",
+            "REQUIRED": false,
+            "STARTUPTYPE": 1
+        },
+        "TcHmiLua": {
+            "ENABLED": true,
+            "NAME": "TcHmiLua",
+            "PATH": "",
+            "PLUGINCONTAINER": "in process",
+            "REQUIRED": true,
+            "STARTUPTYPE": 1
+        },
+        "TcHmiRecipeManagement": {
+            "ENABLED": true,
+            "NAME": "TcHmiRecipeManagement",
+            "REQUIRED": false,
+            "STARTUPTYPE": 1
+        },
+        "TcHmiSqliteHistorize": {
+            "ENABLED": true,
+            "NAME": "TcHmiSqliteHistorize",
+            "REQUIRED": false,
+            "STARTUPTYPE": 1
+        },
+        "TcHmiSqliteLogger": {
+            "ENABLED": true,
+            "NAME": "TcHmiSqliteLogger",
+            "PATH": "",
+            "PLUGINCONTAINER": "in process",
+            "REQUIRED": true,
+            "STARTUPTYPE": 0
+        },
+        "TcHmiTextStorage": {
+            "ENABLED": true,
+            "NAME": "TcHmiTextStorage",
+            "REQUIRED": false,
+            "STARTUPTYPE": 1
+        },
+        "TcHmiUserManagement": {
+            "ENABLED": true,
+            "NAME": "TcHmiUserManagement",
+            "PATH": "",
+            "PLUGINCONTAINER": "in process",
+            "REQUIRED": true,
+            "STARTUPTYPE": 1
+        }
+    },
+    "FILES": {},
+    "FLOODPROTECTION": 500,
+    "GLOBALHTTPHEADERS": "{LASTMODIFIED}",
+    "GZIPENABLED": true,
+    "GZIPMINSIZE": 800,
+    "INTERNALSTORAGE": {},
+    "KEEP_ALIVE": "PT40S",
+    "KEY": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2Z0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktnd2dnU2tBZ0VBQW9JQkFRRGhvWVRvZnBzVyt3UzkKSGUwTnlhYzNHODdhREc3VzB2NEVqNG5PMEk3Y1RjN29OWkdqb0M1bXV0bVkyT09EN04vYis3T09JaG1ySTVUVApxczRld3MxL3lQVHQ4RGpzQzMzb3liZmVqN1IyUEU5ZWRGNVh5aFM5SmN3YzliZlZNZkpRY2lYS3ltNzVOZWFDClhxelVaNE9MVS9TaUR6bitxSlgvR0orajMzdHNId2FqN0NvQ2ZsbTNuMElLMTFIL084cW5NWDhnZ1lXL3cyeFcKT2puY2pRSllzUE9TNkp5TWs0TnlhZHhmb2VZZEdveGRRU081cGk1QnVPem5KZzF4TW1MRXJEUXE0R2doZCtjNwp2ODFFRTlzOTJ6K0Z4YUwwWjBNZDA3VEw3b3c3YUt6cUlXMElscW5HK05NU2NwZTdIR0tXV25KZWwveW5ZNGpaCmhrdjJ1cEJiQWdNQkFBRUNnZ0VCQU5aVTUzc3ZZVVhvTjYwcWMxZ29tWlpvN1FzR3luZDVRR0cydEhMb2ZQemIKVU5RV3B2MW5HUXp2SytyZEJPcjZKZ0REVGVLVGxBeVZKVGdZeGVwRXBJOWhwd0Vycy9iT1I5SE5aTU9mZ1E3Ygo1WTFWUDVWbldtSC9PTEM5M2Q1QXJ1MHFNYW84dUVRMXBuMXJVQVFKUE5VcWNIVk52NHFnUExSeGdKeGJtOU9zCnNGWUxjOGN6T3RBN0k4aHV2dG9MeTF4Rmt1aUhEY015a2srZkZ3aFl6MldrUDJjYWQyS0tOS0YzMWxNZzJqZkUKemg0TW9iS1dzZWlOeEU2b0RrVjBvdjFIY0w4S21oYm5uMjBXeTRpVzdtSmdIRlA2YlZwNFVwYVZYd1k2RktUbgp5QkphdGU1c0ZDZHc4WE9sbk9VUkdNZjlkeWR1Q01TMGVadHVhZDJNKzBFQ2dZRUErbG15Zmw2S1B4ZmZhdys2CmpnZjUwTC9kOFhpMk1mTWRiNDQwZ2tpWjkyR1dzd3ZDNUZGZlFmQlBSWWdRdnB0dHE3Ym5RMWVHM2RXc054OFUKRlRTSG13R0RDVFVFYVdmTHFEeldlQ0hrU21Cak9VUWJ2Q2dmOHJEQ1dNQlArbndIblhxTEc0VjBoUVZlZllSOQpKYVNURmNaMW9RNVJLOXk2RDNSdFd0YVNkN3NDZ1lFQTVya0R6bm5EWGZxSVozdUlISGUrQ3BET3dvcCszSDFGClVWQTU5b2RRUU5nd2FIRmNvNXp5WC9yNVBKYmpBajF1TTNvS043SHNzenc3TEdvWUxOZGFaQUxLUEQzY2MyLy8KUnRGMGhuWUFVRW1CS0o4QmRKZXRlOUE3VTBuSk4zWkJkR05LOTMwNmM3bzFlUHBlMUM0S2pwS2ZTaEQvb1QrVwowUFJrY29uTUwrRUNnWUVBaWcza3JHTWVBV1Q4dzJGTkV2MjYrUzZWQ1kvemlOLzBINHhmMEdpUTN5WmxvQjZnClBwL1EwOS9kRnc3TmpRN1JENXd4TTZXVXJjZ2l5OUxMbEZYL1lhOFh2NEFKQ3NjK08yd3hLTlludWd3bEszTXYKaURib1IwREtLMzhCbTdQQnowbkFaRkRYekhNRmhGb0hXVGJFRllIM1kvVXROZTdtZTVkTXBvY2xCZmtDZ1lCaApZa3BYQmxJT0FzYzhWb25XNmp2T25keUhoSW1UYTFTc3c1NFRqbjJ6UVF6OXFJdWZpNGxLTmRhcFdrNnJEVjdNClg0Q2NqWDhKRUMweHkvNDBQeG1xQ1B0dmZmVGt6S3NGS3pkeDRiQzBNckpQZ1AzT1JvODFLV2xBK0czeitQZ2IKdGlWWVhRVWsvNzIrT0g5Nk00ekZMT0lMRXkyeTAvSkdkRUZKanh3ZVFRS0JnQjlJU1R2eVd5MHNTWG9XMXoxVApjUDlyaVIwT2JPMU4wSUNzTENKMHZlZEdwb0V0SXBLdjZPbGJPY0IyNk9wNmFZQzc1K25zUTRkTjRiK0w4a21qCmJURmFIbDBMY0I0NGN5aFlXY2pqZmc1blhzRDluSzdURWQ2RG1PRTA0NFNuRVE1U0syYlY1bEg0d1EvKzlMVlIKRU9jSENjZ2lZR1ZlcDJneXQ3VHM5aXM4Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K",
+    "KEYPASSWORD": "",
+    "LOGLEVEL": 1,
+    "MAXCONNECTIONSPERCLIENT": 32,
+    "MAXHTTPHEADERSIZE": 8192,
+    "MAXREQUESTSIZE": 1048576,
+    "MAXSESSIONS": 128,
+    "MIME": {
+        "bin": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/octet-stream"
+        },
+        "bmp": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "image/bmp"
+        },
+        "cer": {
+            "MIME_ENABLE_CACHE": false,
+            "MIME_ENABLE_CHUNKING": false,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/x-x509-ca-cert"
+        },
+        "config": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "text/xml"
+        },
+        "content": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "text/plain"
+        },
+        "css": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "text/css"
+        },
+        "dll": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/octet-stream"
+        },
+        "ear": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/java-archive"
+        },
+        "eot": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "vnd.ms-fontobject"
+        },
+        "exe": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/octet-stream"
+        },
+        "gif": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "image/gif"
+        },
+        "htm": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "text/html"
+        },
+        "html": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "text/html"
+        },
+        "ico": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "image/x-icon"
+        },
+        "img": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/octet-stream"
+        },
+        "iso": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/octet-stream"
+        },
+        "jar": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/java-archive"
+        },
+        "jpeg": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "image/jpeg"
+        },
+        "jpg": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "image/jpeg"
+        },
+        "js": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/javascript"
+        },
+        "json": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/json"
+        },
+        "jsonp": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/javascript"
+        },
+        "localization": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/json"
+        },
+        "lp": {
+            "MIME_ENABLE_CACHE": false,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "no-store",
+            "MIME_TYPE": "application/lp"
+        },
+        "lua": {
+            "MIME_ENABLE_CACHE": false,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "no-store",
+            "MIME_TYPE": "application/lua"
+        },
+        "map": {
+            "MIME_ENABLE_CACHE": false,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/json"
+        },
+        "mp3": {
+            "MIME_ENABLE_CACHE": false,
+            "MIME_ENABLE_CHUNKING": false,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "audio/mpeg"
+        },
+        "mp4": {
+            "MIME_ENABLE_CACHE": false,
+            "MIME_ENABLE_CHUNKING": false,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "video/mp4"
+        },
+        "ogg": {
+            "MIME_ENABLE_CACHE": false,
+            "MIME_ENABLE_CHUNKING": false,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "video/ogg"
+        },
+        "ogv": {
+            "MIME_ENABLE_CACHE": false,
+            "MIME_ENABLE_CHUNKING": false,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "video/ogg"
+        },
+        "otf": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/font-sfnt"
+        },
+        "pdf": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/pdf"
+        },
+        "pem": {
+            "MIME_ENABLE_CACHE": false,
+            "MIME_ENABLE_CHUNKING": false,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/x-pem-file"
+        },
+        "png": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "image/png"
+        },
+        "shtml": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "text/html"
+        },
+        "svg": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "image/svg+xml"
+        },
+        "theme": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/json"
+        },
+        "ttf": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/font-sfnt"
+        },
+        "txt": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "text/plain"
+        },
+        "usercontrol": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "text/plain"
+        },
+        "view": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "text/plain"
+        },
+        "war": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/java-archive"
+        },
+        "webm": {
+            "MIME_ENABLE_CACHE": false,
+            "MIME_ENABLE_CHUNKING": false,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "video/webm"
+        },
+        "woff": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/font-woff"
+        },
+        "xml": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": true,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "text/xml"
+        },
+        "zip": {
+            "MIME_ENABLE_CACHE": true,
+            "MIME_ENABLE_CHUNKING": true,
+            "MIME_ENABLE_GZIP": false,
+            "MIME_HTTP_HEADERS": "",
+            "MIME_TYPE": "application/zip"
+        }
+    },
+    "NETWORKADAPTER": "",
+    "PERMESSAGEDEFLATEENABLED": true,
+    "PLAINADMINISTRATIONENABLED": true,
+    "PROJECTNAME": "2020_HAM017_HMI",
+    "PROJECTVERSION": "1.0.0.0",
+    "REMOTEADMINISTRATIONENABLED": true,
+    "REMOTESERVERS": {},
+    "REMOTESERVERS_CERTIFICATES": [],
+    "REQUIREAUTH": 0,
+    "REVALIDATION": true,
+    "SELFSIGNEDROOTCA": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVBakNDQXVxZ0F3SUJBZ0lKQVBQRWl4VFdqZHB3TUEwR0NTcUdTSWIzRFFFQkN3VUFNRWd4Q3pBSkJnTlYKQkFZVEFrUkZNUnN3R1FZRFZRUUtEQkpVZDJsdVEwRlVJRWhOU1NCVFpYSjJaWEl4SERBYUJnTlZCQU1NRTFaRgpVMXBOVDA1VU1UY3pMVTVDWDNKdmIzUXdIaGNOTWpBd05EQXlNVEl4T0RRMVdoY05NakV3TkRBeU1USXhPRFExCldqQklNUXN3Q1FZRFZRUUdFd0pFUlRFYk1Ca0dBMVVFQ2d3U1ZIZHBia05CVkNCSVRVa2dVMlZ5ZG1WeU1Sd3cKR2dZRFZRUUREQk5XUlZOYVRVOU9WREUzTXkxT1FsOXliMjkwTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQwpBUThBTUlJQkNnS0NBUUVBelFLcWtZazF3M05qamhSazlJaVpxZWdVRTJrUWUxTVpsVGMwMDhLRXBRaUJhZnZSCkRxTmRkdEkrN2ZnSnNnRy8wdm9lNFJqMU9LUmRRb0xHZE1uR2Z0dzhqYXJaQWxESUNZOU9VUXd0dHo3Z1Q5aGsKZlFhOFhwcEZjTi9GL3RnTGM3aldZdFdHeHlEMVRZeTA1dXNlVzJUV0NKL0tnRTRtWUhhWG5KdGVkNzlQR0J3Vwp4YlBkZm1vWXk3Z3Y0M0ZxVHEyQjlyOFNVN1BRZXNMQ01oUjRzaDZ1aE9JVGYwbmxaVEZISnVwYVB6TVBKSDdRCnhZbEQ2WC9HZEZBWndZQWxKRjFPVllLZkExUlN6ODNvUmx3blhlR1cyOU5qeEtocGwzeWUvZHc4aTNRbHlJNmYKeG5SeHRoUjVqSFhaN2c5RmNtbmUrSE5sSElib0NYTVZHT1FLeXdJREFRQUJvNEh1TUlIck1JRzRCZ05WSFJFRQpnYkF3Z2EyQ0NXeHZZMkZzYUc5emRJY0Vmd0FBQVljUUFBQUFBQUFBQUFBQUFBQUFBQUFBQVlJT1ZrVlRXazFQClRsUXhOek10VGtLQ0hsWkZVMXBOVDA1VU1UY3pMVTVDTG5abGMzb3RiVzl1ZEM1c2IyTmhiSWNFcWY0OU00Y0UKd0toaytvY0V3S2dCY0ljRXFmNmFwSWNFcWY2UUJJY0VxZjc3MjRjRXFmNGduWWNFcWY1dy80Y0V3S2pFQVljRQp3S2h2QVljRXFmNmIvb2NRQUFBQUFBQUFBQUFBQUFBQUFBQUFBWWNFZndBQUFUQWRCZ05WSFE0RUZnUVVsamIvCmdJZGFlWml1TzRScXpRZ25tY1ZUUmw4d0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBTkJna3Foa2lHOXcwQkFRc0YKQUFPQ0FRRUFzUGI1NGxwbDdFdThHWWdNeFRUalB2N2pXSStNdWxGMURxTG02MnZFZ0hNeE1BNmhJeTlQV1plQwplNllZODkzeEtjN1lJd2E4WFVsYnd4VUJiK05jUk9XYjBLQTI3TElER1owbDdRT0tOdlBDT3VwczdUb0hSTWZpClAxa3Y5eGxxeVZBZFJqTzdGMFZlT1MycTFhdnV1Z2JHT2FZS2pQQ2IyVUd1S3l1RGY1SjVnTGhmT2szVmJpY20KNDIzRGh3bzgwaWxOZ25VRDI2QkNXeVZGdFEya0NPK2dkdkpFdkNOTHVUZGFkNTNObzkrZ3ZMUDBKMHFXL3dRVwpSY2Q5UzZmb0lqZmh6MkIxb1A3SDkxdnhacTNaRDNaZ2FzSUlXWlhkbmdXbHByMWJ4ZHNTY1BIYzJ2b1NGZHJnCnhuNXFXYk44ZVhWVEQwL01CZlZWU1gzby9OenBRUT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K",
+    "SELFSIGNEDROOTCAKEY": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2Z0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktnd2dnU2tBZ0VBQW9JQkFRRGhvWVRvZnBzVyt3UzkKSGUwTnlhYzNHODdhREc3VzB2NEVqNG5PMEk3Y1RjN29OWkdqb0M1bXV0bVkyT09EN04vYis3T09JaG1ySTVUVApxczRld3MxL3lQVHQ4RGpzQzMzb3liZmVqN1IyUEU5ZWRGNVh5aFM5SmN3YzliZlZNZkpRY2lYS3ltNzVOZWFDClhxelVaNE9MVS9TaUR6bitxSlgvR0orajMzdHNId2FqN0NvQ2ZsbTNuMElLMTFIL084cW5NWDhnZ1lXL3cyeFcKT2puY2pRSllzUE9TNkp5TWs0TnlhZHhmb2VZZEdveGRRU081cGk1QnVPem5KZzF4TW1MRXJEUXE0R2doZCtjNwp2ODFFRTlzOTJ6K0Z4YUwwWjBNZDA3VEw3b3c3YUt6cUlXMElscW5HK05NU2NwZTdIR0tXV25KZWwveW5ZNGpaCmhrdjJ1cEJiQWdNQkFBRUNnZ0VCQU5aVTUzc3ZZVVhvTjYwcWMxZ29tWlpvN1FzR3luZDVRR0cydEhMb2ZQemIKVU5RV3B2MW5HUXp2SytyZEJPcjZKZ0REVGVLVGxBeVZKVGdZeGVwRXBJOWhwd0Vycy9iT1I5SE5aTU9mZ1E3Ygo1WTFWUDVWbldtSC9PTEM5M2Q1QXJ1MHFNYW84dUVRMXBuMXJVQVFKUE5VcWNIVk52NHFnUExSeGdKeGJtOU9zCnNGWUxjOGN6T3RBN0k4aHV2dG9MeTF4Rmt1aUhEY015a2srZkZ3aFl6MldrUDJjYWQyS0tOS0YzMWxNZzJqZkUKemg0TW9iS1dzZWlOeEU2b0RrVjBvdjFIY0w4S21oYm5uMjBXeTRpVzdtSmdIRlA2YlZwNFVwYVZYd1k2RktUbgp5QkphdGU1c0ZDZHc4WE9sbk9VUkdNZjlkeWR1Q01TMGVadHVhZDJNKzBFQ2dZRUErbG15Zmw2S1B4ZmZhdys2CmpnZjUwTC9kOFhpMk1mTWRiNDQwZ2tpWjkyR1dzd3ZDNUZGZlFmQlBSWWdRdnB0dHE3Ym5RMWVHM2RXc054OFUKRlRTSG13R0RDVFVFYVdmTHFEeldlQ0hrU21Cak9VUWJ2Q2dmOHJEQ1dNQlArbndIblhxTEc0VjBoUVZlZllSOQpKYVNURmNaMW9RNVJLOXk2RDNSdFd0YVNkN3NDZ1lFQTVya0R6bm5EWGZxSVozdUlISGUrQ3BET3dvcCszSDFGClVWQTU5b2RRUU5nd2FIRmNvNXp5WC9yNVBKYmpBajF1TTNvS043SHNzenc3TEdvWUxOZGFaQUxLUEQzY2MyLy8KUnRGMGhuWUFVRW1CS0o4QmRKZXRlOUE3VTBuSk4zWkJkR05LOTMwNmM3bzFlUHBlMUM0S2pwS2ZTaEQvb1QrVwowUFJrY29uTUwrRUNnWUVBaWcza3JHTWVBV1Q4dzJGTkV2MjYrUzZWQ1kvemlOLzBINHhmMEdpUTN5WmxvQjZnClBwL1EwOS9kRnc3TmpRN1JENXd4TTZXVXJjZ2l5OUxMbEZYL1lhOFh2NEFKQ3NjK08yd3hLTlludWd3bEszTXYKaURib1IwREtLMzhCbTdQQnowbkFaRkRYekhNRmhGb0hXVGJFRllIM1kvVXROZTdtZTVkTXBvY2xCZmtDZ1lCaApZa3BYQmxJT0FzYzhWb25XNmp2T25keUhoSW1UYTFTc3c1NFRqbjJ6UVF6OXFJdWZpNGxLTmRhcFdrNnJEVjdNClg0Q2NqWDhKRUMweHkvNDBQeG1xQ1B0dmZmVGt6S3NGS3pkeDRiQzBNckpQZ1AzT1JvODFLV2xBK0czeitQZ2IKdGlWWVhRVWsvNzIrT0g5Nk00ekZMT0lMRXkyeTAvSkdkRUZKanh3ZVFRS0JnQjlJU1R2eVd5MHNTWG9XMXoxVApjUDlyaVIwT2JPMU4wSUNzTENKMHZlZEdwb0V0SXBLdjZPbGJPY0IyNk9wNmFZQzc1K25zUTRkTjRiK0w4a21qCmJURmFIbDBMY0I0NGN5aFlXY2pqZmc1blhzRDluSzdURWQ2RG1PRTA0NFNuRVE1U0syYlY1bEg0d1EvKzlMVlIKRU9jSENjZ2lZR1ZlcDJneXQ3VHM5aXM4Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K",
+    "SESSIONSTORAGE": {},
+    "SOCKET_TIMEOUT": "PT10S",
+    "SYMBOLS": {
+        "ADS.AdsSyncReadDeviceInfoReq": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "HIDDEN": true,
+            "MAPPING": "AdsSyncReadDeviceInfoReq",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "doc": "Ads runtime.",
+                    "type": "string"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "ADS.AdsSyncReadReq": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "HIDDEN": true,
+            "MAPPING": "AdsSyncReadReq",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "IndexGroup": {
+                            "$ref": "tchmi:general#/definitions/UINT32"
+                        },
+                        "IndexOffset": {
+                            "$ref": "tchmi:general#/definitions/UINT32"
+                        },
+                        "ReadLen": {
+                            "$ref": "tchmi:general#/definitions/UINT32"
+                        },
+                        "Runtime": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "Runtime",
+                        "IndexGroup",
+                        "ReadLen"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "ADS.AdsSyncReadStateReq": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "HIDDEN": true,
+            "MAPPING": "AdsSyncReadStateReq",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "doc": "Ads runtime.",
+                    "type": "string"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "ADS.AdsSyncReadWriteReq": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "HIDDEN": true,
+            "MAPPING": "AdsSyncReadWriteReq",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "IndexGroup": {
+                            "$ref": "tchmi:general#/definitions/UINT32"
+                        },
+                        "IndexOffset": {
+                            "$ref": "tchmi:general#/definitions/UINT32"
+                        },
+                        "ReadLen": {
+                            "$ref": "tchmi:general#/definitions/UINT32"
+                        },
+                        "Runtime": {
+                            "type": "string"
+                        },
+                        "WriteData": {
+                            "format": "base64",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "Runtime",
+                        "IndexGroup",
+                        "IndexOffset",
+                        "ReadLen",
+                        "WriteData"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "ADS.AdsSyncWriteControlReq": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "HIDDEN": true,
+            "MAPPING": "AdsSyncWriteControlReq",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "AdsState": {
+                            "$ref": "tchmi:general#/definitions/UINT32"
+                        },
+                        "DeviceState": {
+                            "$ref": "tchmi:general#/definitions/UINT32"
+                        },
+                        "Runtime": {
+                            "type": "string"
+                        },
+                        "WriteData": {
+                            "format": "base64",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "Runtime",
+                        "AdsState",
+                        "DeviceState",
+                        "WriteData"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "ADS.AdsSyncWriteReq": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "HIDDEN": true,
+            "MAPPING": "AdsSyncWriteReq",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "IndexGroup": {
+                            "$ref": "tchmi:general#/definitions/UINT32"
+                        },
+                        "IndexOffset": {
+                            "$ref": "tchmi:general#/definitions/UINT32"
+                        },
+                        "Runtime": {
+                            "type": "string"
+                        },
+                        "WriteData": {
+                            "format": "base64",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "Runtime",
+                        "IndexGroup",
+                        "IndexOffset",
+                        "WriteData"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "ADS.Config": {
+            "ACCESS": 0,
+            "DOMAIN": "ADS",
+            "HIDDEN": true,
+            "MAPPING": "Config",
+            "OPTIONS": {},
+            "SCHEMA": {},
+            "USEMAPPING": true
+        },
+        "ADS.Diagnostics": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "HIDDEN": true,
+            "MAPPING": "Diagnostics",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "properties": {
+                    "runtimes": {
+                        "additionalProperties": {
+                            "properties": {
+                                "adsState": {
+                                    "readOnly": true,
+                                    "type": "string"
+                                },
+                                "adsVersion": {
+                                    "readOnly": true,
+                                    "type": "string"
+                                },
+                                "deviceName": {
+                                    "readOnly": true,
+                                    "type": "string"
+                                }
+                            },
+                            "readOnly": true,
+                            "type": "object"
+                        },
+                        "readOnly": true,
+                        "type": "object"
+                    }
+                },
+                "readOnly": true,
+                "transient": true,
+                "type": "object"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.GetDefinitions": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "HIDDEN": true,
+            "MAPPING": "GetDefinitions",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "ADS.GetSchema": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "HIDDEN": true,
+            "MAPPING": "GetSchema",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "ADS.ListCommonTypes": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "HIDDEN": true,
+            "MAPPING": "ListCommonTypes",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "ADS.ListRoutes": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "HIDDEN": true,
+            "MAPPING": "ListRoutes",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "items": {
+                    "type": "string"
+                },
+                "type": "array"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.ListSymbols": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "HIDDEN": true,
+            "MAPPING": "ListSymbols",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "ADS.RuntimePorts": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "HIDDEN": true,
+            "MAPPING": "RuntimePorts",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "AddSymbol": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "AddSymbol",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "allOf": [
+                        {
+                            "$ref": "tchmi:server#/definitions/symbol"
+                        },
+                        {
+                            "properties": {
+                                "AUTOMAP": {
+                                    "doc": "Automatically obtain symbol information",
+                                    "type": "boolean"
+                                },
+                                "NAME": {
+                                    "doc": "Name of the symbol",
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    ]
+                }
+            },
+            "USEMAPPING": true
+        },
+        "AddToConfiguration": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "AddToConfiguration",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "domain": {
+                            "doc": "Domain of the config value.",
+                            "type": "string"
+                        },
+                        "name": {
+                            "doc": "Name of the configuration.",
+                            "type": "string"
+                        },
+                        "path": {
+                            "doc": "Path of the config value.",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "domain",
+                        "path"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "ConfirmAlarm": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "ConfirmAlarm",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "$ref": "tchmi:server#/definitions/alarm"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "CreateEvent": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "CreateEvent",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "$ref": "tchmi:server#/definitions/event"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "Delete": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "Delete",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "domain": {
+                            "doc": "Upload extension dll to remote filesystem.",
+                            "type": "string"
+                        },
+                        "fileName": {
+                            "doc": "Name of the file to delete.",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "fileName"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "DeleteConfiguration": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "DeleteConfiguration",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "type": "string"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "Diagnostics": {
+            "ACCESS": 1,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "Diagnostics",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "additionalProperties": false,
+                "function": true,
+                "properties": {
+                    "ACCEPTEDSOCKETS": {
+                        "readOnly": true,
+                        "transient": true,
+                        "type": "integer"
+                    },
+                    "ACTIVESESSIONS": {
+                        "link": "Sessions",
+                        "readOnly": true,
+                        "transient": true,
+                        "type": "integer"
+                    },
+                    "ACTIVESOCKETS": {
+                        "readOnly": true,
+                        "transient": true,
+                        "type": "integer"
+                    },
+                    "ARCHITECTURE": {
+                        "readOnly": true,
+                        "transient": true,
+                        "type": "string"
+                    },
+                    "DOTNETCOREVERSIONS": {
+                        "items": {
+                            "readOnly": true,
+                            "type": "string"
+                        },
+                        "readOnly": true,
+                        "transient": true,
+                        "type": "array"
+                    },
+                    "DOTNETVERSIONS": {
+                        "items": {
+                            "readOnly": true,
+                            "type": "string"
+                        },
+                        "readOnly": true,
+                        "transient": true,
+                        "type": "array"
+                    },
+                    "LICENSE": {
+                        "properties": {
+                            "CLIENTS": {
+                                "readOnly": true,
+                                "transient": true,
+                                "type": "integer"
+                            },
+                            "EXTENSIONS": {
+                                "readOnly": true,
+                                "transient": true,
+                                "type": "boolean"
+                            },
+                            "SERVERS": {
+                                "readOnly": true,
+                                "transient": true,
+                                "type": "integer"
+                            },
+                            "STATE": {
+                                "default": "Unregistered",
+                                "enum": [
+                                    "Error",
+                                    "Unregistered",
+                                    "Engineering",
+                                    "Demo",
+                                    "Pending",
+                                    "OK"
+                                ],
+                                "readOnly": true,
+                                "type": "string"
+                            },
+                            "TARGETS": {
+                                "readOnly": true,
+                                "transient": true,
+                                "type": "integer"
+                            },
+                            "USEDCLIENTS": {
+                                "readOnly": true,
+                                "transient": true,
+                                "type": "integer"
+                            },
+                            "USEDSERVERS": {
+                                "readOnly": true,
+                                "transient": true,
+                                "type": "integer"
+                            },
+                            "USEDTARGETS": {
+                                "readOnly": true,
+                                "transient": true,
+                                "type": "integer"
+                            }
+                        },
+                        "readOnly": true,
+                        "transient": true,
+                        "type": "object"
+                    },
+                    "MEMORYUSAGE": {
+                        "displayClass": "megabyte",
+                        "readOnly": true,
+                        "transient": true,
+                        "type": "number"
+                    },
+                    "REMOTESERVERS": {
+                        "additionalProperties": {
+                            "properties": {
+                                "REMOTE_STATUS": {
+                                    "enum": [
+                                        "Disconnected",
+                                        "Connected",
+                                        "Upgraded",
+                                        "Disabled",
+                                        "Error"
+                                    ],
+                                    "readOnly": true,
+                                    "transient": true,
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "readOnly": true,
+                        "transient": true,
+                        "type": "object"
+                    },
+                    "SERVERTIME": {
+                        "format": "date-time",
+                        "readOnly": true,
+                        "transient": true,
+                        "type": "string"
+                    },
+                    "TRAFFICIN": {
+                        "displayClass": "byte",
+                        "readOnly": true,
+                        "transient": true,
+                        "type": "number"
+                    },
+                    "TRAFFICOUT": {
+                        "displayClass": "byte",
+                        "readOnly": true,
+                        "transient": true,
+                        "type": "number"
+                    },
+                    "UPTIME": {
+                        "format": "timespan",
+                        "readOnly": true,
+                        "transient": true,
+                        "type": "string"
+                    }
+                },
+                "readOnly": true,
+                "transient": true,
+                "type": "object"
+            },
+            "USEMAPPING": true
+        },
+        "ForceLogout": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "ForceLogout",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "anyOf": [
+                        {
+                            "doc": "User name. The authentification domain can be specified by using 'Domain::UserName'. If no domain is specified all users with the given name will be logged out.",
+                            "type": "string"
+                        },
+                        {
+                            "doc": "All users",
+                            "type": "null"
+                        },
+                        {
+                            "properties": {
+                                "clientCertificate": {
+                                    "doc": "Thumbprint of the used client certificate",
+                                    "type": "string"
+                                },
+                                "clientIp": {
+                                    "doc": "IP adress",
+                                    "type": "string"
+                                },
+                                "group": {
+                                    "doc": "User group",
+                                    "type": "string"
+                                },
+                                "sessionId": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    ]
+                }
+            },
+            "USEMAPPING": true
+        },
+        "GetConfiguration": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "GetConfiguration",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "domain": {
+                            "type": "string"
+                        },
+                        "full": {
+                            "default": false,
+                            "type": "boolean"
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "domain"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "GetCurrentUser": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "GetCurrentUser",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "properties": {
+                    "autoLogin": {
+                        "type": "boolean"
+                    },
+                    "clientCertificate": {
+                        "type": "string"
+                    },
+                    "clientIp": {
+                        "type": "string"
+                    },
+                    "configLocale": {
+                        "type": "string"
+                    },
+                    "domain": {
+                        "type": "string"
+                    },
+                    "groups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "locale": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "session": {
+                        "type": "string"
+                    },
+                    "timeZone": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "USEMAPPING": true
+        },
+        "GetDefinitions": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "GetDefinitions",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "resolve": {
+                            "default": "MergeRefs",
+                            "enum": [
+                                "NoRefLink",
+                                "MergeRefs",
+                                "None"
+                            ],
+                            "type": "string"
+                        },
+                        "type": {
+                            "default": "general",
+                            "enum": [
+                                "server",
+                                "framework",
+                                "general",
+                                "project"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "GetSchema": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "GetSchema",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "resolve": {
+                            "default": "MergeRefs",
+                            "enum": [
+                                "AddRefs",
+                                "AddAllRefs",
+                                "MergeRefs",
+                                "None"
+                            ],
+                            "type": "string"
+                        },
+                        "symbol": {
+                            "doc": "Name of the symbol.",
+                            "type": "string"
+                        },
+                        "type": {
+                            "default": "Read",
+                            "enum": [
+                                "Read",
+                                "Write"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "symbol"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "GetServerInformation": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "GetServerInformation",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "type": "object"
+            },
+            "USEMAPPING": true
+        },
+        "Heartbeat": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "Heartbeat",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "Import": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "Import",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "IsAuthRequired": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "IsAuthRequired",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "type": "boolean"
+            },
+            "USEMAPPING": true
+        },
+        "ListActiveSessions": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "ListActiveSessions",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "items": {},
+                "type": "array"
+            },
+            "USEMAPPING": true
+        },
+        "ListConfigurations": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "ListConfigurations",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "items": {
+                    "type": "string"
+                },
+                "type": "array"
+            },
+            "USEMAPPING": true
+        },
+        "ListDomains": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "ListDomains",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "additionalProperties": {
+                    "properties": {
+                        "authExtension": {
+                            "doc": "Shows if extension can be used for user management.",
+                            "type": "boolean"
+                        },
+                        "error": {
+                            "$ref": "tchmi:general#/definitions/errorDetails"
+                        },
+                        "extension": {
+                            "doc": "Name of the extension.",
+                            "type": "string"
+                        },
+                        "fileExtensions": {
+                            "doc": "List of supported file extensions.",
+                            "items": {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "fileDescription": {
+                                        "doc": "Language variable describing the file extension.",
+                                        "type": "string"
+                                    },
+                                    "fileExtension": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "type": "array"
+                        },
+                        "licensed": {
+                            "doc": "indicate the extension is license status",
+                            "type": "boolean"
+                        },
+                        "loaded": {
+                            "doc": "Shows if extension is currently active. TO BE REMOVED.",
+                            "type": "boolean"
+                        },
+                        "state": {
+                            "doc": "Shows the current state of the extension.",
+                            "enum": [
+                                "NotLoaded",
+                                "Loaded",
+                                "Initialized",
+                                "Invalid",
+                                "Disabled"
+                            ],
+                            "type": "string"
+                        },
+                        "updated": {
+                            "doc": "Shows last update time of the config.",
+                            "format": "date-time",
+                            "type": "string"
+                        },
+                        "usesConfig": {
+                            "doc": "True if this domain is configurable.",
+                            "type": "boolean"
+                        }
+                    },
+                    "type": "object"
+                },
+                "function": true,
+                "type": "object"
+            },
+            "USEMAPPING": true
+        },
+        "ListEvents": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "ListEvents",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "items": {
+                    "oneOf": [
+                        {
+                            "properties": {
+                                "alarm": {
+                                    "$ref": "tchmi:server#/definitions/alarm"
+                                },
+                                "domain": {
+                                    "type": "string"
+                                },
+                                "localizedText": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "alarm",
+                                "domain",
+                                "localizedText"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "properties": {
+                                "domain": {
+                                    "type": "string"
+                                },
+                                "localizedText": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "$ref": "tchmi:server#/definitions/message"
+                                }
+                            },
+                            "required": [
+                                "message",
+                                "domain",
+                                "localizedText"
+                            ],
+                            "type": "object"
+                        }
+                    ]
+                },
+                "type": "array",
+                "writeValue": {
+                    "$ref": "tchmi:server#/definitions/eventFilter"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "ListInternalSymbols": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "ListInternalSymbols",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "type": "object"
+            },
+            "USEMAPPING": true
+        },
+        "ListSymbolNames": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "ListSymbolNames",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "doc": "List of mapped symbolnames.",
+                "function": true,
+                "items": {
+                    "type": "string"
+                },
+                "type": "array"
+            },
+            "USEMAPPING": true
+        },
+        "ListSymbols": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "ListSymbols",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "additionalProperties": {
+                    "$ref": "tchmi:server#/definitions/symbol"
+                },
+                "function": true,
+                "type": "object"
+            },
+            "USEMAPPING": true
+        },
+        "ListUserNames": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "ListUserNames",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "doc": "List of usernames.",
+                "function": true,
+                "items": {
+                    "type": "string"
+                },
+                "type": "array"
+            },
+            "USEMAPPING": true
+        },
+        "ListUsers": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "ListUsers",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "items": {
+                    "doc": "List of all users and their permissions.",
+                    "properties": {
+                        "domain": {
+                            "type": "string"
+                        },
+                        "groups": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "type": "array"
+            },
+            "USEMAPPING": true
+        },
+        "LocalizeText": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "LocalizeText",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "doc": "The localized text.",
+                "function": true,
+                "type": "string",
+                "writeValue": {
+                    "oneOf": [
+                        {
+                            "$ref": "tchmi:server#/definitions/alarm"
+                        },
+                        {
+                            "$ref": "tchmi:server#/definitions/message"
+                        },
+                        {
+                            "doc": "Localizable object.",
+                            "properties": {
+                                "domain": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "params": {
+                                    "additionalProperties": {},
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "domain"
+                            ],
+                            "type": "object"
+                        }
+                    ]
+                }
+            },
+            "USEMAPPING": true
+        },
+        "Login": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "Login",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "doc": "The SessionId of the logged in user.",
+                "function": true,
+                "type": "string",
+                "writeValue": {
+                    "properties": {
+                        "password": {
+                            "type": "string"
+                        },
+                        "persistent": {
+                            "default": false,
+                            "type": "boolean"
+                        },
+                        "userName": {
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "Logout": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "Logout",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "MappingUsage": {
+            "ACCESS": 1,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "MappingUsage",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "additionalProperties": false,
+                "function": true,
+                "properties": {
+                    "load": {
+                        "items": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "blockBegin": {
+                                    "format": "date-time",
+                                    "type": "string"
+                                },
+                                "blockSize": {
+                                    "format": "timespan",
+                                    "type": "string"
+                                },
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "subscriptionTickCount": {
+                                    "type": "integer"
+                                },
+                                "writeCount": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array"
+                    },
+                    "loadLive": {
+                        "items": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "blockBegin": {
+                                    "format": "date-time",
+                                    "type": "string"
+                                },
+                                "blockSize": {
+                                    "format": "timespan",
+                                    "type": "string"
+                                },
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "subscriptionTickCount": {
+                                    "type": "integer"
+                                },
+                                "writeCount": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array"
+                    },
+                    "mappings": {
+                        "additionalProperties": {
+                            "count": {
+                                "type": "integer"
+                            },
+                            "distinctSubscriptionIntervals": {
+                                "items": {
+                                    "type": "integer"
+                                },
+                                "type": "array"
+                            },
+                            "subscriptionTickCount": {
+                                "type": "integer"
+                            },
+                            "writeCount": {
+                                "type": "integer"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "metadata": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "recordingEnd": {
+                                "format": "date-time",
+                                "type": "string"
+                            },
+                            "recordingStart": {
+                                "format": "date-time",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "responsiveness": {
+                        "additionalProperties": {
+                            "mean": {
+                                "format": "timespan",
+                                "type": "string"
+                            },
+                            "standardDeviation": {
+                                "format": "timespan",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "readOnly": true,
+                "transient": true,
+                "type": "object",
+                "writeValue": {
+                    "type": "string"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.i_bEMYStop3": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::GVL_IO::i_bEMYStop3",
+            "OPTIONS": {
+                "comment": " Vszstop nyomgomb 3"
+            },
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_IO.i_nBusStates": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::GVL_IO::i_nBusStates",
+            "OPTIONS": {
+                "comment": " Modul sttuszok"
+            },
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/PLC1.ARRAY (1..16) OF UINT"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_Main.bAckHMI": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::GVL_Main::bAckHMI",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_Main.bGodMode": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::GVL_Main::bGodMode",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_Main.bManualMode": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::GVL_Main::bManualMode",
+            "OPTIONS": {
+                "comment": " KÃ©zi Ã¼zemmÃ³d gÃ©pÃ¡llapot "
+            },
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_Main.bStepHMI": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::GVL_Main::bStepHMI",
+            "OPTIONS": {
+                "comment": " Lptets gomb HMI "
+            },
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_Main.bStepMode": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::GVL_Main::bStepMode",
+            "OPTIONS": {
+                "comment": " Lptets md "
+            },
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_Main.nLocale": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::GVL_Main::nLocale",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BYTE"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.GVL_Main.sMode": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::GVL_Main::sMode",
+            "OPTIONS": {
+                "comment": " Aktulis zemmd "
+            },
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/STRING(80)"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.St10.fbPCBSust": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::St10::fbPCBSust",
+            "OPTIONS": {
+                "comment": "PCB sustainment/alÃ¡tÃ¡masztÃ¡s"
+            },
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/PLC1.FB_Bistabil"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.St10.fbPaletteLift": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::St10::fbPaletteLift",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/PLC1.FB_Bistabil"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.St11.fbPaletteLift": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::St11::fbPaletteLift",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/PLC1.FB_Bistabil"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.St60.fbClamper": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::St60::fbClamper",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/PLC1.FB_Bistabil"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.St60.fbClamperX": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::St60::fbClamperX",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/PLC1.FB_Bistabil"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.St60.fbClamperZ": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::St60::fbClamperZ",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/PLC1.FB_Bistabil"
+            },
+            "USEMAPPING": true
+        },
+        "PLC1.St60.fbPaletteLift": {
+            "ACCESS": 3,
+            "CUSTOMERDATA": "",
+            "DOMAIN": "ADS",
+            "MAPPING": "PLC1::St60::fbPaletteLift",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/PLC1.FB_Bistabil"
+            },
+            "USEMAPPING": true
+        },
+        "RefreshDefinitions": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "RefreshDefinitions",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "enum": [
+                        "framework",
+                        "project",
+                        "general"
+                    ],
+                    "type": "string"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "Remove": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "Remove",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "configuration": {
+                            "default": "default",
+                            "doc": "Configuration name.",
+                            "type": "string"
+                        },
+                        "domain": {
+                            "doc": "Extension domain.",
+                            "type": "string"
+                        },
+                        "path": {
+                            "doc": "Path to the entry.",
+                            "type": "string"
+                        },
+                        "value": {}
+                    },
+                    "required": [
+                        "path",
+                        "domain",
+                        "value"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "RemoveFromConfiguration": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "RemoveFromConfiguration",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "domain": {
+                            "doc": "Domain of the config value.",
+                            "type": "string"
+                        },
+                        "name": {
+                            "doc": "Name of the configuration.",
+                            "type": "string"
+                        },
+                        "path": {
+                            "doc": "Path of the config value.",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "domain",
+                        "path"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "RemoveUnusedDefinitions": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "RemoveUnusedDefinitions",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "Rename": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "Rename",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "configuration": {
+                            "default": "default",
+                            "doc": "Configuration name.",
+                            "type": "string"
+                        },
+                        "domain": {
+                            "doc": "Extension domain.",
+                            "type": "string"
+                        },
+                        "new": {
+                            "doc": "Path to the new entry.",
+                            "type": "string"
+                        },
+                        "old": {
+                            "doc": "Path to the old entry.",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "old",
+                        "new",
+                        "domain"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "RenameConfiguration": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "RenameConfiguration",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "new": {
+                            "type": "string"
+                        },
+                        "old": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "old",
+                        "new"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "Restart": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "Restart",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "SetConfiguration": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "SetConfiguration",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "data": {},
+                        "domain": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "symbol": {
+                            "default": "",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "domain",
+                        "data"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "SetLocale": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "SetLocale",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "format": "locale",
+                    "type": "string"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "Shutdown": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "Shutdown",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "SubscribeEvents": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "SubscribeEvents",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "filter": {
+                            "$ref": "tchmi:server#/definitions/eventFilter"
+                        },
+                        "responseId": {
+                            "doc": "Id for the response.",
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "responseId"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiEventLogger.Config": {
+            "ACCESS": 0,
+            "DOMAIN": "TcHmiEventLogger",
+            "HIDDEN": true,
+            "MAPPING": "Config",
+            "OPTIONS": {},
+            "SCHEMA": {},
+            "USEMAPPING": true
+        },
+        "TcHmiLua.Config": {
+            "ACCESS": 0,
+            "DOMAIN": "TcHmiLua",
+            "HIDDEN": true,
+            "MAPPING": "Config",
+            "OPTIONS": {},
+            "SCHEMA": {},
+            "USEMAPPING": true
+        },
+        "TcHmiRecipeManagement.ActivateRecipe": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiRecipeManagement",
+            "HIDDEN": true,
+            "MAPPING": "ActivateRecipe",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "path": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "path"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiRecipeManagement.Config": {
+            "ACCESS": 0,
+            "DOMAIN": "TcHmiRecipeManagement",
+            "HIDDEN": true,
+            "MAPPING": "Config",
+            "OPTIONS": {},
+            "SCHEMA": {},
+            "USEMAPPING": true
+        },
+        "TcHmiRecipeManagement.GetActiveRecipes": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiRecipeManagement",
+            "HIDDEN": true,
+            "MAPPING": "GetActiveRecipes",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "items": {
+                    "recipe": {
+                        "type": "string"
+                    }
+                },
+                "type": "array"
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiRecipeManagement.GetRecipes": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiRecipeManagement",
+            "HIDDEN": true,
+            "MAPPING": "GetRecipes",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "items": {
+                    "recipes": {
+                        "type": "string"
+                    }
+                },
+                "type": "array",
+                "writeValue": {
+                    "properties": {
+                        "recipeTypePath": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "recipeTypePath"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiRecipeManagement.ReadFromTarget": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiRecipeManagement",
+            "HIDDEN": true,
+            "MAPPING": "ReadFromTarget",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "properties": {
+                    "path": {
+                        "type": "string"
+                    },
+                    "values": {
+                        "additionalProperties": {},
+                        "type": "object"
+                    }
+                },
+                "type": "object",
+                "writeValue": {
+                    "properties": {
+                        "path": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "path"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiRecipeManagement.UpdateRecipe": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiRecipeManagement",
+            "HIDDEN": true,
+            "MAPPING": "UpdateRecipe",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "properties": {
+                    "path": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "writeValue": {
+                    "properties": {
+                        "path": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "path"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiSqliteHistorize.Config": {
+            "ACCESS": 0,
+            "DOMAIN": "TcHmiSqliteHistorize",
+            "HIDDEN": true,
+            "MAPPING": "Config",
+            "OPTIONS": {},
+            "SCHEMA": {},
+            "USEMAPPING": true
+        },
+        "TcHmiSqliteHistorize.GetTrendLineData": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSqliteHistorize",
+            "HIDDEN": true,
+            "MAPPING": "GetTrendLineData",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "properties": {
+                    "axesData": {
+                        "doc": "Array with Subarray for each symbol.",
+                        "items": {
+                            "doc": "Data for symbol from DB.",
+                            "items": {
+                                "doc": "X and Y Values of historized data.",
+                                "properties": {
+                                    "error": {
+                                        "doc": "Error Code.",
+                                        "type": "number"
+                                    },
+                                    "flags": {
+                                        "doc": "Historize flags.",
+                                        "type": "string"
+                                    },
+                                    "x": {
+                                        "doc": "Timstamp from recording.",
+                                        "format": "date-time",
+                                        "type": "string"
+                                    },
+                                    "y": {
+                                        "doc": "Historized Value.",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "type": "array"
+                        },
+                        "type": "array"
+                    }
+                },
+                "type": "object",
+                "writeValue": {
+                    "properties": {
+                        "chartName": {
+                            "doc": "TrendChart Name.",
+                            "type": "string"
+                        },
+                        "displayWidth": {
+                            "type": "number"
+                        },
+                        "xAxisEnd": {
+                            "$ref": "tchmi:server#/definitions/stringTypeArray"
+                        },
+                        "xAxisStart": {
+                            "$ref": "tchmi:server#/definitions/stringTypeArray"
+                        },
+                        "yAxes": {
+                            "doc": "Array with Start and Width for each historized symbol.",
+                            "items": {
+                                "additionalProperties": false,
+                                "doc": "Information for one symbol.",
+                                "properties": {
+                                    "symbol": {
+                                        "doc": "Name of the symbol historized in DB.",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "symbol"
+                                ],
+                                "type": "object"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "required": [
+                        "chartName",
+                        "yAxes",
+                        "xAxisStart",
+                        "displayWidth"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiSqliteHistorize.GetTrendLineWindow": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSqliteHistorize",
+            "HIDDEN": true,
+            "MAPPING": "GetTrendLineWindow",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "properties": {
+                    "xAxisEnd": {
+                        "doc": "Timstamp from recording.",
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "xAxisStart": {
+                        "doc": "Timstamp from recording.",
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "writeValue": {
+                    "properties": {
+                        "chartName": {
+                            "doc": "TrendChart Name.",
+                            "type": "string"
+                        },
+                        "xAxisEnd": {
+                            "$ref": "tchmi:server#/definitions/stringTypeArray"
+                        },
+                        "xAxisStart": {
+                            "$ref": "tchmi:server#/definitions/stringTypeArray"
+                        },
+                        "yAxes": {
+                            "doc": "Array with Start and Width for each historized symbol.",
+                            "items": {
+                                "additionalProperties": false,
+                                "doc": "Information for one symbol.",
+                                "properties": {
+                                    "symbol": {
+                                        "doc": "Name of the symbol historized in DB.",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "symbol"
+                                ],
+                                "type": "object"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "required": [
+                        "chartName",
+                        "yAxes",
+                        "xAxisStart"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiSqliteHistorize.HistorizeData": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSqliteHistorize",
+            "HIDDEN": true,
+            "MAPPING": "HistorizeData",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiSqliteLogger.Clear": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSqliteLogger",
+            "HIDDEN": true,
+            "MAPPING": "Clear",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiSqliteLogger.Config": {
+            "ACCESS": 0,
+            "DOMAIN": "TcHmiSqliteLogger",
+            "HIDDEN": true,
+            "MAPPING": "Config",
+            "OPTIONS": {},
+            "SCHEMA": {},
+            "USEMAPPING": true
+        },
+        "TcHmiSqliteLogger.ListEvents": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSqliteLogger",
+            "HIDDEN": true,
+            "MAPPING": "ListEvents",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiSrv.Config": {
+            "ACCESS": 0,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "Config",
+            "OPTIONS": {},
+            "SCHEMA": {},
+            "USEMAPPING": true
+        },
+        "TcHmiUserManagement.AddUser": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiUserManagement",
+            "HIDDEN": true,
+            "MAPPING": "AddUser",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "enabled": {
+                            "doc": "Indicates if the user can be used or not.",
+                            "type": "boolean"
+                        },
+                        "password": {
+                            "doc": "Password of the user. Only a hash will be stored.",
+                            "type": "string"
+                        },
+                        "userName": {
+                            "doc": "Name of the user.",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "userName",
+                        "password"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiUserManagement.ChangePassword": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiUserManagement",
+            "HIDDEN": true,
+            "MAPPING": "ChangePassword",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "properties": {
+                        "currentPassword": {
+                            "type": "string"
+                        },
+                        "newPassword": {
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiUserManagement.Config": {
+            "ACCESS": 0,
+            "DOMAIN": "TcHmiUserManagement",
+            "HIDDEN": true,
+            "MAPPING": "Config",
+            "OPTIONS": {},
+            "SCHEMA": {},
+            "USEMAPPING": true
+        },
+        "TcHmiUserManagement.ListSymbols": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiUserManagement",
+            "HIDDEN": true,
+            "MAPPING": "ListSymbols",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiUserManagement.ListUsers": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiUserManagement",
+            "HIDDEN": true,
+            "MAPPING": "ListUsers",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "items": {
+                    "type": "string"
+                },
+                "type": "array"
+            },
+            "USEMAPPING": true
+        },
+        "TcHmiUserManagement.RemoveUser": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiUserManagement",
+            "HIDDEN": true,
+            "MAPPING": "RemoveUser",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "doc": "Name of the user.",
+                    "type": "string"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "Unsubscribe": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "Unsubscribe",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "doc": "The requestId of a subscription.",
+                    "type": "integer"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "UnsubscribeEvents": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "UnsubscribeEvents",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "doc": "The requestId of a subscription.",
+                    "type": "integer"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "UpdateEventsSubscription": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "UpdateEventsSubscription",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "filter": {
+                            "$ref": "tchmi:server#/definitions/eventFilter"
+                        },
+                        "responseId": {
+                            "doc": "Id for the response.",
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "responseId"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        },
+        "Upload": {
+            "ACCESS": 3,
+            "DOMAIN": "TcHmiSrv",
+            "HIDDEN": true,
+            "MAPPING": "Upload",
+            "OPTIONS": {},
+            "SCHEMA": {
+                "function": true,
+                "writeValue": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "checkSum": {
+                            "doc": "Checksum of the file as MD5 hexstring.",
+                            "type": "string"
+                        },
+                        "chunkType": {
+                            "default": 0,
+                            "enum": [
+                                0,
+                                1,
+                                2,
+                                3
+                            ],
+                            "type": "integer"
+                        },
+                        "data": {
+                            "doc": "Data of the file.",
+                            "format": "base64",
+                            "type": "string"
+                        },
+                        "domain": {
+                            "doc": "Upload extension dll to remote filesystem.",
+                            "type": "string"
+                        },
+                        "fileName": {
+                            "doc": "Name of the file.",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "fileName",
+                        "data"
+                    ],
+                    "type": "object"
+                }
+            },
+            "USEMAPPING": true
+        }
+    },
+    "TEMPDH": "",
+    "THREADPOOLSIZE": 12,
+    "UPLOADTIMEOUT": "PT5S",
+    "USERGROUPS": {
+        "Admins": {
+            "ENABLED": true,
+            "FILEACCESS": 3,
+            "FILES": {},
+            "SYMBOLACCESS": 3,
+            "SYMBOLS": {
+                "IsAuthRequired": 3,
+                "ListUsers": 3,
+                "Login": 3
+            }
+        },
+        "Operators": {
+            "ENABLED": true,
+            "FILEACCESS": 3,
+            "FILES": {},
+            "SYMBOLACCESS": 3,
+            "SYMBOLS": {
+                "IsAuthRequired": 3,
+                "ListUsers": 3,
+                "Login": 3
+            }
+        },
+        "__SystemAdministrators": {
+            "ENABLED": true,
+            "FILEACCESS": 3,
+            "FILES": {},
+            "SYMBOLACCESS": 3,
+            "SYMBOLS": {}
+        },
+        "__SystemGuests": {
+            "ENABLED": true,
+            "FILEACCESS": 0,
+            "FILES": {
+                "/FavIcon.ico": 1
+            },
+            "SYMBOLACCESS": 0,
+            "SYMBOLS": {
+                "DefaultAuthExtension": 1,
+                "GetCurrentUser": 3,
+                "Heartbeat": 3,
+                "IsAuthRequired": 3,
+                "ListDomains": 3,
+                "ListUserNames": 3,
+                "Login": 3,
+                "Logout": 3,
+                "UserSelectType": 1
+            }
+        },
+        "__SystemUsers": {
+            "ENABLED": true,
+            "FILEACCESS": 3,
+            "FILES": {
+                "/Config": 1
+            },
+            "SYMBOLACCESS": 0,
+            "SYMBOLS": {
+                "ConfirmAlarm": 3,
+                "CreateEvent": 3,
+                "DefaultAuthExtension": 1,
+                "Diagnostics": 3,
+                "GetCurrentUser": 3,
+                "GetDefinitions": 3,
+                "GetSchema": 3,
+                "Heartbeat": 3,
+                "IsAuthRequired": 3,
+                "ListDomains": 3,
+                "ListEvents": 3,
+                "ListSymbols": 3,
+                "ListUserNames": 3,
+                "LocalizeText": 3,
+                "Login": 3,
+                "Logout": 3,
+                "SetLocale": 3,
+                "SubscribeEvents": 3,
+                "TcHmiSqliteHistorize.GetTrendLineData": 3,
+                "TcHmiSqliteHistorize.GetTrendLineWindow": 3,
+                "TcHmiSqliteHistorize.HistorizeData": 3,
+                "TcHmiUserManagement.ChangePassword": 3,
+                "Unsubscribe": 3,
+                "UnsubscribeEvents": 3,
+                "UpdateEventsSubscription": 3
+            }
+        }
+    },
+    "USERGROUPUSERS": {
+        "TcHmiUserManagement": {
+            "Admin": {
+                "USERGROUPUSERS_AUTO_LOGOFF": "P30D",
+                "USERGROUPUSERS_GROUPS": [
+                    "__SystemUsers",
+                    "Admins"
+                ],
+                "USERGROUPUSERS_LOCALE": "client",
+                "USERGROUPUSERS_TIMEFORMATLOCALE": "project",
+                "USERGROUPUSERS_TIMEZONE": "project"
+            },
+            "Operator": {
+                "USERGROUPUSERS_AUTO_LOGOFF": "P365D",
+                "USERGROUPUSERS_GROUPS": [
+                    "__SystemUsers",
+                    "Operators"
+                ],
+                "USERGROUPUSERS_LOCALE": "client",
+                "USERGROUPUSERS_TIMEFORMATLOCALE": "project",
+                "USERGROUPUSERS_TIMEZONE": "project"
+            },
+            "__SystemAdministrator": {
+                "USERGROUPUSERS_AUTO_LOGOFF": "P30D",
+                "USERGROUPUSERS_GROUPS": [
+                    "__SystemAdministrators"
+                ],
+                "USERGROUPUSERS_LOCALE": "project",
+                "USERGROUPUSERS_TIMEFORMATLOCALE": "project",
+                "USERGROUPUSERS_TIMEZONE": "project"
+            },
+            "__SystemGuest": {
+                "USERGROUPUSERS_AUTO_LOGOFF": "P30D",
+                "USERGROUPUSERS_GROUPS": [
+                    "__SystemGuests"
+                ],
+                "USERGROUPUSERS_LOCALE": "project",
+                "USERGROUPUSERS_TIMEFORMATLOCALE": "project",
+                "USERGROUPUSERS_TIMEZONE": "project"
+            }
+        }
+    },
+    "USERSELECTTYPE": 0,
+    "VIDEOSEGMENTSIZE": 1048576,
+    "VIRTUALDIRECTORIES": {
+        "/": "..\\..\\2020_HAM017_HMI",
+        "/framework": "..\\..\\..\\..\\..\\..\\..\\TwinCAT\\Functions\\TE2000-HMI-Engineering\\Infrastructure\\TcHmiFramework\\1.10.1336.0"
+    }
+}

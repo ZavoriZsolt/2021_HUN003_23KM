@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_CONFIG" Id="{d85adfcc-94f3-4adf-b3ea-b89effadca59}">
+    <Declaration><![CDATA[TYPE ST_CONFIG :
+STRUCT
+	AXIS_POSITION_TOLERANCE:		LREAL;
+	AXIS_OVERRIDE:					LREAL;
+	AXIS_C_EXIST:					BOOL;	
+	AXIS_END_SENSOR_EXIST:			BOOL;
+	STATION_ID:						INT;
+	ADAPTER_ID:						UINT;
+	NUMBER_OF_SLOTS:				INT:=4;
+	CUSTOM_POSITIONS:				ARRAY[0..19] OF ST_MOVE;
+	//Depth measurement check ON/OFF	
+	DEPTH_MEASURE_ON:				BOOL:=TRUE;	
+	DEPTH_TRIGGER_OFFSET :			LREAL;
+	DEPTH_TOLERANCE :				LREAL;
+	//Screw length check ON/OFF
+	SCREW_CHECK_ON:					BOOL:=TRUE;
+	SCREW_LENGTH:					ARRAY [CE_FEEDER_1..(CE_FEEDER_LAST-1)] OF LREAL;
+	SCREW_LENGTH_TOLERANCE:			LREAL;		
+	//X axis specific positions:
+	POS_X_CHANGE_WP:				LREAL;
+	POS_X_HOME:						LREAL;
+	POS_X_SAFETY:					LREAL;	
+	//Y axis specific positions:
+	POS_Y_SCREW_FEEDER:				ARRAY [CE_FEEDER_1..(CE_FEEDER_LAST-1)] OF LREAL;
+	POS_Y_SCREW_DROP:				ARRAY [CE_FEEDER_1..(CE_FEEDER_LAST-1)] OF LREAL;	
+	//Z axis specific positions:
+	POS_Z_SCREW_FEEDER:				ARRAY [CE_FEEDER_1..(CE_FEEDER_LAST-1)] OF LREAL;
+	POS_Z_SCREW_DROP:				ARRAY [CE_FEEDER_1..(CE_FEEDER_LAST-1)] OF LREAL;
+	POS_Z_HOME:						LREAL;
+	POS_Z_SAFETY:					LREAL;	
+	//C axis specific positions:
+	POS_C_HOME:						LREAL;
+	
+	(* Configuration variables for GSL Application *)	
+	(* Configuration variables for Dispensing Application *)
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

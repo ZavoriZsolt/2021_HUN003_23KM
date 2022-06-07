@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_P_SET" Id="{c6ce7a81-b89d-4320-b36c-468d867cd229}">
+    <Declaration><![CDATA[TYPE ST_P_SET :
+STRUCT
+	Block:		INT;
+	Channel:	ENUM_CHANNEL;
+	ExecuteOnFail:	BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

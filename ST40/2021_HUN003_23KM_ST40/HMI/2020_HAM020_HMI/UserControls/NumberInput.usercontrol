@@ -1,0 +1,203 @@
+﻿<div id="NumberInput" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControl" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-creator-viewport-width="200" data-tchmi-creator-viewport-height="200" data-tchmi-width="100" data-tchmi-width-unit="%" data-tchmi-height-unit="%" data-tchmi-height="100">
+
+<div id="Number_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-auto-focus-out="True" data-tchmi-text="%f%GaugeValueFormatter(%pp%Symbol%/pp%, %pp%MaxDecimals%/pp%)%/f%" data-tchmi-text-horizontal-alignment="Center" data-tchmi-min-width="40" data-tchmi-min-height="25" data-tchmi-width="%pp%ActWidth%/pp%" data-tchmi-height="%pp%ActHeight%/pp%">
+<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
+{
+  "top": 3,
+  "right": 3,
+  "bottom": 3,
+  "left": 3
+}
+</script>
+
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "Number_1.onFocusIn",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%pp%Numpad_1::Visibility%/pp%",
+        "valueType": "tchmi:framework#/definitions/Visibility",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:framework#/definitions/Visibility",
+          "value": "Visible"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%pp%Numpad_1::Left%/pp%",
+        "valueType": "tchmi:framework#/definitions/MeasurementValue",
+        "value": {
+          "objectType": "Symbol",
+          "symbolExpression": "%pp%Numpad_1LeftPosition%/pp%"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%pp%Numpad_1::Top%/pp%",
+        "valueType": "tchmi:framework#/definitions/MeasurementValue",
+        "value": {
+          "objectType": "Symbol",
+          "symbolExpression": "%pp%Numpad_1TopPosition%/pp%"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%i%NumpadMin%/i%",
+        "valueType": "tchmi:general#/definitions/FLOAT",
+        "value": {
+          "objectType": "Symbol",
+          "symbolExpression": "%pp%Min%/pp%"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%i%NumpadMax%/i%",
+        "valueType": "tchmi:general#/definitions/FLOAT",
+        "value": {
+          "objectType": "Symbol",
+          "symbolExpression": "%pp%Max%/pp%"
+        },
+        "asyncWait": true
+      }
+    ]
+  },
+  {
+    "event": "Number_1.onFocusOut",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%pp%Numpad_1::Visibility%/pp%",
+        "valueType": "tchmi:framework#/definitions/Visibility",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:framework#/definitions/Visibility",
+          "value": "Collapsed"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "Condition",
+        "active": true,
+        "asyncWait": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "symbolExpression": "%ctrl%Number_1::Text%/ctrl%"
+                },
+                "compare2": {
+                  "objectType": "Symbol",
+                  "symbolExpression": "%pp%Min%/pp%"
+                },
+                "compareOperator": ">=",
+                "logic": null
+              },
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "symbolExpression": "%ctrl%Number_1::Text%/ctrl%"
+                },
+                "compare2": {
+                  "objectType": "Symbol",
+                  "symbolExpression": "%pp%Max%/pp%"
+                },
+                "compareOperator": "<=",
+                "logic": "AND"
+              },
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "symbolExpression": "%ctrl%Number_1::Text%/ctrl%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/String",
+                  "value": ""
+                },
+                "compareOperator": "!=",
+                "logic": "AND"
+              }
+            ],
+            "then": [
+              {
+                "objectType": "Comment",
+                "comment": "Beírás változóba"
+              },
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%pp%Symbol%/pp%",
+                "valueType": "tchmi:general#/definitions/Number",
+                "value": {
+                  "objectType": "FunctionExpression",
+                  "functionExpression": "GaugeValueFormatter(%ctrl%Number_1::Text%/ctrl%, %pp%MaxDecimals%/pp%)"
+                },
+                "asyncWait": true
+              },
+              {
+                "objectType": "Comment",
+                "comment": "Kijelzés frissítés"
+              },
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%Number_1::Text%/ctrl%",
+                "valueType": "tchmi:general#/definitions/String",
+                "value": {
+                  "objectType": "FunctionExpression",
+                  "functionExpression": "GaugeValueFormatter(%ctrl%Number_1::Text%/ctrl%, %pp%MaxDecimals%/pp%)"
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "Function",
+                "active": true,
+                "fn": "Alert",
+                "fnParams": [
+                  {
+                    "objectType": "Symbol",
+                    "symbolExpression": "%l%InputError%/l%"
+                  }
+                ],
+                "asyncWait": true
+              },
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%Number_1::Text%/ctrl%",
+                "valueType": "tchmi:general#/definitions/String",
+                "value": {
+                  "objectType": "FunctionExpression",
+                  "functionExpression": "GaugeValueFormatter(%pp%Symbol%/pp%, %pp%MaxDecimals%/pp%)"
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]</script>
+</div>
+
+</div>

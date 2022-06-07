@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_DEPTH_DATA_DUT" Id="{c1020a48-92bb-43e5-99a7-2a764f411b0e}">
+    <Declaration><![CDATA[TYPE ST_DEPTH_DATA_DUT :
+STRUCT
+	lrDepth_MV:			LREAL;
+	lrDepth_LL:			LREAL;
+	lrDepth_UL:			LREAL;
+	lrDepth_Signal:		LREAL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

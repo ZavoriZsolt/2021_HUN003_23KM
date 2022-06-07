@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_P_CHECK_INPUT" Id="{3ccb740c-75dd-4877-a3dd-3c37bb2fab1c}">
+    <Declaration><![CDATA[TYPE ST_P_CHECK_INPUT :
+STRUCT
+	Block:		INT;
+	Channel:	ENUM_CHANNEL;
+	State:		BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

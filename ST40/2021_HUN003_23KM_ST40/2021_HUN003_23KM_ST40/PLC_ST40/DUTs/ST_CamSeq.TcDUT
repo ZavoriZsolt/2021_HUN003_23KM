@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_CamSeq" Id="{631dd778-95e1-44cf-989b-01ded73d051a}">
+    <Declaration><![CDATA[TYPE ST_CamSeq :
+STRUCT
+	rAxisX			:REAL;
+	rAxisY			:REAL;
+	nCamProg		:UINT;
+	bExecute		:BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

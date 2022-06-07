@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <GVL Name="GVL_Recipe" Id="{40921e93-76c2-4bec-86ad-ff209c0dd9b9}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	arrP1RecipeNames		:ARRAY[1..200] OF STRING;
+	stP1Recipe				:ST_SCR_RECIPE;
+	fbP1RecipeManager		:FB_RecipeManager;	
+
+	bP1RecipeLoad			:BOOL;
+	bP1RecipeSave			:BOOL;
+	bP1RecipeRefresh		:BOOL;
+	nP1RecipeIdx			:INT := 1;
+	sP1RecipeName			:STRING (1000);
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

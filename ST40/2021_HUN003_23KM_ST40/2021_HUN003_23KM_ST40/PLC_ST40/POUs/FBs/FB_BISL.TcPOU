@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_BISL" Id="{fbb7023c-e41a-43b8-aa7f-cabf4b640a5f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BISL
+(*Ez az FB BIS L-409-045-001-07-SA olvasóval lett tezstelve
+TAG: BIS003R BIS L-200-03/L, ami 40bit adatot ad vissza*)
+
+VAR_INPUT
+	sName				:STRING;
+	KA					:BOOL; (*Head off=1/Head on = 0*)
+	GR					:BOOL; (*SW Reset = 1 / Normal operation =0*)
+	InData	AT %I*		:ARRAY[0..8] OF BYTE;
+END_VAR
+VAR_OUTPUT
+	BB					:BOOL; (*Device ready=1 / Device in groung state =0*)
+	HF					:BOOL; (*Head is turned off=1/turned on =0*)
+	AF					:BOOL; (*Job incorrectly processed = 1 / without error = 0*)
+	CP					:BOOL; (*Data carrier is within range of the head =1 / no data carrier = 0*)
+	ErrorCode			:BYTE; (*Error codem when AF=1*)
+	TAGData				:ULINT; (*Data wich were read from the data carrier*)
+	OutData		AT %Q*	:ARRAY[0..7] OF BYTE;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[BB:=InData[0].7;
+HF:=InData[0].6;
+AF:=InData[0].3;
+CP:=InData[0].0;
+
+IF AF
+	THEN ErrorCode:=InData[1];
+		 TAGData:=0;
+	ELSE ErrorCode:=0;
+		 IF CP
+			 THEN TAGData:=
+					SHL(BYTE_TO_ULINT(InData[8] AND 127), 56) +
+					SHL(BYTE_TO_ULINT(InData[7]), 48) +
+					SHL(BYTE_TO_ULINT(InData[6]), 40) +
+					SHL(BYTE_TO_ULINT(InData[5]), 32) +
+					SHL(BYTE_TO_ULINT(InData[4]), 24) +
+					SHL(BYTE_TO_ULINT(InData[3]), 16) +
+					SHL(BYTE_TO_ULINT(InData[2]), 8) +
+					InData[1]; 
+		 END_IF;
+END_IF;
+		 
+OutData[0].2:=GR;
+OutData[0].5:=KA;
+OutData[7]:=OutData[0];
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_BISL">
+      <LineId Id="3" Count="10" />
+      <LineId Id="71" Count="6" />
+      <LineId Id="17" Count="7" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

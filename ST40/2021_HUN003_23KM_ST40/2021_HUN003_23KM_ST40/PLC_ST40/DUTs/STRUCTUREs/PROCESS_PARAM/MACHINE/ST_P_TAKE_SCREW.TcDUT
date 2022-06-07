@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_P_TAKE_SCREW" Id="{d18230c6-047c-44e5-8cb7-e5139dc24fcb}">
+    <Declaration><![CDATA[TYPE ST_P_TAKE_SCREW :
+STRUCT
+	//'X:=-86.36;Y:=168.56;Z:=115.23;C:=90.12;FEEDER:=2;'
+	Feeder:				INT;
+	Override:			LREAL;
+	X:					LREAL;
+	Y:					LREAL;
+	Z:					LREAL;
+	C:					LREAL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

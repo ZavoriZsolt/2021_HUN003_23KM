@@ -1,0 +1,52 @@
+﻿{
+  "parameters": [
+    {
+      "name": "data-tchmi-readername",
+      "displayName": "ReaderName",
+      "visible": true,
+      "type": "tchmi:general#/definitions/String",
+      "category": "",
+      "description": "",
+      "requiredOnCompile": false,
+      "readOnly": false,
+      "bindable": true,
+      "heritable": true,
+      "propertyName": "ReaderName",
+      "propertySetterName": "setReaderName",
+      "propertyGetterName": "getReaderName"
+    },
+    {
+      "name": "data-tchmi-readedcode",
+      "displayName": "ReadedCode",
+      "visible": true,
+      "type": "tchmi:general#/definitions/String",
+      "category": "",
+      "description": "",
+      "requiredOnCompile": false,
+      "readOnly": false,
+      "bindable": true,
+      "heritable": true,
+      "propertyName": "ReadedCode",
+      "propertySetterName": "setReadedCode",
+      "propertyGetterName": "getReadedCode"
+    },
+    {
+      "name": "data-tchmi-readertrigger",
+      "displayName": "ReaderTrigger",
+      "visible": true,
+      "type": "tchmi:general#/definitions/BOOL",
+      "category": "",
+      "description": "",
+      "requiredOnCompile": false,
+      "readOnly": false,
+      "bindable": true,
+      "heritable": true,
+      "propertyName": "ReaderTrigger",
+      "propertySetterName": "setReaderTrigger",
+      "propertyGetterName": "getReaderTrigger"
+    }
+  ],
+  "virtualRights": [],
+  "$schema": "../../Packages/Beckhoff.TwinCAT.HMI.Framework.12.742.0/runtimes/native1.12-tchmi/Schema/UserControlConfig.Schema.json",
+  "description": ""
+}

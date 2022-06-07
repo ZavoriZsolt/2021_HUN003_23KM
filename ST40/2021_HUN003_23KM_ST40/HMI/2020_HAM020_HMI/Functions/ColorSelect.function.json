@@ -1,0 +1,50 @@
+﻿{
+  "function": {
+    "name": "ColorSelect",
+    "displayName": "ColorSelect",
+    "visible": true,
+    "category": "",
+    "waitMode": "Synchronous",
+    "injectContextObject": false,
+    "description": "",
+    "returnValue": {
+      "type": "tchmi:framework#/definitions/Color"
+    },
+    "arguments": [
+      {
+        "name": "ButtonState",
+        "displayName": "ButtonState",
+        "type": "tchmi:general#/definitions/Boolean",
+        "description": "",
+        "defaultValue": "False",
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false
+      },
+      {
+        "name": "ColorFalse",
+        "displayName": "ColorFalse",
+        "type": "tchmi:framework#/definitions/Color",
+        "description": "",
+        "defaultValue": null,
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false
+      },
+      {
+        "name": "ColorTrue",
+        "displayName": "ColorTrue",
+        "type": "tchmi:framework#/definitions/Color",
+        "description": "",
+        "defaultValue": null,
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false
+      }
+    ]
+  },
+  "$schema": "../../Packages/Beckhoff.TwinCAT.HMI.Framework.12.742.0/runtimes/native1.12-tchmi/Schema/FunctionDescription.Schema.json"
+}

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <GVL Name="GVL_Persistenet" Id="{af42aaba-6ba2-4bb6-95d5-77df70d9e83b}">
+    <Declaration><![CDATA[VAR_GLOBAL PERSISTENT
+	sST10_NetId				:STRING;						// Local 192.168.102.101.1.1
+	bMesEnable				:BOOL;							// MES rendszer engedélyezése
+	bTechEMYStopIgnored		:BOOL;							// Technológiai Vészstop kikapcsolása
+	arrCamSeq				:ARRAY [1..64] OF ST_CamSeq;
+	rVelocity				:REAL;
+	nWorkLightTime			:UINT;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

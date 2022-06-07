@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_KRC_Control" Id="{aa8c278d-fbd5-4356-933d-e12f88b349c7}">
+    <Declaration><![CDATA[TYPE ST_KRC_Control :
+STRUCT
+(*-----=== Byte 00 ===-----*)
+	bPgnoParity				:BIT;				// 00.0	Parity BIT FOR PROGRAM number check (NOT used)
+	bPgnoValid				:BIT;				// 00.1	Program number is read for this signal's rising edge
+	bExtStart				:BIT;				// 00.2	Start cell.src program (not used)
+	bMoveEnable				:BIT;				// 00.3	Enable signal for movement
+	bConfMess				:BIT;				// 00.4	Message confirmation message
+	bDrivesOff				:BIT;				// 00.5	Turn off drives if this signal is FALSE at least for 20 ms (nem használt)
+	bDrivesOn				:BIT;				// 00.6	Turn on drives if this signal is TRUE at least for 20 ms
+	bIOAct					:BIT;				// 00.7	Enable external control (not used)
+
+(*-----=== Byte 01 ===-----*)
+	{attribute 'hide'}
+	_reserved_01			:BYTE;				// 01	Tartalék	
+
+(*-----=== Byte 02 ===-----*)
+	nProgNr					:BYTE;				// 02	Program number
+	
+(*-----=== Byte 03 ===-----*)
+	{attribute 'hide'}
+	_reserved_03			:BYTE;				// 03	Tartalék (Safety IO)	
+
+(*-----=== Byte 04 ===-----*)
+	bEnableMoveInPalettZone	:BIT;				// 04.0	Enabling Robot to move insdie Palett Zone after it requested it
+	{attribute 'hide'}
+	_reserved_04_1			:BIT;				// 04.1	Tartalék	
+	{attribute 'hide'}
+	_reserved_04_2			:BIT;				// 04.2	Tartalék	
+	{attribute 'hide'}
+	_reserved_04_3			:BIT;				// 04.3	Tartalék	
+	{attribute 'hide'}
+	_reserved_04_4			:BIT;				// 04.4	Tartalék	
+	{attribute 'hide'}
+	_reserved_04_5			:BIT;				// 04.5	Tartalék	
+	{attribute 'hide'}
+	_reserved_04_6			:BIT;				// 04.6	Tartalék	
+	{attribute 'hide'}
+	_reserved_04_7			:BIT;				// 04.7	Tartalék	
+	
+(*-----=== Byte 05 ===-----*)
+	bVacuumErrorClear		:BIT;				// 05.0	Clearing Vacuum Error
+	{attribute 'hide'}
+	_reserved_05_1			:BIT;				// 05.1	Tartalék	
+	{attribute 'hide'}
+	_reserved_05_2			:BIT;				// 05.2	Tartalék	
+	{attribute 'hide'}
+	_reserved_05_3			:BIT;				// 05.3	Tartalék	
+	{attribute 'hide'}
+	_reserved_05_4			:BIT;				// 05.4	Tartalék	
+	{attribute 'hide'}
+	_reserved_05_5			:BIT;				// 05.5	Tartalék	
+	{attribute 'hide'}
+	_reserved_05_6			:BIT;				// 05.6	Tartalék	
+	{attribute 'hide'}
+	_reserved_05_7			:BIT;				// 05.7	Tartalék	
+	
+(*-----=== Byte 06 ===-----*)
+	{attribute 'hide'}
+	_reserved_06			:BYTE;				// 06	Tartalék	
+(*-----=== Byte 07 ===-----*)
+	{attribute 'hide'}
+	_reserved_07			:BYTE;				// 07	Tartalék	
+(*-----=== Byte 08 ===-----*)
+	{attribute 'hide'}
+	_reserved_08			:BYTE;				// 08	Tartalék	
+(*-----=== Byte 09 ===-----*)
+	{attribute 'hide'}
+	_reserved_09			:BYTE;				// 09	Tartalék
+(*-----=== Byte 10 ===-----*)
+	{attribute 'hide'}
+	_reserved_10			:BYTE;				// 10	Tartalék
+(*-----=== Byte 11 ===-----*)
+	{attribute 'hide'}
+	_reserved_11			:BYTE;				// 11	Tartalék
+(*-----=== Byte 12 ===-----*)
+	{attribute 'hide'}
+	_reserved_12			:BYTE;				// 12	Tartalék
+(*-----=== Byte 13 ===-----*)
+	{attribute 'hide'}
+	_reserved_13			:BYTE;				// 13	Tartalék	
+(*-----=== Byte 14 ===-----*)
+	{attribute 'hide'}
+	_reserved_14			:BYTE;				// 14	Tartalék	
+(*-----=== Byte 15 ===-----*)
+	{attribute 'hide'}
+	_reserved_15			:BYTE;				// 15	Tartalék	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

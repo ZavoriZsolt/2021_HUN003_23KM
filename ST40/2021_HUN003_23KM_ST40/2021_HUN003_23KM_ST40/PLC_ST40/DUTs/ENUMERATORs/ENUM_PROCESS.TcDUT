@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ENUM_PROCESS" Id="{4fb32048-4f1a-42b9-9454-d8432bae6e4f}">
+    <Declaration><![CDATA[TYPE ENUM_PROCESS :
+(
+	T_UNKNOWN:=0,
+
+	//MACHINE
+	T_MOVE:=1,
+	T_TAKE_SCREW:=2,
+	T_SCREWING:=3,
+	T_BARCODE_READ:=4,
+	T_CAMERA:=5,
+	T_CHECK_INPUT:=6,
+	T_WAIT:=7,
+	T_WAIT_UNTIL:=8,
+	T_SET:=9,
+	T_RESET:=10,
+	T_SET_RECIPE:=11,
+	T_SET_RECIPE_COND:=12,
+	T_RELEASE_PARTS:=13,
+	
+	//MES
+	T_GET_OP_STATE:=14,
+	T_GET_PARENT:=15,
+	T_GET_CHILD:=16,
+	T_START_OP:=17,
+	T_SAVE_MESDAT:=18,
+	T_COMPLETE_OP:=19,
+	T_GET_RECIPE:=20,
+	T_RELEASE_MRT:=21,
+	T_START_ASSY:=22,
+	T_ASSY_ELEMENT:=23,
+	T_COMPLETE_ASSY:=24,
+	T_CHECK_TIMECONTROL:=25,
+	T_STOP_TIMECONTROL:=26,
+	
+	//LAST LINE INDICATOR
+	T_END:=27
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,744 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "PLC1.ARRAY (0..7) OF BYTE": {
+      "items": {
+        "$ref": "tchmi:general#/definitions/BYTE"
+      },
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "PLC1.FB_Bistabil": {
+      "properties": {
+        "bAck": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bBasePosCmd": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bBasePosStab": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bDisableManualCmd": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bEHA": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bEn": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bErrBPWP": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bErrBasePos0": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bErrBasePos1": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bErrWorkPos0": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bErrWorkPos1": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bError": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bIsInitalized": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bWorkPosCmd": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bWorkPosStab": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "fbAckRTrig": {
+          "$ref": "tchmi:project#/definitions/PLC1.Tc2_Standard.R_TRIG"
+        },
+        "fbAlarm": {
+          "$ref": "tchmi:project#/definitions/PLC1.Tc3_EventLogger.FB_TcAlarm"
+        },
+        "fbErrorRTrig": {
+          "$ref": "tchmi:project#/definitions/PLC1.Tc2_Standard.R_TRIG"
+        },
+        "i_bBasePos": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "i_bWorkPos": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "nEHMode": {
+          "$ref": "tchmi:general#/definitions/BYTE"
+        },
+        "q_bBasePos": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "q_bWorkPos": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "sBasePosSensor": {
+          "allOf": [
+            {
+              "maxLength": 10
+            },
+            {
+              "$ref": "tchmi:general#/definitions/String"
+            }
+          ]
+        },
+        "sError": {
+          "allOf": [
+            {
+              "maxLength": 255
+            },
+            {
+              "$ref": "tchmi:general#/definitions/String"
+            }
+          ]
+        },
+        "sName": {
+          "allOf": [
+            {
+              "maxLength": 30
+            },
+            {
+              "$ref": "tchmi:general#/definitions/String"
+            }
+          ]
+        },
+        "sWorkPosSensor": {
+          "allOf": [
+            {
+              "maxLength": 10
+            },
+            {
+              "$ref": "tchmi:general#/definitions/String"
+            }
+          ]
+        },
+        "stEventEntry": {
+          "$ref": "tchmi:project#/definitions/PLC1.TcEventEntry"
+        },
+        "tBP": {
+          "$ref": "tchmi:project#/definitions/PLC1.Tc2_Standard.TON"
+        },
+        "tBPS": {
+          "$ref": "tchmi:project#/definitions/PLC1.Tc2_Standard.TON"
+        },
+        "tDPWP": {
+          "$ref": "tchmi:project#/definitions/PLC1.Tc2_Standard.TON"
+        },
+        "tWP": {
+          "$ref": "tchmi:project#/definitions/PLC1.Tc2_Standard.TON"
+        },
+        "tWPS": {
+          "$ref": "tchmi:project#/definitions/PLC1.Tc2_Standard.TON"
+        },
+        "timBasePos": {
+          "$ref": "tchmi:general#/definitions/TIME"
+        },
+        "timBasePosStab": {
+          "$ref": "tchmi:general#/definitions/TIME"
+        },
+        "timWorkPos": {
+          "$ref": "tchmi:general#/definitions/TIME"
+        },
+        "timWorkPosStab": {
+          "$ref": "tchmi:general#/definitions/TIME"
+        }
+      },
+      "type": "object"
+    },
+    "PLC1.GUID": {
+      "properties": {
+        "Data1": {
+          "$ref": "tchmi:general#/definitions/DWORD"
+        },
+        "Data2": {
+          "$ref": "tchmi:general#/definitions/WORD"
+        },
+        "Data3": {
+          "$ref": "tchmi:general#/definitions/WORD"
+        },
+        "Data4": {
+          "$ref": "tchmi:project#/definitions/PLC1.ARRAY (0..7) OF BYTE"
+        }
+      },
+      "type": "object"
+    },
+    "PLC1.Tc2_Standard.R_TRIG": {
+      "properties": {
+        "CLK": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "M": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "Q": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        }
+      },
+      "type": "object"
+    },
+    "PLC1.Tc2_Standard.TON": {
+      "properties": {
+        "ET": {
+          "$ref": "tchmi:general#/definitions/TIME"
+        },
+        "IN": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "M": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "PT": {
+          "$ref": "tchmi:general#/definitions/TIME"
+        },
+        "Q": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "StartTime": {
+          "$ref": "tchmi:general#/definitions/TIME"
+        }
+      },
+      "type": "object"
+    },
+    "PLC1.Tc3_EventLogger.FB_AsyncStrResult": {
+      "properties": {
+        "bBusy": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "bError": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "hrErrorCode": {
+          "$ref": "tchmi:general#/definitions/HRESULT"
+        },
+        "nStringSize": {
+          "$ref": "tchmi:general#/definitions/UDINT"
+        },
+        "sResult": {
+          "allOf": [
+            {
+              "maxLength": 255
+            },
+            {
+              "$ref": "tchmi:general#/definitions/String"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "PLC1.Tc3_EventLogger.FB_TcAlarm": {
+      "properties": {
+        "__FB_TCEVENTBASE__REQUESTEVENTCLASSNAME__BBUSY": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "__FB_TCEVENTBASE__REQUESTEVENTCLASSNAME__FBRESULT": {
+          "$ref": "tchmi:project#/definitions/PLC1.Tc3_EventLogger.FB_AsyncStrResult"
+        },
+        "__FB_TCEVENTBASE__REQUESTEVENTTEXT__BBUSY": {
+          "$ref": "tchmi:general#/definitions/BOOL"
+        },
+        "__FB_TCEVENTBASE__REQUESTEVENTTEXT__FBRESULT": {
+          "$ref": "tchmi:project#/definitions/PLC1.Tc3_EventLogger.FB_AsyncStrResult"
+        },
+        "eConfirmationState": {
+          "$ref": "tchmi:project#/definitions/PLC1.TcEventConfirmationState"
+        },
+        "eSeverity": {
+          "$ref": "tchmi:project#/definitions/PLC1.TcEventSeverity"
+        },
+        "fbSourceInfo": {
+          "$ref": "tchmi:project#/definitions/PLC1.Tc3_EventLogger.FB_TcSourceInfo"
+        },
+        "ipSourceInfo": {
+          "$ref": "tchmi:project#/definitions/PLC1.Tc3_EventLogger.I_TcSourceInfo"
+        },
+        "nEventId": {
+          "$ref": "tchmi:general#/definitions/UDINT"
+        },
+        "nTimeCleared": {
+          "$ref": "tchmi:general#/definitions/ULINT"
+        },
+        "nTimeConfirmed": {
+          "$ref": "tchmi:general#/definitions/ULINT"
+        },
+        "nTimeRaised": {
+          "$ref": "tchmi:general#/definitions/ULINT"
+        },
+        "sEventClassName": {
+          "allOf": [
+            {
+              "maxLength": 255
+            },
+            {
+              "$ref": "tchmi:general#/definitions/String"
+            }
+          ]
+        },
+        "sEventText": {
+          "allOf": [
+            {
+              "maxLength": 255
+            },
+            {
+              "$ref": "tchmi:general#/definitions/String"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "PLC1.Tc3_EventLogger.FB_TcSourceInfo": {
+      "properties": {
+        "nId": {
+          "$ref": "tchmi:general#/definitions/UDINT"
+        },
+        "sName": {
+          "allOf": [
+            {
+              "maxLength": 255
+            },
+            {
+              "$ref": "tchmi:general#/definitions/String"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "PLC1.Tc3_EventLogger.I_TcSourceInfo": {},
+    "PLC1.TcEventConfirmationState": {
+      "allOf": [
+        {
+          "enum": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "options": [
+            {
+              "value": 0,
+              "label": "NotSupported"
+            },
+            {
+              "value": 1,
+              "label": "NotRequired"
+            },
+            {
+              "value": 2,
+              "label": "WaitForConfirmation"
+            },
+            {
+              "value": 3,
+              "label": "Confirmed"
+            },
+            {
+              "value": 4,
+              "label": "Reset"
+            }
+          ]
+        },
+        {
+          "$ref": "tchmi:general#/definitions/INT16"
+        }
+      ]
+    },
+    "PLC1.TcEventEntry": {
+      "properties": {
+        "eSeverity": {
+          "$ref": "tchmi:project#/definitions/PLC1.TcEventSeverity"
+        },
+        "nEventId": {
+          "$ref": "tchmi:general#/definitions/UDINT"
+        },
+        "uuidEventClass": {
+          "$ref": "tchmi:project#/definitions/PLC1.GUID"
+        }
+      },
+      "type": "object"
+    },
+    "PLC1.TcEventSeverity": {
+      "allOf": [
+        {
+          "enum": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "options": [
+            {
+              "value": 0,
+              "label": "TCEVENTSEVERITY_Verbose"
+            },
+            {
+              "value": 1,
+              "label": "TCEVENTSEVERITY_Info"
+            },
+            {
+              "value": 2,
+              "label": "TCEVENTSEVERITY_Warning"
+            },
+            {
+              "value": 3,
+              "label": "TCEVENTSEVERITY_Error"
+            },
+            {
+              "value": 4,
+              "label": "TCEVENTSEVERITY_Critical"
+            }
+          ]
+        },
+        {
+          "$ref": "tchmi:general#/definitions/INT16"
+        }
+      ]
+    },
+    "PLC1.ST_KRC_Control": {
+      "properties": {
+        "bConfMess": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bDrivesOff": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bDrivesOn": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bEnableMoveInPalettZone": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bExtStart": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bIOAct": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bMoveEnable": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bPgnoParity": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bPgnoValid": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bVacuumErrorClear": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "nProgNr": {
+          "$ref": "tchmi:general#/definitions/BYTE"
+        }
+      },
+      "type": "object"
+    },
+    "PLC1.ST_KRC_Status": {
+      "properties": {
+        "bAlarm": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bApplRun": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bAut": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bExt": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bIOActConf": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bIntEStop": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bIntMoveInPalettZone": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bParameterError": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bPeriReday": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bPgnoReq": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bPositionError": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bProAct": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bProdSensor": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bProgramError": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bReady": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bReqMoveInPalettZone": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bRobStopped": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bStopMess": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bT1": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bT2": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bUserSAF": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bVacuumError": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bVacuumInStat": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bVacuumOutStat": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "bWorpieceError": {
+          "$ref": "tchmi:general#/definitions/BIT"
+        },
+        "nProgNr": {
+          "$ref": "tchmi:general#/definitions/BYTE"
+        }
+      },
+      "type": "object"
+    },
+    "PLC1.ST_PalletData": {
+      "properties": {
+        "nDone": {
+          "$ref": "tchmi:general#/definitions/WORD"
+        },
+        "nErrorCode": {
+          "$ref": "tchmi:general#/definitions/WORD"
+        },
+        "nPalletCommand": {
+          "$ref": "tchmi:general#/definitions/WORD"
+        },
+        "nPalletState": {
+          "$ref": "tchmi:general#/definitions/WORD"
+        },
+        "sCarrierCode": {
+          "allOf": [
+            {
+              "maxLength": 40
+            },
+            {
+              "$ref": "tchmi:general#/definitions/String"
+            }
+          ]
+        },
+        "sCoverCode": {
+          "allOf": [
+            {
+              "maxLength": 40
+            },
+            {
+              "$ref": "tchmi:general#/definitions/String"
+            }
+          ]
+        },
+        "sFanCode": {
+          "allOf": [
+            {
+              "maxLength": 40
+            },
+            {
+              "$ref": "tchmi:general#/definitions/String"
+            }
+          ]
+        },
+        "sMRTCode": {
+          "allOf": [
+            {
+              "maxLength": 40
+            },
+            {
+              "$ref": "tchmi:general#/definitions/String"
+            }
+          ]
+        },
+        "sPCBACode": {
+          "allOf": [
+            {
+              "maxLength": 40
+            },
+            {
+              "$ref": "tchmi:general#/definitions/String"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "PLC1.E_ADS_Cmd": {
+      "allOf": [
+        {
+          "enum": [
+            "0",
+            "1",
+            "2"
+          ],
+          "options": [
+            {
+              "value": 0,
+              "label": "NoCmd"
+            },
+            {
+              "value": 1,
+              "label": "Read"
+            },
+            {
+              "value": 2,
+              "label": "Write"
+            }
+          ]
+        },
+        {
+          "$ref": "tchmi:general#/definitions/INT16"
+        }
+      ]
+    },
+    "UserControls_EtherCAT_Diag": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\EtherCAT_Diag.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_EtherCAT_Diag"
+    },
+    "UserControls_BusStates": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\BusStates.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_BusStates"
+    },
+    "UserControls_ConveyorIn": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\ConveyorIn.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_ConveyorIn"
+    },
+    "UserControls_ConveyorOut": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\ConveyorOut.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_ConveyorOut"
+    },
+    "UserControls_FB_Bistabil": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\FB_Bistabil.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_FB_Bistabil"
+    },
+    "UserControls_FB_CodeReader": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\FB_CodeReader.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_FB_CodeReader"
+    },
+    "UserControls_FB_Conveyor": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\FB_Conveyor.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_FB_Conveyor"
+    },
+    "UserControls_FB_Kamino": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\FB_Kamino.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_FB_Kamino"
+    },
+    "UserControls_FB_Kuka_KCR": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\FB_Kuka_KCR.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_FB_Kuka_KCR"
+    },
+    "UserControls_FB_Motor": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\FB_Motor.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_FB_Motor"
+    },
+    "UserControls_NumberInput": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\NumberInput.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_NumberInput"
+    },
+    "UserControls_Numpad": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\Numpad.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_Numpad"
+    },
+    "UserControls_PalletState": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\PalletState.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_PalletState"
+    },
+    "UserControls_PositionXYZ": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\PositionXYZ.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_PositionXYZ"
+    },
+    "UserControls_XYZ": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\XYZ.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControls_XYZ"
+    }
+  }
+}

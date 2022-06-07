@@ -1,0 +1,15 @@
+{
+    "CERTIFICATEEXPIRATION": "P365D",
+    "REQUIREAUTH": 2,
+    "VIRTUALDIRECTORIES": {
+        "/": "C:\\Source\\2020_HAM017-33KM_ST40\\HMI\\2020_HAM017_HMI",
+        "/Beckhoff.TwinCAT.HMI.Controls": "C:\\Source\\2020_HAM017-33KM_ST40\\HMI\\Packages\\Beckhoff.TwinCAT.HMI.Controls.12.742.0\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.EventLogger": "C:\\Source\\2020_HAM017-33KM_ST40\\HMI\\Packages\\Beckhoff.TwinCAT.HMI.EventLogger.12.742.0",
+        "/Beckhoff.TwinCAT.HMI.Functions": "C:\\Source\\2020_HAM017-33KM_ST40\\HMI\\Packages\\Beckhoff.TwinCAT.HMI.Functions.12.742.0\\runtimes\\native1.12-tchmi",
+        "/Beckhoff.TwinCAT.HMI.RecipeManagement": "C:\\Source\\2020_HAM017-33KM_ST40\\HMI\\Packages\\Beckhoff.TwinCAT.HMI.RecipeManagement.12.742.0",
+        "/Beckhoff.TwinCAT.HMI.SqliteHistorize": "C:\\Source\\2020_HAM017-33KM_ST40\\HMI\\Packages\\Beckhoff.TwinCAT.HMI.SqliteHistorize.12.742.0",
+        "/bin": "C:\\Source\\2020_HAM017-33KM_ST40\\HMI\\2020_HAM017_HMI\\bin\\",
+        "/bin/framework": "C:\\Source\\2020_HAM017-33KM_ST40\\HMI\\2020_HAM017_HMI\\bin\\framework",
+        "/framework": "C:\\Source\\2020_HAM017-33KM_ST40\\HMI\\Packages\\Beckhoff.TwinCAT.HMI.Framework.12.742.0\\runtimes\\native1.12-tchmi"
+    }
+}

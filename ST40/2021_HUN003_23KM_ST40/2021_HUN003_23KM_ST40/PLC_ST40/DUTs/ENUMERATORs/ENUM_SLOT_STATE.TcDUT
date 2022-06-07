@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ENUM_SLOT_STATE" Id="{b9e6f39d-d96c-4ad7-8296-dbba798ec6ff}">
+    <Declaration><![CDATA[TYPE ENUM_SLOT_STATE :
+(
+	EMPTY := 0,
+	IN_QUEUE,
+	WAIT_FOR_START,
+	DISABLED,
+	IN_WORK,
+	FINISHED
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

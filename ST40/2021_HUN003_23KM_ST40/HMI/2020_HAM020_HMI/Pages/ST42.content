@@ -1,0 +1,308 @@
+﻿<div id="Main_1" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="1500" data-tchmi-height="845" data-tchmi-left-unit="px" data-tchmi-top-unit="px" data-tchmi-width-unit="px" data-tchmi-height-unit="px" data-tchmi-zindex="2" data-tchmi-background-image="Images/pages/p1_back.PNG" data-tchmi-is-enabled="True">
+
+<div id="ContentName_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="250" data-tchmi-left-unit="px" data-tchmi-text="Robot" data-tchmi-top="10" data-tchmi-top-unit="px" data-tchmi-width="1000" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-horizontal-alignment="Center" data-tchmi-is-enabled="True" data-tchmi-text-font-style="Normal" data-tchmi-text-font-weight="Bold" data-tchmi-zindex="2">
+
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
+{
+  "left": 0,
+  "right": 0,
+  "top": 0,
+  "bottom": 0,
+  "leftUnit": "px",
+  "rightUnit": "px",
+  "topUnit": "px",
+  "bottomUnit": "px"
+}
+</script>
+</div>
+
+<div id="Statestring_19" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="34" data-tchmi-height-unit="px" data-tchmi-left="26" data-tchmi-left-unit="px" data-tchmi-top="50" data-tchmi-top-unit="px" data-tchmi-width="788" data-tchmi-width-unit="px" data-tchmi-word-wrap="False" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="2" data-tchmi-text="%f%'ST40 Robot' + %s%PLC1.GVL_Main.stP2::sState%/s%%/f%">
+
+</div>
+
+<div id="RFID_Data_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="302" data-tchmi-left-unit="px" data-tchmi-top="120" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text="%f%'RFID: ' + %s%PLC1.GVL_Main.fbP2RFID.nTAGData%/s%%/f%">
+
+</div>
+
+<div id="TcHmiCheckbox_36" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCheckbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="302" data-tchmi-left-unit="px" data-tchmi-text="Carrier" data-tchmi-top="178" data-tchmi-top-unit="px" data-tchmi-width="169" data-tchmi-width-unit="px" data-tchmi-is-enabled="True" data-tchmi-background-color="%f%ColorSelect(%s%PLC1.GVL_IO.i_bP2DutSensor2%/s%, %i%ColorTransparent%/i%, %i%ColorGreen%/i%)%/f%" data-tchmi-text-font-size="16">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-toggle-state-icon-color" type="application/json">
+{
+  "color": "None"
+}
+</script>
+</div>
+
+<div data-tchmi-grid-row-index="0" data-tchmi-grid-column-index="0" id="TcHmiCheckbox_37" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCheckbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="302" data-tchmi-left-unit="px" data-tchmi-text="Cover" data-tchmi-top="224" data-tchmi-top-unit="px" data-tchmi-width="169" data-tchmi-width-unit="px" data-tchmi-is-enabled="True" data-tchmi-background-color="%f%ColorSelect(%s%PLC1.GVL_IO.i_bP2DutSensor3%/s%, %i%ColorTransparent%/i%, %i%ColorGreen%/i%)%/f%" data-tchmi-text-font-size="16">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-toggle-state-icon-color" type="application/json">
+{
+  "color": "None"
+}
+</script>
+</div>
+
+<div data-tchmi-grid-row-index="0" data-tchmi-grid-column-index="0" id="TcHmiCheckbox_38" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCheckbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="302" data-tchmi-left-unit="px" data-tchmi-text="PCBA" data-tchmi-top="266" data-tchmi-top-unit="px" data-tchmi-width="169" data-tchmi-width-unit="px" data-tchmi-is-enabled="True" data-tchmi-background-color="%f%ColorSelect(%s%PLC1.GVL_IO.i_bP2DutSensor1%/s%, %i%ColorTransparent%/i%, %i%ColorGreen%/i%)%/f%" data-tchmi-text-font-size="16">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-toggle-state-icon-color" type="application/json">
+{
+  "color": "None"
+}
+</script>
+</div>
+
+<div id="P2_PalletCycleTime" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiDatagrid" data-tchmi-height="340" data-tchmi-height-unit="px" data-tchmi-left="26" data-tchmi-left-unit="px"    data-tchmi-top="262" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-src-data="%s%PLC1.GVL_Main.fbP2FullCycleTime.arrCycleTimes%/s%">
+<script data-tchmi-target-attribute="data-tchmi-src-column" type="application/json">
+{
+  "label": "%l%CycleTimeOfPallet%/l%",
+  "control": "TextBox",
+  "width": 120,
+  "widthUnit": "px",
+  "resize": false,
+  "sortable": false,
+  "minWidth": 120,
+  "minWidthUnit": "px",
+  "cellBackground": null,
+  "textColor": null,
+  "editable": false,
+  "horizontalAlignment": "Left",
+  "verticalAlignment": "Center",
+  "format": {
+    "objectType": "Function",
+    "active": true,
+    "fn": "TcHmi.Functions.Beckhoff.GaugeValueFormatter",
+    "fnParams": [
+      {
+        "objectType": "StaticValue",
+        "valueType": "tchmi:general#/definitions/Number",
+        "value": 1.0
+      }
+    ]
+  }
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-cell-content-padding" type="application/json">
+{
+  "left": 3,
+  "leftUnit": "px",
+  "right": 3,
+  "rightUnit": "px",
+  "top": 0,
+  "topUnit": "px",
+  "bottom": 0,
+  "bottomUnit": "px"
+}
+</script>
+
+</div>
+
+<div id="FB_Conveyor_7" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-error="%s%PLC1.GVL_Main.fbP2KRC4.bError%/s%" data-tchmi-height="610" data-tchmi-height-unit="px" data-tchmi-left="1085" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/FB_Kuka_KCR.usercontrol" data-tchmi-top="50" data-tchmi-top-unit="px" data-tchmi-width="400" data-tchmi-width-unit="px" data-tchmi-name="%s%PLC1.GVL_Main.fbP2KRC4.sName%/s%" data-tchmi-control="%s%PLC1.GVL_Main.fbP2KRC4.RobotOut.Control%/s%" data-tchmi-status="%s%PLC1.GVL_Main.fbP2KRC4.RobotIn.Status%/s%" data-tchmi-state="%s%PLC1.GVL_Main.fbP2KRC4.sState%/s%">
+
+</div>
+
+<div id="FB_Bistabil_5" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="110" data-tchmi-height-unit="px" data-tchmi-left="26" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/FB_Bistabil.usercontrol" data-tchmi-top="120" data-tchmi-top-unit="px" data-tchmi-width="235" data-tchmi-width-unit="px" data-tchmi-name="%f%%s%PLC1.GVL_Main.fbP2Lift.sName%/s% +&quot; &quot;+ %l%ValvePalletLifter%/l%%/f%" data-tchmi-henger="%s%PLC1.GVL_Main.fbP1Lift%/s%" data-tchmi-manualmode="%s%PLC1.GVL_Main.bManualMode%/s%" data-tchmi-error="%s%PLC1.GVL_Main.fbP2Lift.bError%/s%" data-tchmi-q_bworkpos="%s%PLC1.GVL_Main.fbP2Lift.q_bWorkPos%/s%" data-tchmi-q_bbasepos="%s%PLC1.GVL_Main.fbP2Lift.q_bBasePos%/s%" data-tchmi-i_bworkpos="%s%PLC1.GVL_Main.fbP2Lift.i_bWorkPos%/s%" data-tchmi-i_bbasepos="%s%PLC1.GVL_Main.fbP2Lift.i_bBasePos%/s%" data-tchmi-workposcmd="%s%PLC1.GVL_Main.fbP2Lift.bWorkPosCmd%/s%" data-tchmi-baseposcmd="%s%PLC1.GVL_Main.fbP2Lift.bBasePosCmd%/s%">
+
+</div>
+
+<div data-tchmi-grid-row-index="0" data-tchmi-grid-column-index="0" id="TcHmiCheckbox_58" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCheckbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="302" data-tchmi-left-unit="px" data-tchmi-text="FAN" data-tchmi-top="306" data-tchmi-top-unit="px" data-tchmi-width="169" data-tchmi-width-unit="px" data-tchmi-is-enabled="True" data-tchmi-background-color="%f%ColorSelect(%s%PLC1.GVL_IO.i_bP2DutSensor4%/s%, %i%ColorTransparent%/i%, %i%ColorGreen%/i%)%/f%" data-tchmi-text-font-size="16">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-toggle-state-icon-color" type="application/json">
+{
+  "color": "None"
+}
+</script>
+</div>
+
+</div>

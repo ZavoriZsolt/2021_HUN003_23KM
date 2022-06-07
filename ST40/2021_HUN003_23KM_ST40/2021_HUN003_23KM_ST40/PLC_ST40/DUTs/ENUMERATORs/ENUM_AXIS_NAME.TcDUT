@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ENUM_AXIS_NAME" Id="{46817d99-7938-422b-b9e9-24ce99707757}">
+    <Declaration><![CDATA[TYPE ENUM_AXIS_NAME :
+(	
+	CE_AXIS_X := 1,				// X-axis drive
+	CE_AXIS_Y,					// Y-axis drive
+	CE_AXIS_Z,					// Z-axis drive
+	CE_AXIS_C, 					// C-axis drive
+	CE_LAST_AXIS				(* placeholder, do not change*)
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

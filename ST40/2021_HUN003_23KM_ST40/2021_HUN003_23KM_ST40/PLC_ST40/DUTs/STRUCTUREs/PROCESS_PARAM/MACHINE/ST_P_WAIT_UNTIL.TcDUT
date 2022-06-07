@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_P_WAIT_UNTIL" Id="{389ccff2-8d17-4ed2-b357-4a31f743ca67}">
+    <Declaration><![CDATA[TYPE ST_P_WAIT_UNTIL :
+STRUCT
+	Block:		INT;
+	Channel:	ENUM_CHANNEL;
+	State:		BOOL;
+	ExecuteOnFail:	BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

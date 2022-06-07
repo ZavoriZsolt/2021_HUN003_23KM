@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_ReceipeList" Id="{16d70c4a-aa1f-417f-a9ec-c697a66b5478}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ReceipeList
+VAR_INPUT
+	sReceipeListIn			:STRING(1000);
+END_VAR
+VAR_OUTPUT
+	sReceipeListOut			:STRING(1000);
+	sReceipe				:STRING;
+	bEmpty					:BOOL;
+END_VAR
+VAR
+	nPosition				:INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[nPosition := FIND(sReceipeListIn,';');
+IF nPosition > 0 THEN
+	sReceipe := LEFT(sReceipeListIn,(nPosition - 1));
+	sReceipeListOut	:= DELETE(sReceipeListIn,(nPosition + 1),0);
+ELSE
+	sReceipe := sReceipeListIn;
+	sReceipeListOut	:= '';
+END_IF
+bEmpty := (LEN(sReceipeListOut) <= 0);]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ReceipeList">
+      <LineId Id="9" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="26" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

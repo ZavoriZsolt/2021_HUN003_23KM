@@ -1,0 +1,94 @@
+﻿<div id="Main_6" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="1500" data-tchmi-height="845" data-tchmi-zindex="1" data-tchmi-top-unit="px" data-tchmi-width-unit="px" data-tchmi-height-unit="px" data-tchmi-left-unit="px">
+
+<div id="ContentName_8" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="250" data-tchmi-left-unit="px" data-tchmi-text="Kamera" data-tchmi-top="10" data-tchmi-top-unit="px" data-tchmi-width="1000" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-horizontal-alignment="Center" data-tchmi-is-enabled="True" data-tchmi-text-font-style="Normal" data-tchmi-text-font-weight="Bold" data-tchmi-zindex="1">
+
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
+{
+  "left": 0,
+  "right": 0,
+  "top": 0,
+  "bottom": 0,
+  "leftUnit": "px",
+  "rightUnit": "px",
+  "topUnit": "px",
+  "bottomUnit": "px"
+}
+</script>
+</div>>s%PLC1.Pos1.bMESEnable%/s%s%PLC1.GVL_Main.aHmiP2ScrewingState.0.bHMIPass%/s%s%PLC1.GVL_Persistent.nCycleTimePrevP1.1%/s%%s%PLC1.GVL_Persistent.nCycleTimePrevP1.1%/s%5b72e9cfe20988991c9cd87bde43c0b691e3b67b01f76d23f8150615883ce11
+
+<div id="Statestring_17" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="34" data-tchmi-height-unit="px" data-tchmi-left="26" data-tchmi-left-unit="px" data-tchmi-top="50" data-tchmi-top-unit="px" data-tchmi-width="788" data-tchmi-width-unit="px" data-tchmi-word-wrap="False" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="2" data-tchmi-text="%f%'ST40 Kamera: ' + %s%PLC1.GVL_Main.stP1::sState%/s%%/f%">
+
+</div>
+
+<div id="FB_Bistabil_1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="110" data-tchmi-height-unit="px" data-tchmi-left="26" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/FB_Bistabil.usercontrol" data-tchmi-top="120" data-tchmi-top-unit="px" data-tchmi-width="235" data-tchmi-width-unit="px" data-tchmi-name="%f%%s%PLC1.GVL_Main.fbP1Lift.sName%/s% +&quot; &quot;+ %l%ValvePalletLifter%/l%%/f%" data-tchmi-henger="%s%PLC1.GVL_Main.fbP1Lift%/s%" data-tchmi-manualmode="%s%PLC1.GVL_Main.bManualMode%/s%" data-tchmi-error="%s%PLC1.GVL_Main.fbP1Lift.bError%/s%" data-tchmi-q_bworkpos="%s%PLC1.GVL_Main.fbP1Lift.q_bWorkPos%/s%" data-tchmi-q_bbasepos="%s%PLC1.GVL_Main.fbP1Lift.q_bBasePos%/s%" data-tchmi-i_bworkpos="%s%PLC1.GVL_Main.fbP1Lift.i_bWorkPos%/s%" data-tchmi-i_bbasepos="%s%PLC1.GVL_Main.fbP1Lift.i_bBasePos%/s%" data-tchmi-workposcmd="%s%PLC1.GVL_Main.fbP1Lift.bWorkPosCmd%/s%" data-tchmi-baseposcmd="%s%PLC1.GVL_Main.fbP1Lift.bBasePosCmd%/s%">
+
+</div>
+
+<div id="RFID_Data" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="876" data-tchmi-left-unit="px" data-tchmi-text="%f%'RFID: '+%s%PLC1.GVL_Main.fbP1RFID.nTAGData%/s%%/f%" data-tchmi-top="120" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="True">
+
+</div>
+
+
+
+<div id="FB_Motor_AxisX" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="102" data-tchmi-height-unit="px" data-tchmi-left="299" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/FB_Motor.usercontrol" data-tchmi-top="120" data-tchmi-top-unit="px" data-tchmi-width="250" data-tchmi-width-unit="px" data-tchmi-keyboardleft="%f%%ctrl%FB_Motor_AxisX::Left%/ctrl%+150%/f%" data-tchmi-keyboardtop="%f%%ctrl%FB_Motor_AxisX::Top%/ctrl%+150%/f%" data-tchmi-name="%s%PLC1.GVL_Main.fbP1AxisX.sName%/s%" data-tchmi-actpos="%s%PLC1.GVL_Main.fbP1AxisX.Axis.NcToPlc.ActPos%/s%" data-tchmi-setpos="%s%PLC1.GVL_Main.fbP1AxisX.rPosition1%/s%" data-tchmi-setvel="%s%PLC1.GVL_Main.fbP1AxisX.rVelocity1%/s%" data-tchmi-start="%s%PLC1.GVL_Main.fbP1AxisX.bGoPosition%/s%" data-tchmi-enable="%s%PLC1.GVL_Main.fbP1AxisX.bEMYOK%/s%" data-tchmi-enablepos="%s%PLC1.GVL_Main.fbP1AxisX.bEnablePositive%/s%" data-tchmi-enableneg="%s%PLC1.GVL_Main.fbP1AxisX.bEnableNegative%/s%" data-tchmi-jogforward="%s%PLC1.GVL_Main.fbP1AxisX.bJogForward%/s%" data-tchmi-jogbackward="%s%PLC1.GVL_Main.fbP1AxisX.bJogBackwards%/s%" data-tchmi-neglimit="%s%PLC1.GVL_Main.fbP1AxisX.lrNegLimit%/s%" data-tchmi-poslimit="%s%PLC1.GVL_Main.fbP1AxisX.lrPosLimit%/s%" data-tchmi-manualmode="%s%PLC1.GVL_Main.bManualMode%/s%">
+
+</div>
+
+<div id="FB_Motor_AxisY" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="102" data-tchmi-height-unit="px" data-tchmi-left="575" data-tchmi-left-unit="px" data-tchmi-target-user-control="UserControls/FB_Motor.usercontrol" data-tchmi-top="120" data-tchmi-top-unit="px" data-tchmi-width="250" data-tchmi-width-unit="px" data-tchmi-keyboardleft="%f%%ctrl%FB_Motor_AxisY::Left%/ctrl%+150%/f%" data-tchmi-keyboardtop="%f%%ctrl%FB_Motor_AxisY::Top%/ctrl%+150%/f%" data-tchmi-name="%s%PLC1.GVL_Main.fbP1AxisY.sName%/s%" data-tchmi-actpos="%s%PLC1.GVL_Main.fbP1AxisY.Axis.NcToPlc.ActPos%/s%" data-tchmi-setpos="%s%PLC1.GVL_Main.fbP1AxisY.rPosition1%/s%" data-tchmi-setvel="%s%PLC1.GVL_Main.fbP1AxisY.rVelocity1%/s%" data-tchmi-start="%s%PLC1.GVL_Main.fbP1AxisY.bGoPosition%/s%" data-tchmi-enable="%s%PLC1.GVL_Main.fbP1AxisY.bEMYOK%/s%" data-tchmi-jogforward="%s%PLC1.GVL_Main.fbP1AxisY.bJogForward%/s%" data-tchmi-jogbackward="%s%PLC1.GVL_Main.fbP1AxisY.bJogBackwards%/s%" data-tchmi-enablepos="%s%PLC1.GVL_Main.fbP1AxisY.bEnablePositive%/s%" data-tchmi-enableneg="%s%PLC1.GVL_Main.fbP1AxisY.bEnableNegative%/s%" data-tchmi-neglimit="%s%PLC1.GVL_Main.fbP1AxisY.lrNegLimit%/s%" data-tchmi-poslimit="%s%PLC1.GVL_Main.fbP1AxisY.lrPosLimit%/s%" data-tchmi-manualmode="%s%PLC1.GVL_Main.bManualMode%/s%">
+
+</div>
+
+<div id="FB_Kamino_1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="81" data-tchmi-height-unit="px" data-tchmi-left="299" data-tchmi-left-unit="px" data-tchmi-start="%s%PLC1.GVL_Main.fbP1Cam1.bStart%/s%" data-tchmi-target-user-control="UserControls/FB_Kamino.usercontrol" data-tchmi-top="262" data-tchmi-top-unit="px" data-tchmi-width="250" data-tchmi-width-unit="px" data-tchmi-keyboardleft="%f%%ctrl%FB_Kamino_1::Left%/ctrl%+150%/f%" data-tchmi-keyboardtop="%f%%ctrl%FB_Kamino_1::Top%/ctrl%+150%/f%" data-tchmi-name="%s%PLC1.GVL_Main.fbP1Cam1.sName%/s%" data-tchmi-prognr="%s%PLC1.GVL_Main.fbP1Cam1.nProgNr%/s%" data-tchmi-actprognr="%s%PLC1.GVL_Main.fbP1Cam1.stCAM_IN.nCAMType%/s%" data-tchmi-lifesignal="%s%PLC1.GVL_Main.fbP1Cam1.stCAM_IN.nLifeSignal%/s%" data-tchmi-pass="%s%PLC1.GVL_Main.fbP1Cam1.bPass%/s%" data-tchmi-fail="%s%PLC1.GVL_Main.fbP1Cam1.bFail%/s%" data-tchmi-manualmode="%s%PLC1.GVL_Main.bManualMode%/s%">
+
+</div>
+
+<div id="P1_PalletCycleTime" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiDatagrid" data-tchmi-height="340" data-tchmi-height-unit="px" data-tchmi-left="26" data-tchmi-left-unit="px"    data-tchmi-top="262" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-src-data="%s%PLC1.GVL_Main.fbP1FullCycleTime.arrCycleTimes%/s%">
+<script data-tchmi-target-attribute="data-tchmi-src-column" type="application/json">
+{
+  "label": "%l%CycleTimeOfPallet%/l%",
+  "control": "TextBox",
+  "width": 120,
+  "widthUnit": "px",
+  "resize": false,
+  "sortable": false,
+  "minWidth": 120,
+  "minWidthUnit": "px",
+  "cellBackground": null,
+  "textColor": null,
+  "editable": false,
+  "horizontalAlignment": "Left",
+  "verticalAlignment": "Center",
+  "format": {
+    "objectType": "Function",
+    "active": true,
+    "fn": "TcHmi.Functions.Beckhoff.GaugeValueFormatter",
+    "fnParams": [
+      {
+        "objectType": "StaticValue",
+        "valueType": "tchmi:general#/definitions/Number",
+        "value": 1.0
+      }
+    ]
+  }
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-cell-content-padding" type="application/json">
+{
+  "left": 3,
+  "leftUnit": "px",
+  "right": 3,
+  "rightUnit": "px",
+  "top": 0,
+  "topUnit": "px",
+  "bottom": 0,
+  "bottomUnit": "px"
+}
+</script>
+
+</div>
+
+</div>

@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_BISM" Id="{f2db82ff-256b-4ad9-9b4b-ec4ea7b2772b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BISM
+(*Ez az FB BIS M-458-045-001-07-S4-el lett tesztelve.
+TAG: BIS M-191-02/A UID 8 byte read only, User data 2000 byte.
+Saját adatot írtunk a TAG-ekbe 1..255ig és nem a UID-t olvasunk ki, hanem user data-t.
+Ezt a BISM 458 konfigjában be kell állítani: Activity at tag present -> Send data*)
+
+VAR_INPUT
+	sName				:STRING; (*Olvasó neve, HMI*)
+	bReset				:BOOL;	(*Software reset*)
+	bHeadOff			:BOOL;	(*Antenna lekapcsolása*)
+END_VAR
+VAR_OUTPUT
+	bTagPresent			:BOOL;
+	//nTAGData			:ULINT; (*Data which was read from the data carrier*)
+	nTAGData			:BYTE;
+	sTAGData			:STRING;
+	nErrorCode			:BYTE; (*Error code when AF = 1*)
+END_VAR
+VAR
+	InData				AT %I* :ARRAY[0..9] OF BYTE;
+	bBB					:BOOL; (*Power: 1 = Device ready, 0 = Device in groung state*)
+	bHF					:BOOL; (*Head failure: 1 = Head is turned off, 0 = Head is turned on*)
+	bAF					:BOOL; (*Job error: 1 = Job incorrectly processed, 0 = Job processed without errors*)
+	bAE					:BOOL; (*Job end: 1 = Job processed without errors, 0 = No job or job running*)
+	bAA					:BOOL; (*Job accepted: 1 = Job accepted, 0 = No job*)
+	bCP					:BOOL; (*Codetag present: 1 = Data carrier is within range of the head, 0 = no data carrier*)
+	
+	OutData				AT %Q* :ARRAY[0..9] OF BYTE;
+	bTI					:BOOL; (*Toggle bit: State change during job*)	
+	bKA					:BOOL; (*Head on/off: 1 = Head on, 0 = Head off*)
+	bGR					:BOOL; (*Basic state: 1 = Software reset, 0 = Normal operation*)
+	bAV					:BOOL; (*Job: 1 = New job, 0 = No new job*)
+	
+	(*User data íráshoz*)
+	nCommandDesignator	:BYTE := 50; (*50 = write*)
+	nNbrOfBytes			:BYTE := 1; (*1 byteot írunk*)
+	(*User data íráshoz, HMI-ről írjuk be*)
+	nWriteValue			:BYTE; (*Beírt érték*)
+	bWriteCmd			:BOOL; 	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[bBB := InData[0].7;
+bHF := InData[0].6;
+bAF := InData[0].3;
+bAE := InData[0].2;
+bAA := InData[0].1;
+bCP := InData[0].0;
+
+IF bAF THEN 
+	nErrorCode := InData[1];
+	nTAGData := 0;
+ELSE 
+	IF bCP THEN
+		//nTAGData :=	InData[1];
+		nTAGData := ULINT_TO_BYTE(
+					SHL(BYTE_TO_ULINT(InData[8] AND 127), 56) +
+					SHL(BYTE_TO_ULINT(InData[7]), 48) +
+					SHL(BYTE_TO_ULINT(InData[6]), 40) +
+					SHL(BYTE_TO_ULINT(InData[5]), 32) +
+					SHL(BYTE_TO_ULINT(InData[4]), 24) +
+					SHL(BYTE_TO_ULINT(InData[3]), 16) +
+					SHL(BYTE_TO_ULINT(InData[2]), 8) +
+					InData[1]);		
+	ELSE 
+		nTAGData := 0;
+	END_IF
+	IF bBB THEN
+		nErrorCode := 0;
+	ELSE 
+		nErrorCode := 255;
+	END_IF
+END_IF
+
+bTagPresent := bCP;
+//sTAGData := ULINT_TO_STRING(nTAGData);
+sTAGData := BYTE_TO_STRING(nTAGData);
+
+bGR := bReset;
+bKA := bHeadOff;
+OutData[0].0 := bAV;
+OutData[0].2 := bGR;
+OutData[0].5 := bKA;
+OutData[0].6 := bTI;
+OutData[9] := OutData[0];
+
+(*Íráshoz*)
+bAV := bWriteCmd;
+OutData[1] := nCommandDesignator;
+OutData[2] := 0; (*Start address*)
+OutData[4] := nNbrOfBytes;
+OutData[6] := nWriteValue;
+IF bWriteCmd AND bAE THEN
+	bWriteCmd := FALSE;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_BISM">
+      <LineId Id="3" Count="2" />
+      <LineId Id="183" Count="0" />
+      <LineId Id="182" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="99" Count="2" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="103" Count="1" />
+      <LineId Id="224" Count="0" />
+      <LineId Id="142" Count="7" />
+      <LineId Id="141" Count="0" />
+      <LineId Id="110" Count="0" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="111" Count="3" />
+      <LineId Id="214" Count="0" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="225" Count="0" />
+      <LineId Id="181" Count="0" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="20" Count="2" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="235" Count="0" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="237" Count="0" />
+      <LineId Id="236" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="238" Count="1" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="240" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

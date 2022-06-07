@@ -1,0 +1,391 @@
+﻿<div id="XYZ_2" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControl" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="227" data-tchmi-height="92" data-tchmi-width-unit="px" data-tchmi-height-unit="px" data-tchmi-creator-viewport-width="500" data-tchmi-creator-viewport-height="500">
+
+<div id="XPos" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="29" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-top="56" data-tchmi-top-unit="px" data-tchmi-width="72" data-tchmi-width-unit="px" data-tchmi-text="%f%FormatString('{.2f}', %pp%PositionsXYZ::rAxisX%/pp%)%/f%" data-tchmi-border-width="%i%BorderWidth%/i%" data-tchmi-border-style="%i%BorderStyle%/i%" data-tchmi-text-font-size="%i%GlobalTextSize%/i%" data-tchmi-text-horizontal-alignment="Center" data-tchmi-is-enabled="True" data-tchmi-auto-focus-out="True">
+<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
+{
+  "top": 3,
+  "right": 3,
+  "bottom": 3,
+  "left": 3
+}
+</script>
+
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "XPos.onFocusIn",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%Numpad::Visibility%/ctrl%",
+        "valueType": "tchmi:framework#/definitions/Visibility",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:framework#/definitions/Visibility",
+          "value": "Visible"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%Numpad::Left%/ctrl%",
+        "valueType": "tchmi:framework#/definitions/MeasurementValue",
+        "value": {
+          "objectType": "FunctionExpression",
+          "functionExpression": "%ctrl%XPos::Left%/ctrl%+%pp%KeyboardLeft%/pp%+%ctrl%TcHmiRegion::Left%/ctrl%"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%Numpad::Top%/ctrl%",
+        "valueType": "tchmi:framework#/definitions/MeasurementValue",
+        "value": {
+          "objectType": "FunctionExpression",
+          "functionExpression": "%pp%KeyboardTop%/pp%+%ctrl%TcHmiRegion::Top%/ctrl%+%ctrl%XPos::Top%/ctrl%+%ctrl%XPos::Height%/ctrl%"
+        },
+        "asyncWait": true
+      }
+    ]
+  },
+  {
+    "event": "XPos.onFocusOut",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%Numpad::Visibility%/ctrl%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:framework#/definitions/Visibility",
+          "value": "Collapsed"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%pp%PositionsXYZ::rAxisX%/pp%",
+        "value": {
+          "objectType": "FunctionExpression",
+          "functionExpression": "StringToFloat(%ctrl%XPos::Text%/ctrl%)"
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<div id="LabelX_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="28" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-top="28" data-tchmi-top-unit="px" data-tchmi-width="72" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-zindex="1" data-tchmi-text-font-size="%i%GlobalTextSize%/i%" data-tchmi-text-font-weight="Auto" data-tchmi-text-font-size-unit="px" data-tchmi-text-font-style="Auto" data-tchmi-text-horizontal-alignment="Center" data-tchmi-border-width="%i%BorderWidth%/i%" data-tchmi-border-style="%i%BorderStyle%/i%" data-tchmi-text-vertical-alignment="Center" data-tchmi-text="X">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<div id="LabelX_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="28" data-tchmi-height-unit="px" data-tchmi-left="72" data-tchmi-left-unit="px" data-tchmi-top="28" data-tchmi-top-unit="px" data-tchmi-width="72" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-zindex="1" data-tchmi-text-font-size="%i%GlobalTextSize%/i%" data-tchmi-text-font-weight="Auto" data-tchmi-text-font-size-unit="px" data-tchmi-text-font-style="Auto" data-tchmi-text-horizontal-alignment="Center" data-tchmi-border-width="%i%BorderWidth%/i%" data-tchmi-border-style="%i%BorderStyle%/i%" data-tchmi-text-vertical-alignment="Center" data-tchmi-text="Y">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<div id="YPos" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="29" data-tchmi-height-unit="px" data-tchmi-left="72" data-tchmi-left-unit="px" data-tchmi-top="56" data-tchmi-top-unit="px" data-tchmi-width="72" data-tchmi-width-unit="px" data-tchmi-text="%f%FormatString('{.2f}',%pp%PositionsXYZ::rAxisY%/pp%)%/f%" data-tchmi-border-width="%i%BorderWidth%/i%" data-tchmi-border-style="%i%BorderStyle%/i%" data-tchmi-text-font-size="%i%GlobalTextSize%/i%" data-tchmi-text-horizontal-alignment="Center" data-tchmi-is-enabled="True" data-tchmi-auto-focus-out="True">
+<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
+{
+  "top": 3,
+  "right": 3,
+  "bottom": 3,
+  "left": 3
+}
+</script>
+
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "YPos.onFocusIn",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%Numpad::Visibility%/ctrl%",
+        "valueType": "tchmi:framework#/definitions/Visibility",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:framework#/definitions/Visibility",
+          "value": "Visible"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%Numpad::Left%/ctrl%",
+        "valueType": "tchmi:framework#/definitions/MeasurementValue",
+        "value": {
+          "objectType": "FunctionExpression",
+          "functionExpression": "%ctrl%XPos::Left%/ctrl%+%pp%KeyboardLeft%/pp%+%ctrl%TcHmiRegion::Left%/ctrl%"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%Numpad::Top%/ctrl%",
+        "valueType": "tchmi:framework#/definitions/MeasurementValue",
+        "value": {
+          "objectType": "FunctionExpression",
+          "functionExpression": "%pp%KeyboardTop%/pp%+%ctrl%TcHmiRegion::Top%/ctrl%+%ctrl%XPos::Top%/ctrl%+%ctrl%XPos::Height%/ctrl%"
+        },
+        "asyncWait": true
+      }
+    ]
+  },
+  {
+    "event": "YPos.onFocusOut",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%Numpad::Visibility%/ctrl%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:framework#/definitions/Visibility",
+          "value": "Collapsed"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%pp%PositionsXYZ::rAxisY%/pp%",
+        "value": {
+          "objectType": "FunctionExpression",
+          "functionExpression": "StringToFloat(%ctrl%YPos::Text%/ctrl%)"
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<div id="LabelX_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="28" data-tchmi-height-unit="px" data-tchmi-left="144" data-tchmi-left-unit="px" data-tchmi-top="28" data-tchmi-top-unit="px" data-tchmi-width="72" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-zindex="1" data-tchmi-text-font-size="%i%GlobalTextSize%/i%" data-tchmi-text-font-weight="Auto" data-tchmi-text-font-size-unit="px" data-tchmi-text-font-style="Auto" data-tchmi-text-horizontal-alignment="Center" data-tchmi-border-width="%i%BorderWidth%/i%" data-tchmi-border-style="%i%BorderStyle%/i%" data-tchmi-text-vertical-alignment="Center" data-tchmi-text="Z">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<div id="Textname" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="28" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="216" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-zindex="1" data-tchmi-text-font-size="%i%GlobalTextSize%/i%" data-tchmi-text-font-weight="Auto" data-tchmi-text-font-size-unit="px" data-tchmi-text-font-style="Auto" data-tchmi-text-horizontal-alignment="Center" data-tchmi-border-width="%i%BorderWidth%/i%" data-tchmi-border-style="%i%BorderStyle%/i%" data-tchmi-text-vertical-alignment="Center" data-tchmi-text="%pp%Name%/pp%">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<div id="ZPos" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="29" data-tchmi-height-unit="px" data-tchmi-left="144" data-tchmi-left-unit="px" data-tchmi-top="56" data-tchmi-top-unit="px" data-tchmi-width="72" data-tchmi-width-unit="px" data-tchmi-text="%f%FormatString('{.2f}', %pp%PositionsXYZ::rAxisZ%/pp%)%/f%" data-tchmi-border-width="%i%BorderWidth%/i%" data-tchmi-border-style="%i%BorderStyle%/i%" data-tchmi-text-font-size="%i%GlobalTextSize%/i%" data-tchmi-text-horizontal-alignment="Center" data-tchmi-is-enabled="True" data-tchmi-auto-focus-out="True">
+<script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
+{
+  "top": 3,
+  "right": 3,
+  "bottom": 3,
+  "left": 3
+}
+</script>
+
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "ZPos.onFocusIn",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%Numpad::Visibility%/ctrl%",
+        "valueType": "tchmi:framework#/definitions/Visibility",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:framework#/definitions/Visibility",
+          "value": "Visible"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%Numpad::Left%/ctrl%",
+        "valueType": "tchmi:framework#/definitions/MeasurementValue",
+        "value": {
+          "objectType": "FunctionExpression",
+          "functionExpression": "%ctrl%XPos::Left%/ctrl%+%pp%KeyboardLeft%/pp%+%ctrl%TcHmiRegion::Left%/ctrl%"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%Numpad::Top%/ctrl%",
+        "valueType": "tchmi:framework#/definitions/MeasurementValue",
+        "value": {
+          "objectType": "FunctionExpression",
+          "functionExpression": "%pp%KeyboardTop%/pp%+%ctrl%TcHmiRegion::Top%/ctrl%+%ctrl%XPos::Top%/ctrl%+%ctrl%XPos::Height%/ctrl%"
+        },
+        "asyncWait": true
+      }
+    ]
+  },
+  {
+    "event": "ZPos.onFocusOut",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%Numpad::Visibility%/ctrl%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:framework#/definitions/Visibility",
+          "value": "Collapsed"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%pp%PositionsXYZ::rAxisZ%/pp%",
+        "value": {
+          "objectType": "FunctionExpression",
+          "functionExpression": "StringToFloat(%ctrl%ZPos::Text%/ctrl%)"
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+</div>

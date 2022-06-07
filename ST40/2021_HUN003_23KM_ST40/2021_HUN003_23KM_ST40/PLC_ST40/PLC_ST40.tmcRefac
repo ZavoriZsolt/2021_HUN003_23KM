@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedSymbol>
+      <Type guid="a2c2abf6-5b00-43a0-8df1-40df6663f513">P2_Robot</Type>
+      <From>stP2</From>
+      <To>stPos</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="34762149-00dc-4394-ac04-664d8169154b">P1_Camera</Type>
+      <From>stP1</From>
+      <To>stPos</To>
+    </RenamedSymbol>
+  </Renames>
+</Refactors>

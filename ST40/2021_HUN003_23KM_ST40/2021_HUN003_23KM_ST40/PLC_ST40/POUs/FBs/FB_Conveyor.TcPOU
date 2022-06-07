@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_Conveyor" Id="{68a09752-2bea-4d2f-a3eb-0138815d1853}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Conveyor
+VAR_INPUT
+	sName					:STRING;
+	bEn						:BOOL;				(*Enable - Engedély jel*)
+	bEHA					:BOOL; 				(*Error-handling active - Hibafigyelés aktív*)
+	bDisableManualCmd		:BOOL;				(*Manual control disable*)
+	bConveyorOnL			:BOOL;				(*Control to Motor on - vezérlés parancs motor indításhoz*)
+	bConveyorOnR			:BOOL;				(*Control to Motor on - vezérlés parancs motor indításhoz*)
+	timReset				:TIME := T#2S;		(*Resettime - Hibatörlési idő*)
+	bAck					:BOOL; 				(*Acknowledge - Hibanyugta*)
+	i_bConveyorOK	AT %I*	:BOOL;				(*Conveyor drive OK - motorindító üzemkész*)
+	stStartEvent			:TcEventEntry;		(*Event definition*)
+	stRunEvent				:TcEventEntry;		(*Event definition*)
+END_VAR
+VAR_OUTPUT
+	bMotorOn				:BOOL;				(* Motor on - Motor bekapcsolva *)
+	bError					:BOOL;				(* Error bit - Hiba van *)
+	sError					:STRING(255);		(* Error string - Hiba string *)
+	q_bConveyorOnL	AT %Q*	:BOOL;				(* Motor on signal - Motor vezérlés bekapcsolása*)
+	q_bConveyorOnR	AT %Q*	:BOOL;				(* Motor on signal - Motor vezérlés bekapcsolása*)
+	q_bConveyorRst	AT %Q*	:BOOL;				(* Motor reset signal - Motor hibatörlés*)
+END_VAR
+VAR
+	tMotorOn			:TON;
+	tError,tFault		:TON;
+	tReset				:TON;
+	bErrOn,bErrRun		:BOOL;
+	aErrorDesc			:ARRAY [0..1] OF STRING := [
+	' motor hiba : a motorvezérlő nem indítható ', 
+	' motor hiba : a motorvezérlő hibába van '];
+	sEmpty				:STRING:='';
+	bIsInitalized		:BOOL;
+	fbStartAlarm		:FB_TcAlarm;
+	fbRunAlarm			:FB_TcAlarm;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*Hibanyugta*)
+IF bAck OR NOT(bEHA) THEN
+	bErrOn:=FALSE;
+	bErrRun:=FALSE;
+END_IF;
+
+(* Motor bekapcsolási hiba *)
+IF bEn AND bEHA AND (q_bConveyorOnL OR q_bConveyorOnR) AND NOT i_bConveyorOK THEN
+	bErrOn:=TRUE;
+	IF (fbStartAlarm.eConfirmationState <> 2 AND fbStartAlarm.nTimeCleared <> 0 AND fbStartAlarm.nTimeConfirmed <> 0) OR //Ha már volt alarm, akkor van bennük érték
+		(fbStartAlarm.eConfirmationState = 1 AND fbStartAlarm.nTimeCleared = 0 AND fbStartAlarm.nTimeConfirmed = 0)	//Első futás esetén
+	THEN
+		fbStartAlarm.Raise(0);
+	END_IF
+END_IF;
+
+(* Motor üzemzavar *)
+tFault(IN:= bEn AND bEHA AND NOT i_bConveyorOK AND NOT bErrRun, PT:= T#5S);
+IF tFault.Q THEN
+	bErrRun:=TRUE;
+	IF (fbRunAlarm.eConfirmationState <> 2 AND fbRunAlarm.nTimeCleared <> 0 AND fbRunAlarm.nTimeConfirmed <> 0) OR //Ha már volt alarm, akkor van bennük érték
+		(fbRunAlarm.eConfirmationState = 1 AND fbRunAlarm.nTimeCleared = 0 AND fbRunAlarm.nTimeConfirmed = 0)	//Első futás esetén
+	THEN
+		fbRunAlarm.Raise(0);
+	END_IF
+END_IF;
+
+(* Hibagyűjtő *)
+bError := bErrOn OR bErrRun;
+
+(*Vezérlés*)
+IF 		bEn AND bConveyorOnL AND NOT bConveyorOnR AND i_bConveyorOK AND (NOT(bEHA) OR NOT(bError)) THEN
+			q_bConveyorOnL := TRUE;
+			q_bConveyorOnR := FALSE;
+ELSIF	bEn AND NOT bConveyorOnL AND bConveyorOnR AND i_bConveyorOK AND (NOT(bEHA) OR NOT(bError)) THEN
+			q_bConveyorOnL := FALSE;
+			q_bConveyorOnR := TRUE;
+ELSE
+	q_bConveyorOnL := FALSE;
+	q_bConveyorOnR := FALSE;
+END_IF
+
+(* Motor bekapcsolva *)
+tMotorOn(IN:= (q_bConveyorOnL OR q_bConveyorOnR) AND NOT bError, 
+	PT:= T#1S,
+	Q=>  bMotorOn);
+
+(* Manual reset *)
+IF bError AND bAck AND NOT q_bConveyorRst THEN
+	q_bConveyorRst := TRUE;
+END_IF
+
+tReset(IN:= q_bConveyorRst, PT:= timReset, Q=> , ET=> );
+IF tReset.Q THEN
+	q_bConveyorRst := FALSE;
+END_IF
+
+(*Hiba string*)
+IF bErrOn OR bErrRun THEN
+	sError := sName;
+	IF bErrOn THEN
+		sError :=  CONCAT(sError, aErrorDesc[0]);
+	END_IF
+	IF bErrRun THEN
+		sError :=  CONCAT(sError, aErrorDesc[1]);
+	END_IF
+ELSE
+	sError := sEmpty;
+END_IF
+
+(*Hiba kezelés Tc3_EventLogger*)
+IF NOT bIsInitalized THEN
+	bIsInitalized := TRUE;
+	fbStartAlarm.CreateEx(stStartEvent, TRUE, 0);
+	fbRunAlarm.CreateEx(stRunEvent, TRUE, 0);
+END_IF
+
+(*Hiba törlés (nyugtázott és megszűnt)*)
+IF fbStartAlarm.eConfirmationState = 3 AND NOT bError THEN
+	fbStartAlarm.Clear(0, FALSE);
+END_IF	
+IF fbRunAlarm.eConfirmationState = 3 AND NOT bError THEN
+	fbRunAlarm.Clear(0, FALSE);
+END_IF	
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Conveyor">
+      <LineId Id="54" Count="3" />
+      <LineId Id="61" Count="2" />
+      <LineId Id="67" Count="1" />
+      <LineId Id="243" Count="3" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="190" Count="1" />
+      <LineId Id="185" Count="0" />
+      <LineId Id="187" Count="1" />
+      <LineId Id="248" Count="3" />
+      <LineId Id="247" Count="0" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="200" Count="0" />
+      <LineId Id="199" Count="0" />
+      <LineId Id="198" Count="0" />
+      <LineId Id="98" Count="1" />
+      <LineId Id="102" Count="1" />
+      <LineId Id="292" Count="0" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="293" Count="2" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="296" Count="0" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="126" Count="4" />
+      <LineId Id="298" Count="0" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="299" Count="2" />
+      <LineId Id="303" Count="1" />
+      <LineId Id="307" Count="2" />
+      <LineId Id="302" Count="0" />
+      <LineId Id="137" Count="2" />
+      <LineId Id="192" Count="5" />
+      <LineId Id="155" Count="2" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="233" Count="4" />
+      <LineId Id="163" Count="0" />
+      <LineId Id="167" Count="0" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="252" Count="5" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

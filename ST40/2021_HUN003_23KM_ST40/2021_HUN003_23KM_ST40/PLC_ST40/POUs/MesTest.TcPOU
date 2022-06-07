@@ -1,0 +1,792 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="MesTest" Id="{33736cac-e229-4c36-8844-1db569401b02}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MesTest
+VAR
+	MES:						FB_MES_INTERFACE_V2;		(* Instance of MES-Interface function block *)
+	bMES_InitOK					:BOOL := FALSE;
+	RESP:						ST_REQUEST;				(* Reference to MES-Interface function block response *)
+	RESET:						BOOL;					
+	START:						BOOL;					
+	STATE:						UDINT;
+	INDEX:						INT;					
+	
+	COVER_BARCODE:				STRING:='288000060010020103725571';					(* COVER barcode *)
+	COVER_PARENT:				STRING;					(* MRT parent barcode *)
+	COVER_STATE:				ST_GET_OP_STATE;		(* Container of SFC State data which releated to Cover barcode *)
+	COVER_INVENTORY:			ST_INVENTORY;			(* Result inventory of the import *)
+	COVER_VALID:				BOOL;					
+	
+	CARRIER_BARCODE:			STRING:='288000000005020103725189';					(* CARRIER barcode *)
+	CARRIER_PARENT:				STRING;					(* MRT parent barcode *)
+	CARRIER_STATE:				ST_GET_OP_STATE;		(* Container of SFC State data which releated to Carrier barcode *)
+	CARRIER_INVENTORY:			ST_INVENTORY;			(* Result inventory of the import *)
+	CARRIER_VALID:				BOOL;					
+	
+	PCBA_BARCODE:				STRING:='380027351706990103944077';					(* 4010 PCBA barcode *)
+	PCBA_PARENT:				STRING;					(* MRT parent barcode *)
+	PCBA_STATE:					ST_GET_OP_STATE;		(* Container of SFC State data which releated to PCBA barcode *)
+	PCBA_INVENTORY:				ST_INVENTORY;			(* Inventory data of PCBA *)
+	PCBA_VALID:					BOOL;					
+	PCBA_BOM:					ST_BOM;					(* Container of BOM releated to PCBA barcode *)
+	PCBA_RECIPE:				STRING;
+	PCBA_INVENTORY_LIST:		ST_INVENTORY_LIST;		(* Need to be filld with Inventory ID before try to assemble it *)
+	PCBA_ASSY_RESULT:			E_TEST_STATE;			(* Assembly result Passed/Failed *)
+	PCBA_CHECK_RESULT:			E_TEST_STATE;			(* Assembly result Passed/Failed *)
+	PCBA_MATERIAL:				ST_MATERIAL;			(* Contains the PCBA material *)
+	PCBA_SHOPORDER_LIST:		ST_SHOPORDER_LIST;		(* List of suitable sohoporder for the PCBA material *)
+	
+	FAN_BARCODE:				STRING:='288000000004000104014579';					(* FAN barcode *)
+	FAN_PARENT:					STRING;					(* Parent of the FAN, need to be a PCBA barcode, with matching with BOM material. *)
+	FAN_STATE:					ST_GET_OP_STATE;		(* Container of SFC State data which releated to Fan barcode *)
+	FAN_INVENTORY:				ST_INVENTORY;			(* Result inventory of the import *)
+	FAN_VALID:					BOOL;					
+	
+	MRT_BARCODE:				STRING;					(* MRT barcode *)
+	MRT_STATE:					ST_GET_OP_STATE;		(* Container of SFC State data which releated to MRT barcode *)
+	MRT_INVENTORY_LIST:			ST_INVENTORY_LIST;		(* Need to be filld with Inventory ID before try to assemble it *)
+	MRT_ASSY_RESULT:			E_TEST_STATE;			(* Assembly result Passed/Failed *)
+	MRT_BOM:					ST_BOM;					(* Container of BOM releated to PCBA barcode *)
+	MRT_MATERIAL:				ST_MATERIAL;			(* Contains the MRT material *)
+	MRT_MATERIAL_INFO:			ST_MATERIAL_INFO;		(* Contains the MRT material *)
+	MRT_SHOPORDER_LIST:			ST_SHOPORDER_LIST;		(* List of suitable sohoporder for the MRT material *)
+	
+	(* Process variables *)		
+	FAN_INSERT_CHECK_RESULT:		E_TEST_STATE;
+	FAN_INSERT_CHECK_RECIPE:		STRING;
+	
+	FAN_CONNECTION_CEHCK_RESULT:	E_TEST_STATE;
+	FAN_CONNECTION_CEHCK_RECIPE:	STRING;
+	
+	GAP_FILLER_CHECK_MRT_RESULT:	E_TEST_STATE;
+	GAP_FILLER_CHECK_MRT_RECIPE:	STRING;
+	GAP_FILLER_CHECK_COVER_RESULT:	E_TEST_STATE;
+	GAP_FILLER_CHECK_COVER_RECIPE:	STRING;
+	
+	GAP_FILLER_RESULT:				E_TEST_STATE;
+	GAP_FILLER_RECIPE:				STRING;
+	
+	SCREWING_RESULT:				E_TEST_STATE;
+	SCREWING_RECIPE:				STRING;
+
+	TestReceipeName					:String;
+	TestCustomData					:String(1000);	
+	(* Reusable variables*)
+	(* Temporary containers for MES.GET_SHOPORDER_BY_MAT() *)
+
+	SHOPORDER:					ST_SHOPORDER;
+	RELEASE_COUNT:				STRING;
+	
+	(* Temporary containers for MES.VALIDATE_IN_BOM() *)
+	COMPONENT_MATERIAL:			ST_MATERIAL;
+	BOM_COMPONENT:				ST_BOM_COMPONENT;
+	
+	(*  *)
+	MESDAT:						ST_MESDAT;
+	NCDAT:						ST_MESDAT;
+	
+	
+	DEBUG:						STRING;
+	
+	sRecipelist					:STRING(1000);
+	sRecipe						:STRING;
+	fbRecipeList				:FB_ReceipeList;
+	bExecute					:BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bExecute THEN
+	fbRecipeList(
+		sReceipeListIn:= sRecipelist,
+		sReceipeListOut=> sRecipelist,
+		sReceipe=> sRecipe,
+		bEmpty=> );
+	bExecute := FALSE;
+END_IF
+
+//MRT_MATERIAL.MATERIAL:='00003981088'; 	//Preconfigured by the opreator
+//MRT_MATERIAL.REVISION:='990';			//Preconfigured by the operator
+RELEASE_COUNT:='1';						//Preconfigured by the operator - Required quantity.
+
+IF bP1MesInitOK AND bP2MesInitOK AND NOT bMES_InitOK THEN
+	IF MES.REMOTE_INIT_SERVICE() THEN
+		bMES_InitOK := TRUE;
+	END_IF
+END_IF
+
+CASE STATE OF
+(* ###############################################################		Initialize		###########################################################################	*)
+(*
+	0:			(* Material setup based on the selected material *)
+		IF MES.ASSY_GET_SHOPORDER_BY_MAT(MRT_MATERIAL, RELEASE_COUNT, INDEX, MRT_SHOPORDER_LIST) THEN
+			STATE:=10;
+		END_IF
+	10: 		(* Slect ove suitable Shoporder - In this case work always with the idx:=0 *)
+		IF MES.ASSY_GET_TOTAL_BOM_BY_SO(MRT_SHOPORDER_LIST.LIST[0].HANDLE, INDEX, MRT_BOM) THEN
+			STATE:=100;
+		END_IF
+*)
+(* ###############################################################		Wait for start	###########################################################################	*)
+	100:		(* Wait the start trigger *)
+		IF START THEN
+			INDEX:=0;
+			STATE:=30000;
+			START:=FALSE;
+		END_IF				
+		
+(* ################################################################################################################################################################
+   #
+   #
+   #																	ST40-Automatic assembly
+   #
+   #
+   ################################################################################################################################################################ *)
+(* ##############################################################		MRT/Cover dispensing check 		###################################################################	*)
+	30000:		(* Start OP_GAP_FILLER_CHECK in my case is index[0]. *)
+		GAP_FILLER_CHECK_MRT_RESULT:=E_TEST_STATE.FAILED;
+		INDEX:=0; // prepare the next operation
+		IF MES.START_SFC(MRT_BARCODE, INDEX) THEN
+			IF RESP.RESP_CODE='0' THEN
+				STATE := STATE + 1;				//30010;
+			ELSE
+				DEBUG:='30000 - ASSY_START_SFC() failed with wrong rescode';
+				STATE:=99999;
+			END_IF
+		END_IF
+
+	30010: 		(* Get ricpe name *)
+		IF MES.GET_RECIPE_NAME_BY_OPERATION_XML('OP_GAP_FILLER_CHECK_MRT', GAP_FILLER_CHECK_MRT_RECIPE) THEN
+			IF GAP_FILLER_CHECK_MRT_RECIPE<>'' THEN
+				STATE := STATE + 1;				// 30020;
+			ELSE
+				DEBUG:='30010 - ASSY_GET_RECIPE_NAME_BY_OPERATION() failed with wrong rescode or empty recipe';
+				STATE:=99999;
+			END_IF
+		END_IF
+		
+	30020: 		(* Check dispensing quality... then set result. *)
+		GAP_FILLER_CHECK_MRT_RESULT:=E_TEST_STATE.PASSED;
+		STATE := STATE + 1;						//30030;	
+		
+	30030:		(* Complete OP_GAP_FILLER_CHECK in my case is index[4]. *)
+		IF MES.COMPLETE_SFC(MRT_BARCODE, INDEX, GAP_FILLER_CHECK_MRT_RESULT) THEN
+			IF RESP.RESP_CODE='0' THEN
+				MRT_INVENTORY_LIST.LIST[1]:=COVER_INVENTORY;
+				STATE := STATE + 1;				//30200;
+			ELSE
+				DEBUG:='30030 - ASSY_COMPLETE_SFC() failed with wrong rescode';
+				STATE:=99999;
+			END_IF
+		END_IF
+
+	30040:		(* Start OP_GAP_FILLER_CHECK in my case is index[4]. *)
+		GAP_FILLER_CHECK_COVER_RESULT:=E_TEST_STATE.FAILED;
+		INDEX:=1; // prepare the next operation
+		IF MES.START_SFC(COVER_BARCODE, INDEX) THEN
+			IF RESP.RESP_CODE='0' THEN
+				STATE := STATE + 1;				//30010;
+			ELSE
+				DEBUG:='30000 - ASSY_START_SFC() failed with wrong rescode';
+				STATE:=99999;
+			END_IF
+		END_IF
+
+	30050: 		(* Get ricpe name *)
+		IF MES.GET_RECIPE_NAME_BY_OPERATION_JSON('OP_GAP_FILLER_CHECK_COVER', GAP_FILLER_CHECK_COVER_RECIPE) THEN
+			IF GAP_FILLER_CHECK_COVER_RECIPE<>'' THEN
+				STATE := STATE + 1;				// 30020;
+			ELSE
+				DEBUG:='30010 - ASSY_GET_RECIPE_NAME_BY_OPERATION() failed with wrong rescode or empty recipe';
+				STATE:=99999;
+			END_IF
+		END_IF
+		
+	30060: 		(* Check dispensing quality... then set result. *)
+		GAP_FILLER_CHECK_COVER_RESULT:=E_TEST_STATE.PASSED;
+		STATE := STATE + 1;						//30030;	
+		
+	30070:		(* Complete OP_GAP_FILLER_CHECK in my case is index[4]. *)
+		IF MES.COMPLETE_SFC(COVER_BARCODE, INDEX, GAP_FILLER_CHECK_COVER_RESULT) THEN
+			IF RESP.RESP_CODE='0' THEN
+				MRT_INVENTORY_LIST.LIST[1]:=COVER_INVENTORY;
+				STATE := STATE + 1;				//30200;
+			ELSE
+				DEBUG:='30030 - ASSY_COMPLETE_SFC() failed with wrong rescode';
+				STATE:=99999;
+			END_IF
+		END_IF	
+
+	30080:
+			NCDAT.N := 1;
+			NCDAT.MESDAT[NCDAT.N].RESPONSE_CODE := '4005';
+			NCDAT.MESDAT[NCDAT.N].RESPONSE_DESCRIPTION := CONCAT('Camera error of POS#', INT_TO_STRING(2));
+			NCDAT.MESDAT[NCDAT.N].CLIENT_DATE := fbP1MesInterface.GET_LOCAL_TIME();
+			NCDAT.MESDAT[NCDAT.N].TEST_STATE := INT_TO_STRING(E_TEST_STATE.FAILED);
+			NCDAT.MESDAT[NCDAT.N].TEST_STEP := INT_TO_STRING(NCDAT.N);
+			NCDAT.MESDAT[NCDAT.N].VALUE := '0';
+			STATE:=STATE + 10;
+
+	30090:		(* Log NonConformance data *)
+		IF MES.ASSY_SAVE_NCDAT(MRT_BARCODE, INDEX, NCDAT) THEN
+			IF RESP.RESP_CODE = '0' THEN
+				STATE:=STATE + 1;
+			ELSE
+				DEBUG:='30250 - SAVE_NCDAT() failed with wrong rescode';
+				STATE:=99999;
+			END_IF
+		END_IF
+
+
+
+	30100: 	(* Get MRT OP state 1026*)
+			IF MES.GET_CURRENT_OPERATION_STATE(MRT_BARCODE,INDEX,MRT_STATE) THEN
+				IF RESP.RESP_CODE = '0' THEN
+					MRT_MATERIAL.MATERIAL := MRT_STATE.MAT_NO;
+					MRT_MATERIAL.REVISION := MRT_STATE.REVISION;
+					STATE:=STATE + 10;
+				ELSE
+					DEBUG:=' - Get op state MRT error';
+					STATE:=99999;
+				END_IF
+			END_IF
+
+	30110:
+			IF MES.GET_MAT_CUSTOM_DATA(MRT_MATERIAL,INDEX) THEN		//1037
+				IF RESP.RESP_CODE = '0' THEN
+					STATE:=STATE + 10;
+				ELSE
+					DEBUG:=' - GET_MAT_CUSTOM_DATA error';
+					STATE:=99999;
+				END_IF
+			END_IF
+			
+	30120:
+			IF MES.GET_CUSTOM_DATA_BY_KEY(TestReceipeName,TestCustomData) THEN	//
+				IF TestCustomData <> '' THEN
+					STATE:=STATE + 1;
+				ELSE
+					DEBUG:=' - GET_CUSTOM_DATA_BY_KEY error';
+					STATE:=99999;
+				END_IF
+			END_IF
+			
+			
+
+			
+(* ##############################################################		MRT final assembly 		###################################################################	*)
+	30200:		(* Start OP_ASSY_AUTO_2 in my case is index[7]. *)
+		INDEX:=2; // prepare the next operation, the inventory list is filled currently.
+		IF MES.START_SFC(MRT_BARCODE, INDEX) THEN
+			IF RESP.RESP_CODE='0' THEN
+				STATE := STATE + 1;				//30210;
+			ELSE
+				DEBUG:='30200 - ASSY_START_SFC() failed with wrong rescode';
+				STATE:=99999;
+			END_IF
+		END_IF
+		
+	30210: 		(* Assemble parts (PCBA and Cover into MRT) *)
+		IF MES.ASSEMBLE_BY_INVENTORY_LIST(MRT_BARCODE, INDEX, MRT_INVENTORY_LIST) THEN
+			IF RESP.RESP_CODE='0' THEN
+				STATE := STATE + 1;						//30210;
+				MRT_ASSY_RESULT:=E_TEST_STATE.PASSED;
+			ELSE
+				STATE := STATE + 2;						//30220; // jump to scrap
+				MRT_ASSY_RESULT:=E_TEST_STATE.FAILED;
+			END_IF
+			
+		END_IF	
+
+	30220:		(* Scrap the PCBA if needed *)	
+		IF MES.SCRAP_SFC(PCBA_BARCODE, INDEX) THEN
+			DEBUG:='30220 - PCBA is scraped';
+			STATE:=99999;
+		END_IF
+		
+	30230:		(* Complete OP_ASSY_AUTO_2 in my case is index[7]. *)
+		IF MES.COMPLETE_SFC(MRT_BARCODE, INDEX, MRT_ASSY_RESULT) THEN
+			IF RESP.RESP_CODE='0' THEN
+				STATE:=100;						//40000;
+			ELSE
+				DEBUG:='30230 - ASSY_COMPLETE_SFC() failed with wrong rescode';
+				STATE:=99999;
+			END_IF
+		END_IF
+		
+
+END_CASE
+FB_CALL_ACT();;]]></ST>
+    </Implementation>
+    <Action Name="FB_CALL_ACT" Id="{9bb7aace-a652-41d2-a2dc-066be53c0e2e}">
+      <Implementation>
+        <NWL>
+          <XmlArchive>
+            <Data>
+              <o xml:space="preserve" t="NWLImplementationObject">
+                <v n="NetworkListComment">""</v>
+                <v n="DefaultViewMode">"Fbd"</v>
+                <l2 n="NetworkList" cet="Network">
+                  <o>
+                    <v n="ILActive">false</v>
+                    <v n="FBDValid">false</v>
+                    <v n="ILValid">false</v>
+                    <l2 n="ILLines" />
+                    <v n="Comment">""</v>
+                    <v n="Title">""</v>
+                    <v n="Label">""</v>
+                    <v n="OutCommented">false</v>
+                    <l2 n="NetworkItems" cet="BoxTreeBox">
+                      <o>
+                        <v n="BoxType">"FB_MES_INTERFACE_V2"</v>
+                        <o n="Instance" t="Operand">
+                          <v n="Operand">"MES"</v>
+                          <v n="Type">"FB_MES_INTERFACE_V2"</v>
+                          <v n="Comment">""</v>
+                          <v n="SymbolComment">""</v>
+                          <v n="Address">""</v>
+                          <o n="Flags" t="Flags">
+                            <v n="Flags">0</v>
+                            <v n="Fixed">false</v>
+                            <v n="Extensible">false</v>
+                          </o>
+                          <v n="LValue">false</v>
+                          <v n="Boolean">false</v>
+                          <v n="IsInstance">true</v>
+                          <v n="Id">59L</v>
+                        </o>
+                        <o n="OutputItems" t="OutputItemList">
+                          <l2 n="OutputItems" cet="Operand">
+                            <n />
+                            <o>
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">true</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">4L</v>
+                            </o>
+                            <o>
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">true</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">13L</v>
+                            </o>
+                            <o>
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">true</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">14L</v>
+                            </o>
+                            <o>
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">true</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">61L</v>
+                            </o>
+                            <o>
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">true</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">15L</v>
+                            </o>
+                            <o>
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">true</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">16L</v>
+                            </o>
+                          </l2>
+                        </o>
+                        <o n="Flags" t="Flags">
+                          <v n="Flags">0</v>
+                          <v n="Fixed">true</v>
+                          <v n="Extensible">false</v>
+                        </o>
+                        <n n="InputFlags" />
+                        <l2 n="InputItems" cet="BoxTreeOperand">
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"TRUE"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">6L</v>
+                            </o>
+                            <v n="Id">5L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"'127.0.0.1'"</v>
+                              <v n="Type">"STRING(INT#9)"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">8L</v>
+                            </o>
+                            <v n="Id">7L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"5500"</v>
+                              <v n="Type">"INT"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">10L</v>
+                            </o>
+                            <v n="Id">9L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"TRUE"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">19L</v>
+                            </o>
+                            <v n="Id">18L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"MES.ERROR"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">54L</v>
+                            </o>
+                            <v n="Id">53L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">23L</v>
+                            </o>
+                            <v n="Id">22L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">25L</v>
+                            </o>
+                            <v n="Id">24L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"RESP"</v>
+                              <v n="Type">"ST_REQUEST"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">58L</v>
+                            </o>
+                            <v n="Id">57L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"'0'"</v>
+                              <v n="Type">"STRING(INT#1)"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">27L</v>
+                            </o>
+                            <v n="Id">26L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"'1'"</v>
+                              <v n="Type">"STRING(INT#1)"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">29L</v>
+                            </o>
+                            <v n="Id">28L</v>
+                          </o>
+                        </l2>
+                        <o n="InputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>EN</v>
+                            <v>HOST</v>
+                            <v>PORT</v>
+                            <v>ENABLE</v>
+                            <v>RESET</v>
+                            <v>STX</v>
+                            <v>ETX</v>
+                            <v>RESP</v>
+                            <v>TEST_ADAPTER</v>
+                            <v>ADAPTER_ID</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>BOOL</v>
+                            <v>T_IPV4ADDR</v>
+                            <v>UDINT</v>
+                            <v>BOOL</v>
+                            <v>BOOL</v>
+                            <v>BYTE</v>
+                            <v>BYTE</v>
+                            <v>REFERENCE TO ST_REQUEST</v>
+                            <v>STRING</v>
+                            <v>STRING</v>
+                          </l2>
+                        </o>
+                        <o n="OutputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>ENO</v>
+                            <v>BUSY</v>
+                            <v>READY</v>
+                            <v>DONE</v>
+                            <v>INTERFACE_CLOSED</v>
+                            <v>ERROR</v>
+                            <v>ERROR_ID</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>BOOL</v>
+                            <v>BOOL</v>
+                            <v>BOOL</v>
+                            <v>BOOL</v>
+                            <v>BOOL</v>
+                            <v>BOOL</v>
+                            <v>UDINT</v>
+                          </l2>
+                        </o>
+                        <v n="CallType" t="Operator">FunctionBlock</v>
+                        <v n="EN">true</v>
+                        <v n="ENO">true</v>
+                        <n n="STSnippet" />
+                        <v n="ContainsExtensibleInputs">false</v>
+                        <v n="ProvidesSTSnippet">false</v>
+                        <v n="Id">60L</v>
+                      </o>
+                    </l2>
+                    <l2 n="Connectors" />
+                    <v n="Id">1L</v>
+                  </o>
+                </l2>
+                <v n="BranchCounter">0</v>
+                <v n="ValidIds">true</v>
+              </o>
+            </Data>
+            <TypeList>
+              <Type n="Boolean">System.Boolean</Type>
+              <Type n="BoxTreeBox">{acfc6f68-8e3a-4af5-bf81-3dd512095a46}</Type>
+              <Type n="BoxTreeOperand">{9de7f100-1b87-424c-a62e-45b0cfc85ed2}</Type>
+              <Type n="Flags">{668066f2-6069-46b3-8962-8db8d13d7db2}</Type>
+              <Type n="Int32">System.Int32</Type>
+              <Type n="Int64">System.Int64</Type>
+              <Type n="Network">{d9a99d73-b633-47db-b876-a752acb25871}</Type>
+              <Type n="NWLImplementationObject">{25e509de-33d4-4447-93f8-c9e4ea381c8b}</Type>
+              <Type n="Operand">{c9b2f165-48a2-4a45-8326-3952d8a3d708}</Type>
+              <Type n="Operator">{bffb3c53-f105-4e85-aba2-e30df579d75f}</Type>
+              <Type n="OutputItemList">{f40d3e09-c02c-4522-a88c-dac23558cfc4}</Type>
+              <Type n="ParamList">{71496971-9e0c-4677-a832-b9583b571130}</Type>
+              <Type n="String">System.String</Type>
+            </TypeList>
+          </XmlArchive>
+        </NWL>
+      </Implementation>
+    </Action>
+    <LineIds Name="MesTest">
+      <LineId Id="1324" Count="0" />
+      <LineId Id="1316" Count="0" />
+      <LineId Id="1320" Count="3" />
+      <LineId Id="1317" Count="0" />
+      <LineId Id="1325" Count="0" />
+      <LineId Id="1319" Count="0" />
+      <LineId Id="86" Count="2" />
+      <LineId Id="1094" Count="0" />
+      <LineId Id="1099" Count="3" />
+      <LineId Id="1095" Count="0" />
+      <LineId Id="89" Count="2" />
+      <LineId Id="911" Count="0" />
+      <LineId Id="92" Count="7" />
+      <LineId Id="912" Count="0" />
+      <LineId Id="100" Count="6" />
+      <LineId Id="954" Count="0" />
+      <LineId Id="690" Count="18" />
+      <LineId Id="908" Count="0" />
+      <LineId Id="709" Count="23" />
+      <LineId Id="913" Count="0" />
+      <LineId Id="915" Count="34" />
+      <LineId Id="909" Count="0" />
+      <LineId Id="914" Count="0" />
+      <LineId Id="984" Count="1" />
+      <LineId Id="1004" Count="0" />
+      <LineId Id="1007" Count="0" />
+      <LineId Id="986" Count="1" />
+      <LineId Id="990" Count="1" />
+      <LineId Id="1003" Count="0" />
+      <LineId Id="994" Count="8" />
+      <LineId Id="977" Count="4" />
+      <LineId Id="1188" Count="1" />
+      <LineId Id="1198" Count="1" />
+      <LineId Id="1190" Count="4" />
+      <LineId Id="982" Count="0" />
+      <LineId Id="1195" Count="0" />
+      <LineId Id="983" Count="0" />
+      <LineId Id="1196" Count="0" />
+      <LineId Id="1203" Count="0" />
+      <LineId Id="1206" Count="4" />
+      <LineId Id="1202" Count="0" />
+      <LineId Id="1211" Count="0" />
+      <LineId Id="1215" Count="8" />
+      <LineId Id="1212" Count="2" />
+      <LineId Id="1197" Count="0" />
+      <LineId Id="733" Count="22" />
+      <LineId Id="910" Count="0" />
+      <LineId Id="756" Count="14" />
+      <LineId Id="955" Count="1" />
+      <LineId Id="907" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

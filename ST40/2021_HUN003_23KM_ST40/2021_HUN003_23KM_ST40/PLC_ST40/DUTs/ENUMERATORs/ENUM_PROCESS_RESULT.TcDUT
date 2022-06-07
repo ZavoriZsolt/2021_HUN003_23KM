@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ENUM_PROCESS_RESULT" Id="{94ef4b0c-ae95-4747-b3b3-aebefeba3029}">
+    <Declaration><![CDATA[
+TYPE ENUM_PROCESS_RESULT :
+(
+	FAILED := 0,
+	PASSED := 1,
+	CANCELD := 2,
+	ABORTED := 3 
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

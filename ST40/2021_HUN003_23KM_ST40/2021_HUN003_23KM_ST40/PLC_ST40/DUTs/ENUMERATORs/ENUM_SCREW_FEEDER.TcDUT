@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ENUM_SCREW_FEEDER" Id="{dd0f5780-874e-4e1e-adcc-6d1bb0c62e4e}">
+    <Declaration><![CDATA[TYPE ENUM_SCREW_FEEDER :
+(
+	CE_FEEDER_1 := 1,
+	CE_FEEDER_2,
+	CE_FEEDER_3,
+	CE_FEEDER_4,
+	CE_FEEDER_LAST
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

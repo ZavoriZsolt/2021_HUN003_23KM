@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_Vision" Id="{dcc53123-5551-489e-b2d0-78c23760fd85}">
+    <Declaration><![CDATA[TYPE ST_Vision :
+STRUCT
+	Target:					ST_COORDINATE;
+	Comment:				STRING(255);
+	PositionNumber:			INT;
+	CheckingProgramId:		INT;
+	LastPosition:			BOOL:=TRUE;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

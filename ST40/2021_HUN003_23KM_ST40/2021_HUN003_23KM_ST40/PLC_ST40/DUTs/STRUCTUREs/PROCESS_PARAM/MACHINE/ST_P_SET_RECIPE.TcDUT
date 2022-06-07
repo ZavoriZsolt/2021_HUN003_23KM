@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_P_SET_RECIPE" Id="{ade5b1da-1fcf-4ee9-9575-51004284275f}">
+    <Declaration><![CDATA[TYPE ST_P_SET_RECIPE :
+STRUCT
+	RecipeName:			STRING;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

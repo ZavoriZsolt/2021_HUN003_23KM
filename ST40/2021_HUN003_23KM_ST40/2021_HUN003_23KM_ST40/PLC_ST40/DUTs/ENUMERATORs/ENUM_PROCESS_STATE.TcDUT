@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ENUM_PROCESS_STATE" Id="{5966949d-7ced-42a8-a35a-7c4804de10aa}">
+    <Declaration><![CDATA[TYPE ENUM_PROCESS_STATE :
+(
+	TASK_READY:=0,
+	TASK_BUSY,
+	TASK_DONE,
+	TASK_OK,
+	TASK_NG
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

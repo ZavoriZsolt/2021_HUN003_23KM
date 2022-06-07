@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_PalletData" Id="{73f4152a-bee7-4fc5-a4c1-efd1553c7a7c}">
+    <Declaration><![CDATA[TYPE ST_PalletData :
+STRUCT
+		sCarrierCode		:STRING(40);
+		sCoverCode 			:STRING(40);
+		sPCBACode			:STRING(40);
+		sFanCode			:STRING(40);
+		sMRTCode			:STRING(40);
+		nPalletState 		:WORD;		// Paletta státus:	0	Üres paletta
+										//					1	Selejt
+										//					2	OK termék a palettán
+										//					10	ST10 Teszt paletta
+										//					11	ST11 Teszt paletta
+										//					20	ST20 Teszt paletta
+										//					30	ST30 Teszt paletta
+										//					41	ST40 Kamera Teszt paletta
+										//					42	ST40 Robot Teszt paletta
+										//					51	ST51 Teszt paletta
+										//					51	ST52 Teszt paletta
+										//					70	ST70 Teszt paletta
+										//					60	ST60 Teszt paletta
+		nPalletCommand		:WORD;		//	Teszt paletta parancs
+
+		nDone				:WORD;		//Állomás kész bitek
+										//nDone.0		ST10		Operátor pozíció
+										//nDone.1		ST11		Nyomtató
+										//nDone.2		ST20		Diszpenzáló I.
+										//nDone.3		ST30		Diszpenzáló II.		-majd ha egyszer lesz
+										//nDone.4		ST40.1		Kamerás ell.		
+										//nDone.5		ST40.2		Robot
+										//nDone.6		ST50/1		Csavarozó I. 		-majd ha egyszer lesz
+										//nDone.7		ST50/2		Csavarozó II.
+										//nDone.8		ST70		Jótermék kirakó
+										//nDone.9		ST60		Selejt kirakó
+		nErrorCode			:WORD;
+		stInventoryList		:ST_INVENTORY_LIST;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

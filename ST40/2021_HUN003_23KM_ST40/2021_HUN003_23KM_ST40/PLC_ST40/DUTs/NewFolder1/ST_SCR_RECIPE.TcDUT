@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_SCR_RECIPE" Id="{7349fd61-09c2-4ce4-83b8-ef65157e20a6}">
+    <Declaration><![CDATA[TYPE ST_SCR_RECIPE :
+	STRUCT
+		Descr:				STRING(MAX_STRING_LENGTH);
+		Name:				STRING(MAX_STRING_LENGTH);
+		Seq:				ARRAY[0..99] OF ST_Vision;
+	END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

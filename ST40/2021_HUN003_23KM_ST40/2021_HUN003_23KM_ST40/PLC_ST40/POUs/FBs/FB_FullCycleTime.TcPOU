@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_FullCycleTime" Id="{22fe7cd3-be76-406a-a8f8-6dd4765a53d7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_FullCycleTime
+VAR_INPUT
+	bPalletSensor			:BOOL;
+	timTimeMax				:TIME:= T#120S;
+END_VAR
+VAR_OUTPUT
+	nCurrentCycleTime		:REAL;
+	arrCycleTimes			:ARRAY [1..10] OF REAL;
+END_VAR
+VAR
+	tCycleTime				:TON;
+	rStart					:R_TRIG;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[rStart(CLK:= bPalletSensor);
+tCycleTime(IN:= TRUE, PT:= timTimeMax);
+
+IF 		rStart.Q THEN
+				MEMMOVE(ADR(arrCycleTimes)+4,ADR(arrCycleTimes),SIZEOF(arrCycleTimes)-4);
+				arrCycleTimes[1] := nCurrentCycleTime;
+				tCycleTime(IN:= FALSE);
+ELSIF	NOT tCycleTime.Q THEN
+				nCurrentCycleTime := (TIME_TO_REAL(tCycleTime.ET) / 1000);
+ELSE
+				nCurrentCycleTime := (TIME_TO_REAL(timTimeMax) / 1000);
+END_IF	
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_FullCycleTime">
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="35" Count="1" />
+      <LineId Id="38" Count="1" />
+      <LineId Id="28" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <GVL Name="GVL_Constant" Id="{c83bcfc2-0495-406f-9e5e-3d2155b506a0}">
+    <Declaration><![CDATA[VAR_GLOBAL CONSTANT
+	nP1CheckSim_Index					:INT := 0;					// Sim kártya ellenőrzés
+	nP1CheckComponent_Index				:INT := 1;					// Ventilátor ellenőrzés
+	nP2Assy_Auto2_Index					:INT := 2;					// Összeszerelés	
+	nP1GapFillerCheckCover_Index		:INT := 3;					// "Gapfiller" ellenőrzés
+	nP1SupplierInport_Index				:INT := 4;					// Örökbe fogadás majd ha kell pl.: a ventilátorhoz
+
+	nNbrOfAlarms						:UINT := 13;	
+
+	
+(*
+Inventory sorrend
+0:	MRT
+1:	Carrier
+2:	Cover
+3:	PCBA
+4:	Fan
+*)
+
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

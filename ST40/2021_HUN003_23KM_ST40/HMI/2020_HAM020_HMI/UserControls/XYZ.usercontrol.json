@@ -1,0 +1,71 @@
+﻿{
+  "parameters": [
+    {
+      "name": "data-tchmi-keyboardleft",
+      "displayName": "KeyboardLeft",
+      "visible": true,
+      "type": "tchmi:framework#/definitions/MeasurementValue",
+      "category": "",
+      "description": "",
+      "requiredOnCompile": false,
+      "readOnly": false,
+      "bindable": true,
+      "heritable": true,
+      "propertyName": "KeyboardLeft",
+      "propertySetterName": "setKeyboardLeft",
+      "propertyGetterName": "getKeyboardLeft",
+      "refTo": ""
+    },
+    {
+      "name": "data-tchmi-keyboardtop",
+      "displayName": "KeyboardTop",
+      "visible": true,
+      "type": "tchmi:framework#/definitions/MeasurementValue",
+      "category": "",
+      "description": "",
+      "requiredOnCompile": false,
+      "readOnly": false,
+      "bindable": true,
+      "heritable": true,
+      "propertyName": "KeyboardTop",
+      "propertySetterName": "setKeyboardTop",
+      "propertyGetterName": "getKeyboardTop",
+      "refTo": ""
+    },
+    {
+      "name": "data-tchmi-name",
+      "displayName": "Name",
+      "visible": true,
+      "type": "tchmi:general#/definitions/String",
+      "category": "",
+      "description": "",
+      "requiredOnCompile": false,
+      "readOnly": false,
+      "bindable": true,
+      "heritable": true,
+      "propertyName": "Name",
+      "propertySetterName": "setName",
+      "propertyGetterName": "getName",
+      "refTo": ""
+    },
+    {
+      "name": "data-tchmi-positionsxyz",
+      "displayName": "PositionsXYZ",
+      "visible": true,
+      "type": "tchmi:project#/definitions/PLC1.stPositionXYZ",
+      "category": "",
+      "description": "",
+      "requiredOnCompile": false,
+      "readOnly": false,
+      "bindable": true,
+      "heritable": true,
+      "propertyName": "PositionsXYZ",
+      "propertySetterName": "setPositionsXYZ",
+      "propertyGetterName": "getPositionsXYZ",
+      "refTo": ""
+    }
+  ],
+  "virtualRights": [],
+  "$schema": "../../Packages/Beckhoff.TwinCAT.HMI.Framework.12.742.0/runtimes/native1.12-tchmi/Schema/UserControlConfig.Schema.json",
+  "description": ""
+}

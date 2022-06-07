@@ -1,0 +1,24 @@
+{
+    "USERS": {
+        "Admin": {
+            "ENABLED": true,
+            "PASSWORD": "5205911606c56856693cd72deef562721ebcee845449a48dbe9aac585d134744",
+            "SALT": "0u1Cw3Tos+3z7bKRILcrvjIP0spJfSs24TnBGwM1sxfwDk4pv/tMvqUYQsQMqVkHFFNXa4Qa/oqHZlZCiYLQAA=="
+        },
+        "Operator": {
+            "ENABLED": true,
+            "PASSWORD": "7e68d77d66b33a99b1652d63fca14cce96d9b6a1c88905bdd5618eb3aebac1da",
+            "SALT": "9xBBMK9YSqQiWzSlKbU36wFykU4ORgdL3lDOJtAlf8PFtoYeIveXF6jXdqcsdwQ9KX9rNqCDKs3CXv/GWjT4AA=="
+        },
+        "__SystemAdministrator": {
+            "ENABLED": false,
+            "PASSWORD": "",
+            "SALT": ""
+        },
+        "__SystemGuest": {
+            "ENABLED": true,
+            "PASSWORD": "",
+            "SALT": ""
+        }
+    }
+}

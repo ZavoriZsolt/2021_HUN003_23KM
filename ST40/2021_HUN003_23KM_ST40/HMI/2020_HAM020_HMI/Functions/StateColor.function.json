@@ -1,0 +1,72 @@
+﻿{
+  "function": {
+    "name": "StateColor",
+    "displayName": "StateColor",
+    "visible": true,
+    "category": "",
+    "waitMode": "Synchronous",
+    "injectContextObject": false,
+    "description": "",
+    "returnValue": {
+      "type": "tchmi:general#/definitions/String"
+    },
+    "arguments": [
+      {
+        "name": "nState",
+        "displayName": "nState",
+        "type": "tchmi:general#/definitions/UINT",
+        "description": "This is an important Parameter which does... This text is used in a tooltip.",
+        "defaultValue": "",
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false
+      },
+      {
+        "name": "Blue",
+        "displayName": "Blue",
+        "type": "tchmi:framework#/definitions/Color",
+        "description": "",
+        "defaultValue": "{\r\n  \"color\": \"rgba(0, 0, 255, 1)\"\r\n}",
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false
+      },
+      {
+        "name": "Yellow",
+        "displayName": "Yellow",
+        "type": "tchmi:framework#/definitions/Color",
+        "description": "",
+        "defaultValue": "{\r\n  \"color\": \"rgba(255, 255, 0, 1)\"\r\n}",
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false
+      },
+      {
+        "name": "Green",
+        "displayName": "Green",
+        "type": "tchmi:framework#/definitions/Color",
+        "description": "",
+        "defaultValue": "{\r\n  \"color\": \"rgba(0, 255, 0, 1)\"\r\n}",
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false
+      },
+      {
+        "name": "Red",
+        "displayName": "Red",
+        "type": "tchmi:framework#/definitions/Color",
+        "description": "",
+        "defaultValue": "{\r\n  \"color\": \"rgba(255, 0, 0, 1)\"\r\n}",
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false
+      }
+    ]
+  },
+  "$schema": "../../Packages/Beckhoff.TwinCAT.HMI.Framework.12.742.0/runtimes/native1.12-tchmi/Schema/FunctionDescription.Schema.json"
+}

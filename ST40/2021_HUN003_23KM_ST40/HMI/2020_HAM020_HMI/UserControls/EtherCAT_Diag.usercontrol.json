@@ -1,0 +1,55 @@
+﻿{
+  "parameters": [
+    {
+      "name": "data-tchmi-stslavestateinfo",
+      "displayName": "stSlaveStateInfo",
+      "visible": true,
+      "type": "tchmi:server#/definitions/PLC1.Tc3_Utilities_Extension.ST_SlaveStateInfo",
+      "category": "",
+      "description": "",
+      "requiredOnCompile": false,
+      "readOnly": false,
+      "bindable": true,
+      "heritable": true,
+      "propertyName": "stSlaveStateInfo",
+      "propertySetterName": "setStSlaveStateInfo",
+      "propertyGetterName": "getStSlaveStateInfo",
+      "refTo": ""
+    },
+    {
+      "name": "data-tchmi-nslavenr",
+      "displayName": "nSlaveNr",
+      "visible": true,
+      "type": "tchmi:general#/definitions/UINT",
+      "category": "",
+      "description": "",
+      "requiredOnCompile": false,
+      "readOnly": false,
+      "bindable": true,
+      "heritable": true,
+      "propertyName": "nSlaveNr",
+      "propertySetterName": "setNSlaveNr",
+      "propertyGetterName": "getNSlaveNr",
+      "refTo": ""
+    },
+    {
+      "name": "data-tchmi-islaveaddr_arr_size",
+      "displayName": "iSLAVEADDR_ARR_SIZE",
+      "visible": true,
+      "type": "tchmi:general#/definitions/UINT",
+      "category": "",
+      "description": "",
+      "requiredOnCompile": false,
+      "readOnly": false,
+      "bindable": true,
+      "heritable": true,
+      "propertyName": "iSLAVEADDR_ARR_SIZE",
+      "propertySetterName": "setISLAVEADDR_ARR_SIZE",
+      "propertyGetterName": "getISLAVEADDR_ARR_SIZE",
+      "refTo": ""
+    }
+  ],
+  "virtualRights": [],
+  "$schema": "../../Packages/Beckhoff.TwinCAT.HMI.Framework.12.742.0/runtimes/native1.12-tchmi/Schema/UserControlConfig.Schema.json",
+  "description": ""
+}

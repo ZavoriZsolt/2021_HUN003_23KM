@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_SCR_RECIPE_1" Id="{303c795a-7b4c-4774-b94c-72d0606e81e5}">
+    <Declaration><![CDATA[TYPE ST_SCR_RECIPE_1 :
+	STRUCT
+		Descr:				STRING(MAX_STRING_LENGTH);
+		Name:				STRING(MAX_STRING_LENGTH);
+		Seq:				ARRAY[0..99] OF ST_SCREWING;
+	END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

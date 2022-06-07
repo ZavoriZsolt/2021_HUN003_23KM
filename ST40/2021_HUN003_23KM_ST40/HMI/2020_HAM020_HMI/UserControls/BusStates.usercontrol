@@ -1,0 +1,16 @@
+﻿<div id="StateText_1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControl" 
+     data-tchmi-top="0" data-tchmi-left="0" 
+     data-tchmi-width="269" data-tchmi-height="20" data-tchmi-width-unit="px" data-tchmi-height-unit="px"
+     data-tchmi-creator-viewport-width="500" data-tchmi-creator-viewport-height="500">
+
+<div id="TcHmiTextblock_143" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-left="18" data-tchmi-left-unit="px" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="250" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text="%f%NumberSystemConv(%pp%State%/pp%, 10, 16, 4) + State(%pp%State%/pp%)%/f%" data-tchmi-zindex="13" data-tchmi-text-font-size="14">
+
+
+
+</div>
+
+<div id="TcHmiEllipse_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="16" data-tchmi-height-unit="px" data-tchmi-left="1" data-tchmi-left-unit="px" data-tchmi-top="2" data-tchmi-top-unit="px" data-tchmi-width="16" data-tchmi-width-unit="px" data-tchmi-fill-color="%f%StateColor(%pp%State%/pp%, %i%ColorBlue%/i%, %i%ColorYellow%/i%, %i%ColorGreen%/i%, %i%ColorRed%/i%)%/f%">
+
+</div>
+
+</div>

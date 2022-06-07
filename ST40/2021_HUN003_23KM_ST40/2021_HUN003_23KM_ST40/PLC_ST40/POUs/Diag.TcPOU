@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="Diag" Id="{17d55b1a-8206-45c4-b279-82bf2a4c157f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Diag
+VAR
+		{attribute 'TcLinkTo' := '.wFrmXWcState := TIIF(4)^Inputs^Frm1WcState;
+							  .nEcMasterSlaveCountCfg := TIIF(4)^InfoData^CfgSlaveCount;
+							  .arrEcMasterNetId := TIIF(4)^InfoData^AmsNetId;
+							  .nEcMasterDeviceId := TIIF(4)^InfoData^DevId;
+							  .nEcMasterDevState := TIIF(4)^Inputs^DevState;
+							  .nEcMasterSlaveCount := TIIF(4)^Inputs^SlaveCount'} 					
+	FB_ECAT_DIAG			:FB_EtherCATDiagnosticWrapper;	
+	eSubSystem				:E_SubSystem:= E_SubSystem.LOGIC;
+	FB_LOGGER_INIT			:FB_EventLogger:= (eSubsystem:= eSubsystem, sJson:='{}');
+	FB_EVENTHANDLER			:FB_EventHandler;
+	EVENT_TEXT				:STRING(255);
+	EVENT_SOURCE			:STRING(255);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FB_ECAT_DIAG(
+	nEcMasterSlaveCount:= , 
+	nEcMasterDevState:= , 
+	nEcMasterDeviceId:= , 
+	arrEcMasterNetId:= , 
+	nEcMasterSlaveCountCfg:= , 
+	wFrmXWcState:= , 
+	bAllFrameWcStatesOK=> , 
+	bEtherCATOK=> , 
+	bFrameWcStateError=> , 
+	bSlaveCountError=> , 
+	bMasterDevStateError=> , 
+	stMasterDevState=> , 
+	bBusy=> , 
+	bError=> , 
+	iErrorID=> , 
+	arrSlaveInfo:= arrEcatSlaveInfo);
+
+IF nSlaveNr > iSLAVEADDR_ARR_SIZE THEN nSlaveNr := iSLAVEADDR_ARR_SIZE; END_IF
+stSlaveInfo := arrEcatSlaveInfo[nSlaveNr];
+
+
+FB_EVENTHANDLER(
+	bClearAll:= bAckP, 
+	bAlarmActive=> , 
+	sEventText=> , 
+	sEventSource=> , 
+	sEventJson=> );]]></ST>
+    </Implementation>
+    <LineIds Name="Diag">
+      <LineId Id="39" Count="15" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="98" Count="0" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="72" Count="4" />
+      <LineId Id="71" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

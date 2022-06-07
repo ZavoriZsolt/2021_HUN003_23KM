@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="U_KRC_Input" Id="{cf0b9d9c-cbd1-4d22-bb2d-331702330ed3}">
+    <Declaration><![CDATA[TYPE U_KRC_Input :
+UNION
+	aStdIn		AT %I*		:ARRAY [0..3] OF DWORD;
+	Status					:ST_KRC_Status;	
+END_UNION
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,9 @@
+{
+    "MAXTARGETS": 8,
+    "TARGET_SYSTEMS": {
+        "Local": {
+            "ADDRESS": "192.168.1.100.1.1",
+            "ENABLED": true
+        }
+    }
+}

@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="Blink" Id="{62ddce9c-0182-4918-bec8-e17411a4a105}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Blink
+VAR
+	tBL1					:FB_GenPulse; (*50ms/50ms*)
+	tBL2					:FB_GenPulse; (*100ms/100ms*)
+	tBL3					:FB_GenPulse; (*250ms/250ms*)
+	tBL4					:FB_GenPulse; (*500ms/500ms*)
+	tBL5					:FB_GenPulse; (*1000ms/1000ms*)
+	tBL6					:FB_GenPulse; (*750ms/250ms*)
+	rtBL1,rtBL2,rtBL3,rtBL4	:R_TRIG;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[tBl1(ENQ:= TRUE, PTH:=  T#50MS, PTL:= T#50MS, Q=>GVL_Main.bBL50p50 );
+tBl2(ENQ:= TRUE, PTH:=  T#100MS, PTL:= T#100MS, Q=>GVL_Main.bBL100p100 );
+tBl3(ENQ:= TRUE, PTH:=  T#250MS, PTL:= T#250MS, Q=>GVL_Main.bBL250p250 );
+tBl4(ENQ:= TRUE, PTH:=  T#500MS, PTL:= T#500MS, Q=>GVL_Main.bBL500p500 );
+tBl5(ENQ:= TRUE, PTH:=  T#1000MS, PTL:= T#1000MS, Q=>GVL_Main.bBL1000p1000 );
+tBl6(ENQ:= TRUE, PTH:=  T#250MS, PTL:= T#750MS, Q=>GVL_Main.bBL250p750 );
+rtBL1(CLK:=GVL_Main.bBL50p50, Q=> GVL_Main.bTakt100ms);
+rtBL2(CLK:=GVL_Main.bBL100p100, Q=> GVL_Main.bTakt200ms);
+rtBL3(CLK:=GVL_Main.bBL250p250, Q=> GVL_Main.bTakt500ms);
+rtBL4(CLK:=GVL_Main.bBL500p500, Q=> GVL_Main.bTakt1s);
+
+IF GVL_Main.bTakt100ms THEN
+	GVL_Main.nLifeSignal := GVL_Main.nLifeSignal + 1;	
+END_IF
+
+IF GVL_Main.nLifeSignal>100 THEN
+	GVL_Main.nLifeSignal:=0;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="Blink">
+      <LineId Id="3" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="26" Count="2" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

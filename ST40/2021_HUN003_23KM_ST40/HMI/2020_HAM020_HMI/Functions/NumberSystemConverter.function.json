@@ -1,0 +1,62 @@
+﻿{
+  "function": {
+    "name": "NumberSystemConv",
+    "displayName": "NumberSystemConv",
+    "visible": true,
+    "category": "",
+    "waitMode": "Synchronous",
+    "injectContextObject": false,
+    "description": "",
+    "returnValue": {
+      "type": "tchmi:general#/definitions/STRING(80)",
+      "description": "AtalakitottSzam"
+    },
+    "arguments": [
+      {
+        "name": "AtalakitandoSzam",
+        "displayName": "AtalakitandoSzam",
+        "type": "tchmi:general#/definitions/STRING(80)",
+        "description": "This is an important Parameter which does... This text is used in a tooltip.",
+        "defaultValue": "",
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false
+      },
+      {
+        "name": "Mibol",
+        "displayName": "Mibol",
+        "type": "tchmi:general#/definitions/INT",
+        "description": "",
+        "defaultValue": "10",
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false
+      },
+      {
+        "name": "Mibe",
+        "displayName": "Mibe",
+        "type": "tchmi:general#/definitions/INT",
+        "description": "",
+        "defaultValue": "10",
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false
+      },
+      {
+        "name": "KarakterSzam",
+        "displayName": "KarakterSzam",
+        "type": "tchmi:general#/definitions/INT",
+        "description": "",
+        "defaultValue": "",
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false
+      }
+    ]
+  },
+  "$schema": "../../Packages/Beckhoff.TwinCAT.HMI.Framework.12.742.0/runtimes/native1.12-tchmi/Schema/FunctionDescription.Schema.json"
+}

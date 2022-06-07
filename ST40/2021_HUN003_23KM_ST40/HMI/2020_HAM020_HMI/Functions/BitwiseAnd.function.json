@@ -1,0 +1,39 @@
+﻿{
+  "function": {
+    "name": "BitwiseAnd",
+    "displayName": "BitwiseAnd",
+    "visible": true,
+    "category": "",
+    "waitMode": "Synchronous",
+    "injectContextObject": false,
+    "description": "",
+    "returnValue": {
+      "type": "tchmi:general#/definitions/BOOL"
+    },
+    "arguments": [
+      {
+        "name": "Data",
+        "displayName": "Data",
+        "type": "tchmi:general#/definitions/WORD",
+        "description": "",
+        "defaultValue": "",
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false
+      },
+      {
+        "name": "Number",
+        "displayName": "Number",
+        "type": "tchmi:general#/definitions/BYTE",
+        "description": "",
+        "defaultValue": "",
+        "required": true,
+        "bindable": true,
+        "restParameter": false,
+        "asReference": false
+      }
+    ]
+  },
+  "$schema": "../../Packages/Beckhoff.TwinCAT.HMI.Framework.12.742.0/runtimes/native1.12-tchmi/Schema/FunctionDescription.Schema.json"
+}

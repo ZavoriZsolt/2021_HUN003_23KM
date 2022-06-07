@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_Door" Id="{19907d50-4869-4e7a-afc8-f289128a21a0}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Door
+VAR_INPUT
+	bDoorButton			:BOOL;			// Ajtó gomb benemet
+	bOpenEnable			:BOOL;			// Ajtó nyitást lehetséges folyamat oldalról
+	bDoorsClosed		:BOOL;			// Ajtók becsukva
+	bDoorsLocked		:BOOL;			// Ajtók reteszelve
+	bBlink				:BOOL;			// Ajtó led villogtatáshoz külső blinker
+END_VAR
+VAR_OUTPUT
+	bCloseOut			:BOOL;			// Ajtó zárás kimenet
+	bDoorButtonLED		:BOOL;			// Ajtó gomb LED kimenet
+	bObenRequestOut		:BOOL;			// Ajtó nyitás kérés kimenet a körasztalnak
+END_VAR
+VAR
+	rtDoorButton		:R_Trig;		// Ajtó gombnyomás felfutó él
+	rsOpenRequest		:RS;			// Nyitás igény rögzítés
+	tOpenForce			:TON;			// Nyitás kényszerítés időzítő
+	tOpenForceDelay		:TIME := T#5S;	// Nyitás kényszerítés késleltetés
+	ftDoorsLocked		:F_Trig;		// Ajtó retelszelve lefutó él
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* Ajtó kezelő FB működés:
+Zárás: csukva vannak az ajtók és gombnyomás történik
+Nyitás esetek (ha reteszelve vannak az ajtók és gombnyomás történik):
+	1. Nyitás: ha a folyamat engedélyt ad a nyitásra
+	2. Nyitás igény rögzítés: ha a folyamat nem ad engedélyt a nyitásra, 
+		innen mehet 1.-be, vagy 3.-ba, vagy ismételt gombnyomásra törli az igényt
+	3. Kényszerített nyitás: ha 5 másodpercig nyomják a gombot, mindenképp kinyit *)
+
+// Ajtó gomb felfutó él képzés
+rtDoorButton(CLK:= bDoorButton);
+
+// Zárás
+IF rtDoorButton.Q AND bDoorsClosed AND NOT bDoorsLocked THEN
+	bCloseOut := TRUE;
+END_IF
+
+// Nyitás kérés
+rsOpenRequest(
+	SET:= rtDoorButton.Q AND bDoorsClosed AND bDoorsLocked, 
+	RESET1:= NOT bDoorsLocked OR (rtDoorButton.Q AND rsOpenRequest.Q1),  
+	Q1=> bObenRequestOut
+	);
+
+// Kényszerített nyitás
+tOpenForce(IN:= bDoorButton AND bDoorsLocked, PT:= tOpenForceDelay);
+
+// Nyitás kimenet
+IF (rsOpenRequest.Q1 AND bOpenEnable) 
+	OR tOpenForce.Q
+	OR ftDoorsLocked.Q
+THEN
+	bCloseOut := FALSE;
+END_IF
+
+// Ajtó gomb LED vezérlés
+IF bDoorsLocked THEN
+	IF rsOpenRequest.Q1 THEN
+		bDoorButtonLED := bBlink;
+	ELSE
+		bDoorButtonLED := TRUE;
+	END_IF
+ELSE
+	bDoorButtonLED := FALSE;
+END_IF
+
+// Ajtó retelszelve lefutó él
+ftDoorsLocked(CLK:= bDoorsLocked, Q=> );]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Door">
+      <LineId Id="3" Count="6" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="11" Count="20" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="32" Count="12" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="74" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_P_START_ASSY" Id="{82b0ddcd-5a86-4b4e-9f7a-edf6b43808ba}">
+    <Declaration><![CDATA[TYPE ST_P_START_ASSY :
+STRUCT
+	Barcode:				INT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

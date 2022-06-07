@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="Conveyor" Id="{fbfe0b8c-1351-4c32-a400-aed20ae2a7f4}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Conveyor
+VAR
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* Szalaghajtások automatikus indítása *)
+IF i_bEmyOK AND NOT bManualMode THEN
+	fbConveyor_1.bConveyorOnL := TRUE;	
+	fbConveyor_1.bConveyorOnR := FALSE;	
+	fbConveyor_2.bConveyorOnL := TRUE;	
+	fbConveyor_2.bConveyorOnR := FALSE;	
+
+END_IF
+
+(* Szalaghajtások vezérlése *)
+fbConveyor_1(
+	sName:= 'K41', 
+	bEn:= i_bEmyOK, 
+	bEHA:= TRUE, 
+	bDisableManualCmd:= NOT bManualMode, 
+	bAck:= bAckP, 
+	stStartEvent:= TC_EVENTS.MyEvent.fbConv1_Start,
+	stRunEvent:= TC_EVENTS.MyEvent.fbConv1_Run);
+
+fbConveyor_2(
+	sName:= 'K42', 
+	bEn:= i_bEmyOK, 
+	bEHA:= TRUE, 
+	bDisableManualCmd:= NOT bManualMode, 
+	bAck:= bAckP, 
+	stStartEvent:= TC_EVENTS.MyEvent.fbConv2_Start,
+	stRunEvent:= TC_EVENTS.MyEvent.fbConv2_Run);
+
+(* Hibaállapot gyűjtése *)	
+bConveyorsErr:=	fbConveyor_1.bError OR
+				fbConveyor_2.bError;	
+	
+(* Üzemkész állapot gyűjtése *)
+bConveyorsOk :=	(fbConveyor_1.bMotorOn AND NOT fbConveyor_1.bError) AND
+				(fbConveyor_2.bMotorOn AND NOT fbConveyor_2.bError);
+
+(* Megakasztók vezérlése *)
+fbP0Stopper(
+	bNextReady:= fbP1Stopper.bReady, 
+	bMotorRun:= bConveyorsOk, 
+	tToNextStopper:= T#3S, 
+	bStationReady:= TRUE, 
+	bStationFinished:= TRUE,
+	bReady=> q_bST40_ConveyorReady);
+	
+fbP1Stopper(
+	bNextReady:= fbP2Stopper.bReady, 
+	bMotorRun:= bConveyorsOk, 
+	tToNextStopper:= T#4.5S, 
+	bStationReady:= P1_Camera.stPos.nState = 10000, 
+	bStationFinished:= P1_Camera.stPos.nState = 100000);
+
+fbP2Stopper(
+	bNextReady:= i_bST51_ConveyorReady, 
+	bMotorRun:= bConveyorsOk, 
+	tToNextStopper:= T#4.5S, 
+	bStationReady:= P2_Robot.stPos.nState = 10000, 
+	bStationFinished:= P2_Robot.stPos.nState = 100000);
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="Conveyor">
+      <LineId Id="227" Count="58" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

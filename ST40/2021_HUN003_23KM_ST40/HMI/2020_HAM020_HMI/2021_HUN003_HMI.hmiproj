@@ -1,0 +1,653 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Clean;Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <TcHmiDirectory>$(registry:HKEY_LOCAL_MACHINE\Software\Beckhoff\TwinCAT3\3.1@InstallDir)\..\Functions\TE2000-HMI-Engineering</TcHmiDirectory>
+    <TcHmiDirectory Condition="'$(TcHmiDirectory)'==''">$(registry:HKEY_LOCAL_MACHINE\Software\Wow6432Node\Beckhoff\TwinCAT3\3.1@InstallDir)\..\Functions\TE2000-HMI-Engineering</TcHmiDirectory>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
+    <AvailablePlatforms>TwinCAT HMI</AvailablePlatforms>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <HmiTitle>2019_HAM023</HmiTitle>
+    <HmiVerboseLevel>2</HmiVerboseLevel>
+    <HmiVersion>1.0.0.0</HmiVersion>
+    <Name>2021_HUN003_HMI</Name>
+    <HmiCommunicationRouterPort>10123</HmiCommunicationRouterPort>
+    <HmiCommunicationServerPort>3007</HmiCommunicationServerPort>
+    <HmiInitial>1.10.1336.372</HmiInitial>
+    <HmiRecent>1.12.754.4</HmiRecent>
+    <TargetFrameworkMoniker>native,Version=v1.12.0,Profile=tchmi</TargetFrameworkMoniker>
+    <TargetFramework>native1.12-tchmi</TargetFramework>
+    <HmiLogTcHmiServerMessages>false</HmiLogTcHmiServerMessages>
+    <HmiLogDesignerModeComMessages>false</HmiLogDesignerModeComMessages>
+    <HmiUseX64>True</HmiUseX64>
+    <HmiServerVersion>Latest</HmiServerVersion>
+    <EnableTypeScript>true</EnableTypeScript>
+    <HmiCommunicationServerAuthPort>13005</HmiCommunicationServerAuthPort>
+    <HmiServerNodeAdvancedView>False</HmiServerNodeAdvancedView>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TwinCATHmi_Tasks>$(TcHmiDirectory)\MSBuild\Beckhoff.TwinCAT.HMI.tasks</TwinCATHmi_Tasks>
+    <TwinCATHmi_Targets>$(TcHmiDirectory)\MSBuild\Beckhoff.TwinCAT.HMI.targets</TwinCATHmi_Targets>
+  </PropertyGroup>
+  <Import Project="$(TwinCATHmi_Tasks)" />
+  <Import Project="$(TwinCATHmi_Targets)" />
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>0bbde5f8-35f8-41ff-a24c-dd846632a788</ProjectGuid>
+    <RootNamespace>TwinCAT3HmiProject</RootNamespace>
+    <AssemblyName>TwinCAT3HmiProject</AssemblyName>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">TwinCAT HMI</Platform>
+  </PropertyGroup>
+  <!-- Any CPU -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|TwinCAT HMI' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>TwinCAT HMI</PlatformTarget>
+    <TypeScriptToolsVersion>3.9</TypeScriptToolsVersion>
+    <TypeScriptBuildMode>False</TypeScriptBuildMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|TwinCAT HMI' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>TwinCAT HMI</PlatformTarget>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(TypeScriptSdkDir)\$(LastKnownTypeScriptVersion)\build\Microsoft.TypeScript.targets" Condition="Exists('$(TypeScriptSdkDir)\$(LastKnownTypeScriptVersion)\build\Microsoft.TypeScript.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="'$(RestoreProjectStyle)' == 'PackageReference'" />
+  <PropertyGroup>
+    <PreBuildEventDependsOn />
+  </PropertyGroup>
+  <Target Name="PreBuildEvent" Condition="'$(PreBuildEvent)'!=''" DependsOnTargets="$(PreBuildEventDependsOn)">
+    <Exec WorkingDirectory="$(OutDir)" Command="$(PreBuildEvent)" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEventDependsOn />
+  </PropertyGroup>
+  <Target Name="PostBuildEvent" Condition="'$(PostBuildEvent)' != '' and ('$(RunPostBuildEvent)'=='Always' or '$(RunPostBuildEvent)'=='OnOutputUpdated')" DependsOnTargets="$(PostBuildEventDependsOn)">
+    <Exec WorkingDirectory="$(OutDir)" Command="$(PostBuildEvent)" />
+  </Target>
+  <Target Name="GetFrameworkPaths" />
+  <PropertyGroup>
+    <BuildDependsOn>
+			PreBuildEvent;
+			CoreBuild;
+			PostBuildEvent
+		</BuildDependsOn>
+  </PropertyGroup>
+  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)" />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ExtensionSetup>
+      <TcHmiRecipeManagement rid="win-x64" targetPlatform="native" />
+      <TcHmiSqliteHistorize rid="win-x64" targetPlatform="native" />
+      <TcHmiEventLogger rid="win-x64" targetPlatform="native" />
+    </ExtensionSetup>
+  </PropertyGroup>
+  <Target Name="CoreBuild">
+    <!-- TypeScript START -->
+    <CallTarget Targets="FindConfigFiles" Condition="$(TypeScriptSdkDir) != ''" />
+    <CallTarget Targets="CompileTypeScript" Condition="$(TypeScriptSdkDir) != ''" />
+    <CallTarget Targets="PreComputeCompileTypeScript" Condition="$(TypeScriptSdkDir) != ''" />
+    <CallTarget Targets="PreComputeCompileTypeScriptWithTSConfig" Condition="$(TypeScriptSdkDir) != ''" />
+    <CallTarget Targets="CompileTypeScriptWithTSConfig" Condition="$(TypeScriptSdkDir) != ''" />
+    <CallTarget Targets="GetTypeScriptOutputForPublishing" Condition="$(TypeScriptSdkDir) != ''" />
+    <!-- TypeScript END -->
+    <TcHmiMSBuild.Publish.TcHmiBuild TaskAction="Clean" ProjectDirectory="$(TcHmi_ProjectDirectory)" OutputPath="$(OutputPath)" />
+    <TcHmiMSBuild.Publish.TcHmiBuild TaskAction="Build" ProjectDirectory="$(TcHmi_ProjectDirectory)" OutputPath="$(OutputPath)" ProjectFiles="@(Content)" VirtualMappings="$(TcHmi_VirtualMappings)" />
+    <TcHmiMSBuild.Publish.TcHmiGenerator TaskAction="EntryPage" ProjectDirectory="$(TcHmi_ProjectDirectory)" OutputPath="$(OutputPath)" TcHmiServerAddress="$(TcHmi_ServerAddress)" TcHmiServerPort="$(TcHmi_ServerPort)">
+      <Output TaskParameter="Result" PropertyName="TaskResult0" />
+    </TcHmiMSBuild.Publish.TcHmiGenerator>
+    <Message Text="Generating the Default.html within OutputPath('$(OutputPath)'): $(TaskResult0)" />
+  </Target>
+  <Target Name="ReBuild" DependsOnTargets="Clean; Build" />
+  <Target Name="Clean" DependsOnTargets="BaseClean" />
+  <ItemGroup>
+    <Content Include="Codebehind\ReadUrlParameter.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Functions\BitwiseAnd.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Functions\BitwiseAnd.js</DependentUpon>
+    </Content>
+    <Content Include="Functions\BitwiseAnd.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Functions\StateMachine.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Functions\StateMachine.js</DependentUpon>
+    </Content>
+    <Content Include="Functions\StateMachine.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Functions\Alert.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Functions\Alert.js</DependentUpon>
+    </Content>
+    <Content Include="Functions\Alert.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Functions\ColorSelect.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Functions\ColorSelect.js</DependentUpon>
+    </Content>
+    <Content Include="Functions\ColorSelect.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Functions\CurrentUser.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Functions\CurrentUser.js</DependentUpon>
+    </Content>
+    <Content Include="Functions\CurrentUser.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Functions\NumberSystemConverter.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Functions\NumberSystemConverter.js</DependentUpon>
+    </Content>
+    <Content Include="Functions\NumberSystemConverter.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Functions\ProfinetDiag.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Functions\ProfinetDiag.js</DependentUpon>
+    </Content>
+    <Content Include="Functions\ProfinetDiag.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Functions\ProfinetState.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Functions\ProfinetState.js</DependentUpon>
+    </Content>
+    <Content Include="Functions\ProfinetState.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Functions\State.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Functions\State.js</DependentUpon>
+    </Content>
+    <Content Include="Functions\State.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Functions\StateColor.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Functions\StateColor.js</DependentUpon>
+    </Content>
+    <Content Include="Functions\StateColor.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Functions\StringToFloat.function.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Functions\StringToFloat.js</DependentUpon>
+    </Content>
+    <Content Include="Functions\StringToFloat.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Images\HARMAN-logo.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Images\veszmont.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Imports\Images\close_normal.svg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Imports\Images\conveyor_bandactive.svg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Imports\Images\conveyor_bandpressed.svg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Imports\Images\icons_next_pressed.svg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Imports\Images\screen_right_pressed.svg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="KeyboardLayouts\Calculator.keyboard.json" />
+    <Content Include="KeyboardLayouts\German - basic.keyboard.json" />
+    <Content Include="KeyboardLayouts\German - compact.keyboard.json" />
+    <Content Include="KeyboardLayouts\German - with NumPad.keyboard.json" />
+    <Content Include="KeyboardLayouts\Numpad.keyboard.json" />
+    <Content Include="KeyboardLayouts\PINpad.keyboard.json" />
+    <Content Include="KeyboardLayouts\US - basic.keyboard.json" />
+    <Content Include="KeyboardLayouts\US - compact.keyboard.json" />
+    <Content Include="KeyboardLayouts\US - with NumPad.keyboard.json" />
+    <Content Include="Localization\en-US.localization">
+      <SubType>Content</SubType>
+      <DependentUpon>Localization\en-US.tpl.localization</DependentUpon>
+    </Content>
+    <Content Include="Localization\en-US.tpl.localization">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Localization\hu-HU.localization">
+      <SubType>Content</SubType>
+      <DependentUpon>Localization\hu-HU.tpl.localization</DependentUpon>
+    </Content>
+    <Content Include="Localization\hu-HU.tpl.localization">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="packages.config">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="packages.xsd">
+      <Visible>false</Visible>
+    </Content>
+    <Content Include="Pages\Alarms.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Pages\Conveyors1.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Pages\ST41.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Pages\DiagBus.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Pages\Main.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Pages\ST42.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Pages\Safety.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\ADS\ADS.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\ADS\ADS.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\ADS\ADS.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiLua\TcHmiLua.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiLua\TcHmiLua.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiLua\TcHmiLua.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSrv\TcHmiSrv.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSrv\TcHmiSrv.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSrv\TcHmiSrv.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Themes\Base\BaseStyle.css">
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Themes\Base\Images\Splash-320x534.png">
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Themes\Base\Images\Splash-420x200.png">
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Themes\Base\Images\Splash-800x600.png">
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Themes\Bigger\Bigger.theme">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Themes\Bigger\BiggerStyle.css">
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Themes\Bigger\Images\Splash-320x534.png">
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Themes\Bigger\Images\Splash-420x200.png">
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Themes\Bigger\Images\Splash-800x600.png">
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Themes\Bigger\Style.css">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="tsconfig.json">
+      <DependentUpon>tsconfig.tpl.json</DependentUpon>
+    </Content>
+    <Content Include="tsconfig.tpl.json">
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="UserControls\BusStates.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\BusStates.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\BusStates.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\ConveyorIn.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\ConveyorIn.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\ConveyorIn.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\ConveyorOut.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\ConveyorOut.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\ConveyorOut.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\FB_Bistabil.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\FB_Bistabil.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\FB_Bistabil.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\FB_Kuka_KCR.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\FB_Kuka_KCR.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\FB_Kuka_KCR.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\FB_Conveyor.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\FB_Conveyor.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\FB_Conveyor.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\FB_CodeReader.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\FB_CodeReader.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\FB_CodeReader.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\FB_Kamino.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\FB_Kamino.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\FB_Kamino.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\FB_Motor.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\FB_Motor.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\FB_Motor.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\NumberInput.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\NumberInput.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\NumberInput.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\Numpad.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\Numpad.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\Numpad.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\PalletState.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\PalletState.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\PalletState.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\PositionXYZ.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\PositionXYZ.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\PositionXYZ.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\EtherCAT_Diag.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\EtherCAT_Diag.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\EtherCAT_Diag.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="UserControls\XYZ.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="UserControls\XYZ.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>UserControls\XYZ.usercontrol</DependentUpon>
+    </Content>
+    <Folder Include="Codebehind" />
+    <Folder Include="Images" />
+    <Folder Include="Images\Manifest" />
+    <Folder Include="Imports" />
+    <Folder Include="Imports\Images" />
+    <Folder Include="Imports\Videos" />
+    <Folder Include="KeyboardLayouts\" />
+    <Folder Include="Localization" />
+    <Folder Include="Functions" />
+    <Folder Include="Server\TcHmiEventLogger" />
+    <Folder Include="Server\TcHmiRecipeManagement" />
+    <Folder Include="Server\TcHmiSqliteHistorize" />
+    <Folder Include="Themes\Base\Images\" />
+    <Folder Include="Themes\Bigger\Images\" />
+    <Folder Include="UserControls" />
+    <Folder Include="Pages" />
+    <Folder Include="Server\ADS" />
+    <Folder Include="Server\TcHmiLua" />
+    <Folder Include="Server\TcHmiSqliteLogger" />
+    <Folder Include="Server\TcHmiSrv" />
+    <Folder Include="Server\TcHmiTextStorage" />
+    <Folder Include="Server\TcHmiUserManagement" />
+    <Folder Include="Themes" />
+    <Folder Include="Themes\Base\" />
+    <Folder Include="Fonts" />
+    <Folder Include="Server">
+      <WorkingDirectory>2019_HAM023_HMI</WorkingDirectory>
+    </Folder>
+    <Content Include=".tfignore">
+      <SubType>Content</SubType>
+      <Visible>false</Visible>
+    </Content>
+    <Content Include=".gitignore">
+      <SubType>Content</SubType>
+      <Visible>false</Visible>
+    </Content>
+    <Content Include="FavIcon.ico">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Fonts\Fonts.css">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Fonts\Roboto-Condensed-webfont.woff">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Server\ADS\ADS.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\ADS\ADS.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\ADS\ADS.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiEventLogger\TcHmiEventLogger.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiEventLogger\TcHmiEventLogger.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiEventLogger\TcHmiEventLogger.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiLua\TcHmiLua.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiLua\TcHmiLua.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiLua\TcHmiLua.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiRecipeManagement\TcHmiRecipeManagement.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiRecipeManagement\TcHmiRecipeManagement.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiRecipeManagement\TcHmiRecipeManagement.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteHistorize\TcHmiSqliteHistorize.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteHistorize\TcHmiSqliteHistorize.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteHistorize\TcHmiSqliteHistorize.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSqliteLogger\TcHmiSqliteLogger.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSrv\TcHmiSrv.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSrv\TcHmiSrv.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiSrv\TcHmiSrv.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Config.default.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Config.remote.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Server\TcHmiUserManagement\TcHmiUserManagement.Storage.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Themes\Base\Base.theme">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Themes\Base\Style.css">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Images\Beckhoff_Logo.svg">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Images\Background.png">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Images\Manifest\launcher-icon-0-75x.png">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Images\Manifest\launcher-icon-1-5x.png">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Images\Manifest\launcher-icon-1x.png">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Images\Manifest\launcher-icon-2x.png">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Images\Manifest\launcher-icon-3x.png">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Images\Manifest\launcher-icon-4x.png">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Desktop.view">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Folder Include="Properties" />
+    <Content Include="Properties\tchmiconfig.json">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Properties\tchmi.framework.Schema.tpl.json">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Properties\tchmi.framework.Schema.json">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+      <DependentUpon>Properties\tchmi.framework.Schema.tpl.json</DependentUpon>
+    </Content>
+    <Content Include="Properties\tchmi.project.Schema.tpl.json">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Properties\tchmi.project.Schema.json">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+      <DependentUpon>Properties\tchmi.project.Schema.tpl.json</DependentUpon>
+    </Content>
+    <Content Include="Properties\tchmipublish.config.json">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Properties\tchmimanifest.json">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="Properties\Default.tpl">
+      <SubType>Content</SubType>
+      <Visible>true</Visible>
+    </Content>
+    <Folder Include="Themes\Bigger\" />
+  </ItemGroup>
+</Project>

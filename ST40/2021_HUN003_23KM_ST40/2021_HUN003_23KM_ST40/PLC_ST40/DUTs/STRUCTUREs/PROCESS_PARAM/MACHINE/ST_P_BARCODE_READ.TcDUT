@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_P_BARCODE_READ" Id="{44a17c0d-e44e-4f30-acd4-ac96594465c2}">
+    <Declaration><![CDATA[TYPE ST_P_BARCODE_READ :
+STRUCT
+	IpAddress:					STRING;
+	Port:						STRING;
+	Start:						STRING;
+	End:						STRING;
+	Error:						STRING;
+	Barcode:					INT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,392 @@
+﻿{
+  "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.12.742.5/runtimes/native1.12-tchmi/Schema/TchmiConfig.Schema.json",
+  "basePath": "./framework",
+  "scaleMode": "None",
+  "startupView": "Desktop.view",
+  "loginPage": "",
+  "tcHmiServer": {
+    "websocketIntervalTime": 100,
+    "websocketTimeout": 10000,
+    "websocketSystemTimeout": 60000,
+    "websocketSubscriptionMode": "Change"
+  },
+  "activeTheme": "Bigger",
+  "themes": {
+    "Base": {
+      "resources": [
+        {
+          "name": "Themes/Base/Base.theme",
+          "description": "",
+          "type": "ThemedValues"
+        },
+        {
+          "name": "Themes/Base/Style.css",
+          "description": "",
+          "type": "Stylesheet"
+        },
+        {
+          "name": "Themes/Base/BaseStyle.css",
+          "description": "",
+          "type": "Stylesheet"
+        }
+      ],
+      "replacesThemeForControls": []
+    },
+    "Bigger": {
+      "resources": [
+        {
+          "name": "Themes/Bigger/Bigger.theme",
+          "description": "",
+          "type": "ThemedValues"
+        },
+        {
+          "name": "Themes/Bigger/Style.css",
+          "description": "",
+          "type": "Stylesheet"
+        },
+        {
+          "name": "Themes/Bigger/BiggerStyle.css",
+          "description": "",
+          "type": "Stylesheet"
+        }
+      ],
+      "replacesThemeForControls": []
+    }
+  },
+  "dependencyFiles": [
+    {
+      "name": "Fonts/Fonts.css",
+      "description": "",
+      "type": "Stylesheet"
+    },
+    {
+      "name": "Functions/Alert.js",
+      "description": "",
+      "type": "JavaScript"
+    },
+    {
+      "name": "Functions/ColorSelect.js",
+      "description": "",
+      "type": "JavaScript"
+    },
+    {
+      "name": "Functions/CurrentUser.js",
+      "description": "",
+      "type": "JavaScript"
+    },
+    {
+      "name": "Functions/NumberSystemConverter.js",
+      "description": "",
+      "type": "JavaScript"
+    },
+    {
+      "name": "Functions/ProfinetDiag.js",
+      "description": "",
+      "type": "JavaScript"
+    },
+    {
+      "name": "Functions/ProfinetState.js",
+      "description": "",
+      "type": "JavaScript"
+    },
+    {
+      "name": "Functions/State.js",
+      "description": "",
+      "type": "JavaScript"
+    },
+    {
+      "name": "Functions/StateColor.js",
+      "description": "",
+      "type": "JavaScript"
+    },
+    {
+      "name": "Codebehind/ReadUrlParameter.js",
+      "description": "",
+      "type": "JavaScript"
+    },
+    {
+      "name": "Functions/StateMachine.js",
+      "description": "",
+      "type": "JavaScript"
+    },
+    {
+      "name": "Functions/StringToFloat.js",
+      "description": "",
+      "type": "JavaScript"
+    },
+    {
+      "name": "Functions/BitwiseAnd.js",
+      "description": "",
+      "type": "JavaScript"
+    }
+  ],
+  "userControls": [
+    {
+      "url": "UserControls/BusStates.usercontrol"
+    },
+    {
+      "url": "UserControls/ConveyorIn.usercontrol"
+    },
+    {
+      "url": "UserControls/ConveyorOut.usercontrol"
+    },
+    {
+      "url": "UserControls/EtherCAT_Diag.usercontrol"
+    },
+    {
+      "url": "UserControls/FB_Bistabil.usercontrol"
+    },
+    {
+      "url": "UserControls/FB_CodeReader.usercontrol"
+    },
+    {
+      "url": "UserControls/FB_Conveyor.usercontrol"
+    },
+    {
+      "url": "UserControls/FB_Kamino.usercontrol"
+    },
+    {
+      "url": "UserControls/FB_Kuka_KCR.usercontrol"
+    },
+    {
+      "url": "UserControls/FB_Motor.usercontrol"
+    },
+    {
+      "url": "UserControls/NumberInput.usercontrol"
+    },
+    {
+      "url": "UserControls/Numpad.usercontrol"
+    },
+    {
+      "url": "UserControls/PalletState.usercontrol"
+    },
+    {
+      "url": "UserControls/PositionXYZ.usercontrol"
+    },
+    {
+      "url": "UserControls/XYZ.usercontrol"
+    }
+  ],
+  "content": [
+    {
+      "url": "Pages/Alarms.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Pages/Conveyors1.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Pages/DiagBus.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Pages/Main.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Pages/Safety.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Pages/ST41.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Pages/ST42.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    }
+  ],
+  "views": [
+    {
+      "url": "Desktop.view",
+      "preload": false,
+      "keepAlive": false,
+      "preloadBindings": false
+    }
+  ],
+  "userFunctions": [
+    {
+      "url": "Functions/Alert.js"
+    },
+    {
+      "url": "Functions/BitwiseAnd.js"
+    },
+    {
+      "url": "Functions/ColorSelect.js"
+    },
+    {
+      "url": "Functions/CurrentUser.js"
+    },
+    {
+      "url": "Functions/NumberSystemConverter.js"
+    },
+    {
+      "url": "Functions/ProfinetDiag.js"
+    },
+    {
+      "url": "Functions/ProfinetState.js"
+    },
+    {
+      "url": "Functions/State.js"
+    },
+    {
+      "url": "Functions/StateColor.js"
+    },
+    {
+      "url": "Functions/StateMachine.js"
+    },
+    {
+      "url": "Functions/StringToFloat.js"
+    }
+  ],
+  "symbols": {
+    "internal": {
+      "ColorGreen": {
+        "value": {
+          "color": "rgba(15, 222, 31, 1)"
+        },
+        "type": "tchmi:framework#/definitions/Color",
+        "persist": true,
+        "readonly": true
+      },
+      "ColorRed": {
+        "value": {
+          "color": "rgba(251, 1, 1, 1)"
+        },
+        "type": "tchmi:framework#/definitions/Color",
+        "persist": true,
+        "readonly": true
+      },
+      "ColorTransparent": {
+        "value": {
+          "color": "None"
+        },
+        "type": "tchmi:framework#/definitions/Color",
+        "persist": true,
+        "readonly": true
+      },
+      "ColorBlue": {
+        "value": {
+          "color": "rgba(49, 57, 249, 1)"
+        },
+        "type": "tchmi:framework#/definitions/Color",
+        "persist": true,
+        "readonly": true
+      },
+      "ColorYellow": {
+        "value": {
+          "color": "rgba(229, 207, 43, 1)"
+        },
+        "type": "tchmi:framework#/definitions/Color",
+        "persist": true,
+        "readonly": true
+      },
+      "NumpadMin": {
+        "value": 0.0,
+        "type": "tchmi:general#/definitions/FLOAT",
+        "persist": false,
+        "readonly": false
+      },
+      "NumpadMax": {
+        "value": 0.0,
+        "type": "tchmi:general#/definitions/FLOAT",
+        "persist": false,
+        "readonly": false
+      },
+      "ActLocale": {
+        "value": "en-US",
+        "type": "tchmi:general#/definitions/String",
+        "persist": false,
+        "readonly": false
+      },
+      "GlobalTextSize": {
+        "value": 16,
+        "type": "tchmi:general#/definitions/INT16",
+        "persist": false,
+        "readonly": false
+      }
+    }
+  },
+  "trigger": [],
+  "actionTemplates": [],
+  "languages": {
+    "en-US": "Localization/en-US.localization",
+    "hu-HU": "Localization/hu-HU.localization"
+  },
+  "languageFallback": "",
+  "disableLoadingOptimization": false,
+  "creatorSettings": {
+    "viewport": {
+      "defaultWidth": 1920,
+      "defaultHeight": 1080
+    }
+  },
+  "binding": {
+    "symbolError": "Ignore"
+  },
+  "packages": [
+    {
+      "name": "Beckhoff.TwinCAT.HMI.Controls",
+      "basePath": "/Beckhoff.TwinCAT.HMI.Controls"
+    },
+    {
+      "name": "Beckhoff.TwinCAT.HMI.Framework",
+      "basePath": "/framework"
+    },
+    {
+      "name": "Beckhoff.TwinCAT.HMI.Functions",
+      "basePath": "/Beckhoff.TwinCAT.HMI.Functions"
+    }
+  ],
+  "keyboardLayouts": [
+    {
+      "url": "KeyboardLayouts/Calculator.keyboard.json"
+    },
+    {
+      "url": "KeyboardLayouts/German - basic.keyboard.json"
+    },
+    {
+      "url": "KeyboardLayouts/German - compact.keyboard.json"
+    },
+    {
+      "url": "KeyboardLayouts/German - with NumPad.keyboard.json"
+    },
+    {
+      "url": "KeyboardLayouts/Numpad.keyboard.json"
+    },
+    {
+      "url": "KeyboardLayouts/PINpad.keyboard.json"
+    },
+    {
+      "url": "KeyboardLayouts/US - basic.keyboard.json"
+    },
+    {
+      "url": "KeyboardLayouts/US - compact.keyboard.json"
+    },
+    {
+      "url": "KeyboardLayouts/US - with NumPad.keyboard.json"
+    }
+  ]
+}

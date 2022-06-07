@@ -1,0 +1,508 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="MAIN" Id="{8b3a20a2-d766-4674-96bc-c5ad3a88a44c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+//	fbEventlogger				:FB_TcEventLogger;	// Elvégzi az FB_EVENTHANDLER 
+	aErrorActive				:ARRAY[1..nNbrOfAlarms] OF WORD;
+	aErrorID1					:ARRAY[1..nNbrOfAlarms] OF STRING(255);
+	aErrorID2					:ARRAY[1..nNbrOfAlarms] OF STRING(255);
+	afbAlarms					:ARRAY[1..nNbrOfAlarms] OF FB_TcAlarm;
+	i							:UINT;
+	fbAirTimer					:TON;
+	fbUPS						:FB_UpsC69xx;
+	bConsolTest					:bool;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bFirstCycle THEN Init(); END_IF
+IF NOT bP1MesInitOK OR NOT bP2MesInitOK THEN Init_MES(); END_IF
+Alarm();
+Blink();
+Conveyor();
+Door();
+Light();
+Mode();
+Safety();
+
+P1_Camera();
+P1_Camera.Recipe();
+P1_Camera.Camera();
+P1_Camera.DataExchange();
+P1_Camera.RFID();
+P1_Camera.Pneu();
+P1_Camera.Servo();
+P1_Camera.MES();
+P1_Camera.Diag();
+
+P2_Robot();
+P2_Robot.KRC4();
+P2_Robot.DataExchange();
+P2_Robot.RFID();
+P2_Robot.Pneu();
+P2_Robot.MES();
+P2_Robot.Diag();
+
+Diag();
+Harman_AutClient();
+MesTest();
+
+fbUPS(
+	bEnable:= TRUE, 
+	tShdnTime:= T#5S, 
+	nShdnDelay:= 0, 
+	bPowerOK=> , 
+	nBatteryLife=> , 
+	bError=> , 
+	nErrId=> );
+	
+fbPalletDataExchange(
+	stPalletData:= stPalletData, 
+	sName:= 'Paletta adatok', 
+	bAck:= bAckP, 
+	sAMSNetId:= sST10_NetId, 
+	stEventEntry:= TC_EVENTS.MyEvent.fbPalletDataExchange);
+
+IF fbPalletDataExchange.bDone AND fbPalletDataExchange.eCommand <> NoCmd THEN
+	fbPalletDataExchange.eCommand := NoCmd;
+END_IF]]></ST>
+    </Implementation>
+    <Action Name="Alarm" Id="{74b54fed-c5dc-49fb-9aa9-6cad65b323d1}">
+      <Implementation>
+        <ST><![CDATA[// Hibakezelés
+fbAckRTrig(CLK:= bAckHMI OR i_bRedBtn, Q=> bAckP);
+
+IF fbAckRTrig.Q THEN
+	bAckHMI := FALSE;
+END_IF
+
+(* Collect global error *)
+bError :=	bAirPressError OR
+			P1_Camera.stPos.bError OR
+			P2_Robot.stPos.bError OR
+			bConveyorsErr OR
+			bSafetyError OR
+			bP1ScrapRepeatError OR
+			bP2ScrapRepeatError;
+			
+(* Air pressure error *)
+fbAirTimer(IN:= i_bEMYOK AND NOT i_bAirOk, PT:= T#10S, Q=> bAirPressError);
+
+(* Scrap repeat error *)
+bP1ScrapRepeatError :=	nP1ScrapCounter > 3;
+bP2ScrapRepeatError :=	nP2ScrapCounter > 3;
+
+IF bAckP AND (bP1ScrapRepeatError OR bP2ScrapRepeatError) THEN
+	nP1ScrapCounter := 0;
+	nP2ScrapCounter := 0;
+END_IF
+
+(* General errors *)
+aErrorActive[1].0 := bAirPressError;
+aErrorActive[2].0 := i_bSafetyComErr;
+aErrorActive[3].0 := i_bSafetyFbErr;
+aErrorActive[4].0 := i_bSafetyOtherErr;
+aErrorActive[5].0 := i_bSafetyLO1EDMErr;
+aErrorActive[6].0 := i_bSafetyLO2EDMErr;
+aErrorActive[7].0 := i_bAX5805ErrorX;
+aErrorActive[8].0 := i_bAX5805ErrorY;
+aErrorActive[9].0 := i_bAX5805ErrorZ;
+aErrorActive[10].0 := NOT i_bDC1OK;
+aErrorActive[11].0 := NOT i_bDC2OK;
+aErrorActive[12].0 := bP1ScrapRepeatError;
+aErrorActive[13].0 := bP2ScrapRepeatError;
+
+
+
+FOR i := 1 TO nNbrOfAlarms DO
+	IF aErrorActive[i].0 THEN
+		IF (afbAlarms[i].eConfirmationState <> 2 AND afbAlarms[i].nTimeCleared <> 0 AND afbAlarms[i].nTimeConfirmed <> 0) OR //Ha már volt alarm, akkor van bennük érték
+			(afbAlarms[i].eConfirmationState = 1 AND afbAlarms[i].nTimeCleared = 0 AND afbAlarms[i].nTimeConfirmed = 0)	//Első futás esetén
+		THEN
+			IF aErrorActive[i].1 AND aErrorActive[i].2 THEN
+				afbAlarms[i].ipArguments.Clear().AddString(aErrorID1[i]).AddString(aErrorID2[i]);
+			ELSIF aErrorActive[i].1 THEN
+				afbAlarms[i].ipArguments.Clear().AddString(aErrorID1[i]);
+			ELSE
+				afbAlarms[i].ipArguments.Clear();
+			END_IF
+			afbAlarms[i].Raise(0);
+		END_IF	
+	ELSE
+		IF (afbAlarms[i].eConfirmationState = 2 OR afbAlarms[i].eConfirmationState = 3) AND afbAlarms[i].nTimeCleared = 0 THEN
+			afbAlarms[i].Clear(0, FALSE);
+		END_IF		
+	END_IF
+END_FOR
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Door" Id="{83994001-607e-453a-8155-64d2a88222e5}">
+      <Implementation>
+        <ST><![CDATA[fbDoor.bDoorsClosed := NOT	(i_bDoor1Open OR
+							i_bDoor2Open OR 
+							i_bDoor3Open OR 
+							i_bDoor4Open); 
+							
+fbDoor(
+	bDoorButton:= i_bDoorOpenBtn, 
+	bOpenEnable:= P1_Camera.stPos.bDoorOpenEnable AND P2_Robot.stPos.bDoorOpenEnable, 
+	bDoorsClosed:= , 
+	bDoorsLocked:= i_bDoorOK, 
+	bBlink:= bBL100p100, 
+	bCloseOut=> q_bLockDoor, 
+	bDoorButtonLED=> q_bWhiteBtnLed, 
+	bObenRequestOut=> bDoorOpenReq);]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Harman_AutClient" Id="{7dbedbc7-950c-45fb-ab68-8f6f3913c5fa}">
+      <Implementation>
+        <ST><![CDATA[fbStartAutClient(
+	NETID:= '192.168.102.141.1.1', 
+	PATHSTR:= 'C:\tozsolti\ConsoleApp1.exe', 
+	DIRNAME:= 'C:\tozsolti', 
+	COMNDLINE:= 'ConsoleApp1.exe', 
+	START:= bConsolTest, 
+	TMOUT:= T#1S, 
+	BUSY=> , 
+	ERR=> , 
+	ERRID=> );
+
+
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Init" Id="{d87a8829-577b-44df-8bb5-51539643ac1d}">
+      <Implementation>
+        <ST><![CDATA[	(* Bind errors *)
+afbAlarms[1].CreateEx(TC_Events.MyEvent.Gen_1, TRUE, 0);
+afbAlarms[2].CreateEx(TC_Events.MyEvent.Gen_2, TRUE, 0);
+afbAlarms[3].CreateEx(TC_Events.MyEvent.Gen_3, TRUE, 0);
+afbAlarms[4].CreateEx(TC_Events.MyEvent.Gen_4, TRUE, 0);
+afbAlarms[5].CreateEx(TC_Events.MyEvent.Gen_5, TRUE, 0);
+afbAlarms[6].CreateEx(TC_Events.MyEvent.Gen_6, TRUE, 0);
+afbAlarms[7].CreateEx(TC_Events.MyEvent.Gen_7, TRUE, 0);
+afbAlarms[8].CreateEx(TC_Events.MyEvent.Gen_8, TRUE, 0);
+afbAlarms[9].CreateEx(TC_Events.MyEvent.Gen_9, TRUE, 0);
+afbAlarms[10].CreateEx(TC_Events.MyEvent.Gen_10, TRUE, 0);
+afbAlarms[11].CreateEx(TC_Events.MyEvent.Gen_11, TRUE, 0);
+afbAlarms[12].CreateEx(TC_Events.MyEvent.Gen_12, TRUE, 0);
+
+fbP2KRC4.stEventArray[0] := TC_EVENTS.MyEvent.fbP2KRC4_Alarm0;
+fbP2KRC4.stEventArray[1] := TC_EVENTS.MyEvent.fbP2KRC4_Alarm1;
+fbP2KRC4.stEventArray[2] := TC_EVENTS.MyEvent.fbP2KRC4_Alarm2;
+fbP2KRC4.stEventArray[3] := TC_EVENTS.MyEvent.fbP2KRC4_Alarm3;
+fbP2KRC4.stEventArray[4] := TC_EVENTS.MyEvent.fbP2KRC4_Alarm4;
+fbP2KRC4.stEventArray[5] := TC_EVENTS.MyEvent.fbP2KRC4_Alarm5;
+fbP2KRC4.stEventArray[6] := TC_EVENTS.MyEvent.fbP2KRC4_Alarm6;
+fbP2KRC4.stEventArray[7] := TC_EVENTS.MyEvent.fbP2KRC4_Alarm7;
+
+bFirstCycle := False;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Init_MES" Id="{fa12ec2a-580c-40d2-a221-b7a3ff59d77c}">
+      <Implementation>
+        <ST><![CDATA[IF NOT bP1MesInitOK THEN
+	IF fbP1MesInterface.LOCAL_INIT_SERVICE() THEN
+		bP1MesInitOK := TRUE;
+	END_IF
+END_IF
+
+IF bP1MesInitOK AND NOT bP2MesInitOK THEN
+	IF fbP2MesInterface.REMOTE_INIT_SERVICE() THEN
+		bP2MesInitOK := TRUE;
+	END_IF
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Light" Id="{52c5f74b-d1de-4fa4-b807-27db0f8ee1ae}">
+      <Implementation>
+        <ST><![CDATA[fbSmartLight(
+	bEmyStop:= i_bEmyStopBtn1 OR i_bEmyStopBtn2, 
+	bEmyOK:= i_bEmyOK, 
+	bError:= bError, 
+	bOutOfStock:= FALSE);
+	
+// Piros jelzés
+IF i_bEmyStopBtn1 OR i_bEmyStopBtn2 THEN
+	q_bRedBtnLed := TRUE;
+ELSE
+	IF bError THEN
+		q_bRedBtnLed := bBL500p500;
+	ELSIF P1_Camera.stPos.nState = 100100 THEN
+		q_bRedBtnLed := FALSE;
+	ELSE
+		q_bRedBtnLed := FALSE;
+	END_IF
+END_IF
+
+// Zöld jelzés
+IF i_bEmyStopBtn1 OR i_bEmyStopBtn2 THEN
+	q_bGreenBtnLed := FALSE;
+ELSE
+	IF i_bEmyOK THEN
+		q_bGreenBtnLed := TRUE;
+	ELSE
+		q_bGreenBtnLed := bBL500p500;
+	END_IF
+END_IF
+
+// Munkatér világítás
+IF nWorkLightTime > 120 THEN nWorkLightTime := 120; END_IF
+IF nWorkLightTime < 1 THEN nWorkLightTime := 1; END_IF
+
+fbWorkLight(
+		bDoorClose:= fbDoor.bDoorsClosed,
+		bManualCtrl:= ,
+		nEcoTime:= nWorkLightTime,
+		bLightCtrl=> q_bAreaLighting);	
+		
+
+															// A cella gyártóképes ha:
+q_bST40_Status.0		 :=	i_bEmyOK AND					// vészkör endben
+							i_bAirOK AND					// levegő rendben
+							i_bDoorOK AND					// ajtók reteszelve
+							NOT bManualMode AND				// nincs szervíz üzem
+							NOT bStepMode AND				// nincs léptető mód
+							fbP2KRC4.RobotIn.Status.bExt;	// a robot ext-be van kapcsolva
+
+q_bST40_Status.8 := bError;									// hiba bit küldése
+q_bST40_Status.9 := FALSE;									// anyag kifogyás küldése
+
+
+
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Mode" Id="{37f15e2b-fb65-4020-9798-fa6f49222fe7}">
+      <Implementation>
+        <ST><![CDATA[// Üzemmód állítás
+IF bManualModeRequest THEN
+	IF (P1_Camera.stPos.nState = 0 OR P1_Camera.stPos.nState = 10000 OR P1_Camera.stPos.nState = 150000 OR P1_Camera.stPos.nState >= 200000) AND
+		(P2_Robot.stPos.nState = 0 OR P2_Robot.stPos.nState = 10000 OR P2_Robot.stPos.nState = 150000 OR P2_Robot.stPos.nState >= 200000)
+	THEN
+		sMode := 'Kézi mód';
+		nMode := 2;
+		bManualMode := TRUE;
+		bGlobalEHA := FALSE;
+	ELSE
+		sMode := 'Kézi mód kérés';
+		nMode := 1;
+	END_IF
+ELSE
+	sMode := 'Automata mód';
+	nMode := 0;
+	bManualMode := FALSE;
+	bGlobalEHA := TRUE;
+END_IF
+
+// Léptetés üzem teszteléshez
+rtStep(CLK:= bStepHMI or i_bGreenBtn, Q=> bStepP);
+IF bStepMode AND bStepP OR NOT bStepMode THEN
+	bStepEnable := TRUE;
+ELSE
+	bStepEnable := FALSE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Safety" Id="{2570e45c-d66c-4e5c-94db-264e78a7e369}">
+      <Implementation>
+        <ST><![CDATA[(*-----=== Safety GroupPort Run ===-----*)
+IF bTechEMYStopIgnored THEN
+	q_bSafety_Run := TRUE;
+ELSE
+	q_bSafety_Run := i_bST10_TechEMYStopOn AND i_bST10_TechEMYStopOn_Quality <= 2000;		// 200ms adatkimaradás is technológiai stop! 	
+END_IF
+
+(*-----=== Technológiai vészstop figyelembevételének állapota ===-----*)
+q_bST40_TechEMYStopIgnored := bTechEMYStopIgnored;
+
+(*-----=== EDM jelek másolása ===-----*)
+q_bLO1EDM := i_bLO1EDM;
+q_bLO2EDM := i_bLO2EDM;
+
+(*-----=== Hibakezelés ===-----*)
+q_bSafety_Reset := bAckP;
+q_bSafety_Ack := bAckP;
+q_bAX5805_Ack := bAckP;
+
+bSafetyError :=		i_bSafetyFbErr OR
+					i_bSafetyComErr OR
+					i_bSafetyOtherErr OR
+					i_bSafetyLO1EDMErr OR
+					i_bSafetyLO2EDMErr OR
+					i_bAX5805ErrorX OR	
+					i_bAX5805ErrorY OR	
+					i_bAX5805ErrorZ;	]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="MAIN">
+      <LineId Id="120" Count="0" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="164" Count="0" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="186" Count="0" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="93" Count="2" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="102" Count="0" />
+      <LineId Id="196" Count="1" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="103" Count="6" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="172" Count="4" />
+      <LineId Id="171" Count="0" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="179" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.Alarm">
+      <LineId Id="16" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="1" Count="2" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="44" Count="2" />
+      <LineId Id="157" Count="1" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="155" Count="1" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="69" Count="2" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="74" Count="6" />
+      <LineId Id="148" Count="0" />
+      <LineId Id="160" Count="1" />
+      <LineId Id="150" Count="1" />
+      <LineId Id="153" Count="1" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="126" Count="21" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="36" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.Door">
+      <LineId Id="10" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="2" Count="7" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.Harman_AutClient">
+      <LineId Id="4" Count="8" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.Init">
+      <LineId Id="28" Count="10" />
+      <LineId Id="40" Count="1" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="3" Count="7" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.Init_MES">
+      <LineId Id="1" Count="1" />
+      <LineId Id="4" Count="1" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="7" Count="4" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.Light">
+      <LineId Id="2" Count="3" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="8" Count="2" />
+      <LineId Id="13" Count="2" />
+      <LineId Id="18" Count="1" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="26" Count="5" />
+      <LineId Id="33" Count="2" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="40" Count="1" />
+      <LineId Id="56" Count="1" />
+      <LineId Id="65" Count="1" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="58" Count="4" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="74" Count="1" />
+      <LineId Id="77" Count="3" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="72" Count="1" />
+      <LineId Id="68" Count="1" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="70" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.Mode">
+      <LineId Id="20" Count="0" />
+      <LineId Id="44" Count="16" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="30" Count="1" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="17" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.Safety">
+      <LineId Id="18" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="27" Count="1" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="38" Count="1" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="44" Count="4" />
+      <LineId Id="50" Count="2" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

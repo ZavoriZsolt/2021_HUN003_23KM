@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_P_STOP_TIMECONTROL" Id="{86742a2a-d9ed-48bc-aa3c-596edb8e4de1}">
+    <Declaration><![CDATA[TYPE ST_P_STOP_TIMECONTROL :
+STRUCT
+	Barcode:			INT;
+	ControlName:		STRING;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

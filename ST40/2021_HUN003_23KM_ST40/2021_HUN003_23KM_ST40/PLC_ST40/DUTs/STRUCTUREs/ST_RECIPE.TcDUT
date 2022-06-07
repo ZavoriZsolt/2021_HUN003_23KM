@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_RECIPE" Id="{1e4b8b11-1ab3-4ebc-b4f1-0c199c9eaf99}">
+    <Declaration><![CDATA[TYPE ST_RECIPE :
+STRUCT	
+	DESCRIPTION:		STRING(MAX_STRING_LENGTH);
+	NAME:				STRING(MAX_STRING_LENGTH);
+	PROCESS_LIST:		ARRAY [0..299] OF STRING(MAX_STRING_LENGTH);	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

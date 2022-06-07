@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <GVL Name="GVL_Main" Id="{ea5e0780-0ef9-4db8-8cd3-dacde39e3a15}">
+    <Declaration><![CDATA[VAR_GLOBAL
+(* Blink *)
+	bBL50p50						:BOOL;				(*50ms/50ms*)
+	bBL100p100						:BOOL;				(*100ms/100ms*)
+	bBL250p250						:BOOL;				(*250ms/250ms*)
+	bBL500p500						:BOOL;				(*500ms/500ms*)
+	bBL1000p1000					:BOOL;				(*1000ms/1000ms*)
+	bBL250p750						:BOOL;				(*750ms/250ms*)
+	bTakt100ms						:BOOL;				(*Takt 100ms*)
+	bTakt200ms						:BOOL;				(*Takt 200ms*)
+	bTakt500ms						:BOOL;				(*Takt 500ms*)
+	bTakt1s							:BOOL;				(*Takt 1000ms*)
+	bTakt2s							:BOOL;				(*Takt 2000ms*)
+	nLifeSignal						:UINT;
+
+(* Main *)
+	bManualMode						:BOOL;				(* Kézi üzemmód gépállapot *)
+	bManualModeRequest				:BOOL;
+	sMode							:STRING;			(* Aktuális üzemmód *)
+	nMode							:BYTE;
+	nLocale							:BYTE;
+	bEcoMode						:BOOL;				(* Eco mód *)
+	rtStep							:R_Trig;			(* Léptetés trigger*)
+	bStepMode						:BOOL;				(* Léptetés mód *)
+	bStepP							:BOOL;				(* Léptetés impulzus *)
+	bStepHMI						:BOOL;				(* Léptetés gomb HMI *)
+	bStepEnable						:BOOL;				(* Léphet a folyamat*)
+	bAckHMI							:BOOL;				(* Nyugta HMI *)
+	fbAckRTrig						:R_TRIG;			(* Nyugta élképzés *)
+	bAckP							:BOOL;				(* Nyugta impulzus *)
+	bSafetyError					:BOOL;				(* Safety PLC hiba *)
+	fbDoor							:FB_Door;			(* Ajtókör vezérlés *)
+	bGlobalEHA						:BOOL;				(* Error-handling active - Hibafigyelés aktív*)
+	bError							:BOOL;				(* Globális hiba bit *)
+	bDoorOpenReq					:BOOL;				(* Ajtónyitás kérés *)
+	sDoorState						:STRING;			(* Ajtó állapot *)
+	bUserAdmin						:BOOL;				(* Adminisztrátor bejelentkezve *)
+	bUserMaintenance				:BOOL;				(* Karbantartó bejelentkezve *)
+	bInitTCPIP						:BOOL := TRUE;
+	bFirstCycle						:BOOL := TRUE;
+	fbSmartLight					:FB_SmartLight;
+	bAirPressError					:BOOL;
+	arrEcatSlaveInfo				:ARRAY [0..iSLAVEADDR_ARR_SIZE] OF ST_SlaveStateInfo;
+	nSlaveNr						:UINT;
+	stSlaveInfo						:ST_SlaveStateInfo;
+	fbWorkLight						:FB_WorkLight;
+	fbStartAutClient				:NT_StartProcess;
+	
+(* P1 Camera *)
+	fbP1RFID						:Fb_BISM;
+	fbP1Lift						:FB_Bistabil;
+	fbP1AxisX						:FB_Motor;	
+	fbP1AxisY						:FB_Motor;
+	fbP1AxisZ						:FB_Motor;
+	fbP1PalletDataExchange			:FB_ADSHandler;
+	stP1PalletData					:ST_PalletData;
+	fbP1FullCycleTime				:FB_FullCycleTime;
+	nP1ScrapCounter					:INT;
+	bP1ScrapRepeatError				:BOOL;
+	stCam1_IN						:ST_Camera_IN;
+	stCam1_OUT						:ST_Camera_OUT;	
+	fbP1Cam1						:FB_Kamino;
+
+	(* MES *)
+	fbP1MesInterface				:FB_MES_INTERFACE_V2;
+	bP1MesInitOK					:BOOL := FALSE;
+	stP1MesResp						:ST_REQUEST;
+	eP1GapFillerCheck_Result		:E_TEST_STATE;
+	stP1MesOpState					:ST_GET_OP_STATE;
+	stP1MrtMaterial					:ST_MATERIAL;
+	stP1NcDat						:ST_MESDAT;
+	fbP1ReceipeList					:FB_ReceipeList;
+
+
+(* P2 Robot *)
+	fbP2RFID						:Fb_BISM;
+	fbP2Lift						:FB_Bistabil;
+	fbP2PalletDataExchange			:FB_ADSHandler;
+	stP2PalletData					:ST_PalletData;
+	fbP2KRC4						:FB_KRC4;
+	fbP2FullCycleTime				:FB_FullCycleTime;
+	nP2ScrapCounter					:INT;
+	bP2ScrapRepeatError				:BOOL;
+
+	(* MES *)
+	fbP2MesInterface				:FB_MES_INTERFACE_V2;
+	bP2MesInitOK					:BOOL := FALSE;
+	stP2MesResp						:ST_REQUEST;
+	eP2Assy_Auto2_Result			:E_TEST_STATE;
+	sP2Assy_Auto2_Recipe			:STRING;
+	stP2MrtInventoryList			:ST_INVENTORY_LIST;
+	stP2Assy_Auto2_OpState			:ST_GET_OP_STATE;
+	stP2NcDat						:ST_MESDAT;
+
+(* Stopper *)
+	fbP0Stopper						:FB_Stopper;		(* Állomás elötti stopper *)
+	fbP1Stopper						:FB_Stopper;		(* P1 kamera pozíció *)
+	fbP2Stopper						:FB_Stopper;		(* P2 Robot pozíció *)
+
+(* Conveyor *)
+	fbConveyor_1					:FB_Conveyor;		(* Szalag hajtás K41 *)
+	fbConveyor_2					:FB_Conveyor;		(* Szalag hajtás K42 *)
+	bConveyorsOk					:BOOL;
+	bConveyorsErr					:BOOL;
+
+(* Teszt változót *)
+	bAdsInfoNextStation				:BOOL;
+	fbPalletDataExchange			:FB_ADSHandler;
+	stPalletData					:ST_PalletData;
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

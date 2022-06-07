@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <GVL Name="GVL_Safety" Id="{df573d54-f877-4301-b247-14fc86f332eb}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	i_bKukaEstopBtn		AT %I*		:BOOL;			// Kuka vészgomb státusz
+	i_bGreenBtn			AT %I*		:BOOL;			// Master On nyomógomb
+
+	
+	(* Digital input AS1*)
+	i_bEmyStopBtn1		AT %I*		:BOOL;			// I1.1
+	i_bEmyStopBtn2		AT %I*		:BOOL;			// I1.2
+	i_bDoor1Open		AT %I*		:BOOL;			// I1.3
+	i_bDoor2Open		AT %I*		:BOOL;			// I1.4
+	i_bDoor3Open		AT %I*		:BOOL;			// I1.5
+	i_bDoor4Open		AT %I*		:BOOL;			// I1.6
+	i_bLO1EDM			AT %I*		:BOOL;			// I1.7
+	i_bLO2EDM			AT %I*		:BOOL;			// I1.8
+													// I1.9
+													// I1.10
+	i_bRedBtn			AT %I*		:BOOL;			// I1.11
+													// I1.12
+													// ...
+													// I1.16
+													
+	i_bSafetyFbErr		AT %I*		:BOOL;			// Safety hiba
+	i_bSafetyComErr		AT %I*		:BOOL;			// Safety hiba
+	i_bSafetyOtherErr	AT %I*		:BOOL;			// Safety hiba
+	i_bSafetyLO1EDMErr	AT %I*		:BOOL;			// EDM hiba
+	i_bSafetyLO2EDMErr	AT %I*		:BOOL;			// EDM hiba
+
+	i_bAX5805ErrorX		AT %I*		:BOOL;	
+	i_bAX5805ErrorY		AT %I*		:BOOL;	
+	i_bAX5805ErrorZ		AT %I*		:BOOL;	
+	
+	i_bEmyOK			AT %I*		:BOOL;
+	i_bDoorOK			AT %I*		:BOOL;
+
+	
+	q_bSafety_Run		AT %Q*		:BOOL;	
+	q_bSafety_Reset		AT %Q*		:BOOL;	
+	q_bSafety_Ack		AT %Q*		:BOOL;
+	q_bAX5805_Ack		AT %Q*		:BOOL;	
+	q_bLO1EDM			AT %Q*		:BOOL;
+	q_bLO2EDM			AT %Q*		:BOOL;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

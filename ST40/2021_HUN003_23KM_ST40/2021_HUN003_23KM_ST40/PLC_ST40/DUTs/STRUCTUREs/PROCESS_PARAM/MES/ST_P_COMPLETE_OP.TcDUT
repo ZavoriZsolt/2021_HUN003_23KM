@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_P_COMPLETE_OP" Id="{ee2ba148-cc59-460e-b1ee-1d81002d13f0}">
+    <Declaration><![CDATA[TYPE ST_P_COMPLETE_OP :
+STRUCT
+	SetIndex:				BOOL;
+	Index:					INT;
+	Barcode:			INT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

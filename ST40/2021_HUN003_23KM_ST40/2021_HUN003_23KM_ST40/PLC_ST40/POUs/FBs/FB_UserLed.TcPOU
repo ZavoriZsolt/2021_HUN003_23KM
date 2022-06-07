@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_UserLed" Id="{b3fa31c7-50c3-4780-ab17-85abffd8af1a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_UserLed
+VAR_INPUT
+	bEnable					:BOOL;					// FB Engedély.
+	eULedColor				:E_UsrLED_Color;
+END_VAR
+VAR_OUTPUT
+	bError					:BOOL;					// Hiba bit
+	nErrId					:UDINT;					// Hiba kód
+END_VAR
+VAR
+	fbUserLED				:FB_SetLedColor_BAPI;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*-----=== User LED ===-----*)
+(*	--------------------------------------------------------------------------------
+	Leírás		:	C69XX CPU User LED kezelés
+	Név			:	FB_UserLed
+	Módosító	:	Závori Zsolt
+	Dátum		:	2019.07.05
+	Revízió		:	1.0
+	--------------------------------------------------------------------------------
+	Feltételek	:	Tc2_IoFunctions
+	Változók	:	-
+	Visu		:	-
+	UserControl	:	-
+	--------------------------------------------------------------------------------
+	Részletek	:	-					
+*)
+IF		fbUserLED.eNewColor <> eULedColor AND
+		NOT fbUserLED.bExecute AND
+		NOT fbUserLED.bBusy THEN
+			fbUserLED.eNewColor := eULedColor;
+			fbUserLED.bExecute := TRUE;
+ELSIF	(fbUserLED.bExecute AND NOT fbUserLED.bBusy) OR fbUserLED.bError THEN
+			fbUserLED.bExecute := FALSE;
+END_IF
+fbUserLED();
+bError := fbUserLED.bError;
+nErrId := fbUserLED.nErrID;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_UserLed">
+      <LineId Id="13" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="10" />
+      <LineId Id="43" Count="1" />
+      <LineId Id="76" Count="7" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="92" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

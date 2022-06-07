@@ -1,0 +1,36 @@
+﻿{
+  "controlTypeValues": {
+    "TcHmi.Controls.Beckhoff.TcHmiButton": {
+      "attributes": {
+        "TextFontSize": 20.0
+      },
+      "themedResources": {}
+    },
+    "TcHmi.Controls.Beckhoff.TcHmiToggleButton": {
+      "attributes": {
+        "TextFontSize": 20.0
+      },
+      "themedResources": {}
+    },
+    "TcHmi.Controls.Beckhoff.TcHmiCheckbox": {
+      "attributes": {
+        "TextFontSize": 20.0
+      },
+      "themedResources": {}
+    },
+    "TcHmi.Controls.Beckhoff.TcHmiTextblock": {
+      "attributes": {
+        "TextFontSize": 20.0
+      },
+      "themedResources": {}
+    },
+    "TcHmi.Controls.Beckhoff.TcHmiTextbox": {
+      "attributes": {
+        "TextFontSize": 20.0
+      },
+      "themedResources": {}
+    }
+  },
+  "controlClassValues": {},
+  "$schema": "../../../Packages/Beckhoff.TwinCAT.HMI.Framework.12.742.0/runtimes/native1.12-tchmi/Schema/ThemeDescription.Schema.json"
+}
