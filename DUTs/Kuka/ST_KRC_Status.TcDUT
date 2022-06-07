@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="ST_KRC_Status" Id="{ffdb72c4-fe6f-47fb-85ab-1f168f23b128}">
+    <Declaration><![CDATA[TYPE ST_KRC_Status :
+STRUCT
+(*-----=== Byte 00 ===-----*)
+	bReady					:BIT;				// 00.0	System is ready for program start
+	bAlarm					:BIT;				// 00.1	System is in alarm stop state(intern or external)
+	bIntEStop				:BIT;				// 00.2	Internal alarm stop (not used)
+	bUserSAF				:BIT;				// 00.3	User safety (Doors) are closed
+	bPeriReday				:BIT;				// 00.4	Drives ready
+	bIOActConf				:BIT;				// 00.5	External contol is enabled (not used)
+	bStopMess				:BIT;				// 00.6	There is at least one message which has to be confirmed
+	bProAct					:BIT;				// 00.7	Program active
+	
+(*-----=== Byte 01 ===-----*)
+	bPgnoReq				:BIT;				// 01.0	Program number request
+	bApplRun				:BIT;				// 01.1	Application running
+	bT1						:BIT;				// 01.2	Test 1 mode
+	bT2						:BIT;				// 01.3	Test 2 mode
+	bAut					:BIT;				// 01.4	Automatic mode
+	bExt					:BIT;				// 01.5	External automatic mode
+	bRobStopped				:BIT;				// 01.6	Robot arm stopped
+	{attribute 'hide'}
+	_reserved_01_7			:BIT;				// 01.7	Tartalék	
+
+(*-----=== Byte 02 ===-----*)
+	{attribute 'hide'}
+	_reserved_02			:BYTE;				// 02	Tartalék	
+
+(*-----=== Byte 03 ===-----*)
+	nProgNr					:BYTE;				// 03	Reflected program number
+
+(*-----=== Byte 04 ===-----*)
+	{attribute 'hide'}
+	_reserved_04			:BYTE;				// 04	Tartalék (Safety IO)	
+
+(*-----=== Byte 05 ===-----*)
+	bReqMoveInPalettZone	:BIT;				// 05.0	Requesting an Enabling Signal from PLC to be able to move inside Palett Zone.
+	{attribute 'hide'}
+	_reserved_05_1			:BIT;				// 05.1	Tartalék	
+	{attribute 'hide'}
+	_reserved_05_2			:BIT;				// 05.2	Tartalék	
+	{attribute 'hide'}
+	_reserved_05_3			:BIT;				// 05.3	Tartalék	
+	bIntMoveInPalettZone	:BIT;				// 05.0	Interlock signal for PLC that the Robot is inside the Palett Zone and it should not move anything.
+	{attribute 'hide'}
+	_reserved_05_5			:BIT;				// 05.5	Tartalék	
+	{attribute 'hide'}
+	_reserved_05_6			:BIT;				// 05.6	Tartalék	
+	{attribute 'hide'}
+	_reserved_05_7			:BIT;				// 05.7	Tartalék	
+
+(*-----=== Byte 06 ===-----*)
+	bProgramError			:BIT;				// 06.0	Error in program, the occured event isn't handled in program.
+	bPositionError			:BIT;				// 06.1	During position check robot is out of any known zones, manual home required.
+	bParameterError			:BIT;				// 06.2	The parameter sent by PLC isn't valid.
+	bVacuumError			:BIT;				// 06.3	The Vacuum could not build up.
+	bWorpieceError			:BIT;				// 06.4	The Robot lost the workpiece from the gripper. Neither vacuum and nor product presnece sensor indicating its presence.
+	{attribute 'hide'}
+	_reserved_06_5			:BIT;				// 06.5	Tartalék	
+	{attribute 'hide'}
+	_reserved_06_6			:BIT;				// 06.6	Tartalék	
+	{attribute 'hide'}
+	_reserved_06_7			:BIT;				// 06.7	Tartalék	
+
+(*-----=== Byte 07 ===-----*)
+	bProdSensor				:BIT;				// 07.0	Product Presence Sensor Status for PLC.
+	bVacuumInStat			:BIT;				// 07.1	Vacuum Status for PLC.
+	bVacuumOutStat			:BIT;				// 07.2	Inducates that the robot turned on the Vacuum.
+	{attribute 'hide'}
+	_reserved_07_3			:BIT;				// 07.3	Tartalék	
+	{attribute 'hide'}
+	_reserved_07_4			:BIT;				// 07.4	Tartalék	
+	{attribute 'hide'}
+	_reserved_07_5			:BIT;				// 07.5	Tartalék	
+	{attribute 'hide'}
+	_reserved_07_6			:BIT;				// 07.6	Tartalék	
+	{attribute 'hide'}
+	_reserved_07_7			:BIT;				// 07.7	Tartalék	
+	
+(*-----=== Byte 08 ===-----*)
+	{attribute 'hide'}
+	_reserved_08			:BYTE;				// 08	Tartalék	
+(*-----=== Byte 09 ===-----*)
+	{attribute 'hide'}
+	_reserved_09			:BYTE;				// 09	Tartalék	
+(*-----=== Byte 10 ===-----*)
+	{attribute 'hide'}
+	_reserved_10			:BYTE;				// 10	Tartalék	
+(*-----=== Byte 11 ===-----*)
+	{attribute 'hide'}
+	_reserved_11			:BYTE;				// 11	Tartalék	
+(*-----=== Byte 12 ===-----*)
+	{attribute 'hide'}
+	_reserved_12			:BYTE;				// 12	Tartalék	
+(*-----=== Byte 13 ===-----*)
+	{attribute 'hide'}
+	_reserved_13			:BYTE;				// 13	Tartalék	
+(*-----=== Byte 14 ===-----*)
+	{attribute 'hide'}
+	_reserved_14			:BYTE;				// 14	Tartalék	
+(*-----=== Byte 15 ===-----*)
+	{attribute 'hide'}
+	_reserved_15			:BYTE;				// 15	Tartalék		
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
