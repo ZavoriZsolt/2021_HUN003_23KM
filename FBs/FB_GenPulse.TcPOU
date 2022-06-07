@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_GenPulse" Id="{a92e27a3-f101-42cd-8ba1-14d5837ee5bd}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_GenPulse
+VAR_INPUT
+	ENQ : BOOL := TRUE;
+	PTH : TIME;
+	PTL : TIME;
+END_VAR
+VAR_OUTPUT
+	Q : BOOL;	
+END_VAR
+VAR
+	timON: TON;
+	timOFF: TON;
+	init: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT(Init)
+THEN 	timOFF.IN:=FALSE;
+		timON.IN:=FALSE;
+		Init:=TRUE;
+END_IF;
+
+timON(	IN:= enq AND NOT(timOFF.Q),
+		PT:=PTH);
+timOFF(	IN:= timON.Q,
+		PT:=PTL);
+
+q:=timON.Q AND NOT(timOFF.Q);]]></ST>
+    </Implementation>
+    <LineIds Name="FB_GenPulse">
+      <LineId Id="3" Count="10" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

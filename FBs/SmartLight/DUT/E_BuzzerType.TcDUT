@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="E_BuzzerType" Id="{5095b924-6456-4206-a531-8426a2c2df84}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_BuzzerType :
+(
+	Continous		:= 0,
+	f1HZchopped		:= 1,
+	f5HZchopped		:= 2,
+	beep3pause2sec	:= 3
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

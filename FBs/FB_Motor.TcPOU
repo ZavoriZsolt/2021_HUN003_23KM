@@ -1,0 +1,604 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_Motor" Id="{3a2396e3-27f6-44ae-81f8-697f51ead92e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Motor
+VAR_INPUT
+	sName				:STRING;
+	bEMYOK				:BOOL;
+	bErrorAck			:BOOL;
+	bDisableManualCmd	:BOOL;	(*Manual control disable*)
+	rPosition1			:REAL;
+	rVelocity1			:REAL;
+	bBufferedMove		:BOOL;
+	rPosition2			:REAL;
+	rVelocity2			:REAL;
+	bGoPosition			:BOOL;
+	bEnablePositive		:BOOL := TRUE;
+	bEnableNegative		:BOOL := TRUE;
+	bIncremental		:BOOL := FALSE;	//True: Incremental encoder, false: absolut encoder
+	bCalibrationCam		:BOOL;	//Véghelyzet érzékelő
+	bHalt				:BOOL;
+	rVelocityJog		:REAL;
+	lrNegLimit			:LREAL;	
+	lrPosLimit			:LREAL;
+	stAxisEvent			:TcEventEntry;	(*Event definition*)
+END_VAR
+VAR_OUTPUT
+	/// axis reference data structure 
+	Axis				:AXIS_REF;
+	bBusy				:BOOL;
+	bDone				:BOOL;
+	bError				:BOOL;
+	sError				:STRING(255); (*hiba string*)
+END_VAR
+VAR
+	nState				:UINT;
+	nStatePrevious		:UINT;
+	fbRunTrig			:R_TRIG; (*Indulás trigger*)	
+	PowerAxis			:MC_Power;
+	PowerAxisOut		:ST_McOutputs;
+	MoveAxis1			:MC_MoveAbsolute;
+	MoveAbsoluteOut1	:ST_McOutputs;
+	MoveAxis2			:MC_MoveAbsolute;
+	MoveAbsoluteOut2	:ST_McOutputs;
+	Reset				:MC_Reset;
+	ResetOut			:ST_McOutputs;
+	SoEReset			:FB_SoEReset;
+	SoEResetOut			:ST_McOutputs;
+	Home				:MC_Home;
+	HomeOut				:ST_McOutputs;
+	Jog					:MC_Jog;
+	bJogForward			:BOOL;
+	bJogBackwards		:BOOL;
+	Halt				:MC_Halt;
+	HaltOut				:ST_McOutputs;
+	fb_DriveDiag		:FB_SoEReadDiagNumber;
+	bIsInitalized		:BOOL;
+	fbAlarm				:FB_TcAlarm;
+	nGlobalAxisErrorID	:UDINT;
+	GetSoft_NegLimit	:Tc2_MC2.MC_ReadParameter;
+	SetSoft_NegLimit	:Tc2_MC2.MC_WriteParameter;
+	GetSoft_PosLimit	:Tc2_MC2.MC_ReadParameter;
+	SetSoft_PosLimit	:Tc2_MC2.MC_WriteParameter;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*Hiba kezelés Tc3_EventLogger*)
+IF NOT bIsInitalized THEN
+	bIsInitalized := TRUE;
+	fbAlarm.CreateEx(stAxisEvent, TRUE, 0);
+END_IF
+
+IF bErrorAck THEN
+	IF fbAlarm.eConfirmationState = 2 THEN
+		fbAlarm.Confirm(0);
+	END_IF
+END_IF
+
+(*Hibakezelés*)
+IF nState > 0
+	AND nState < 10000
+THEN
+	nStatePrevious := nState;
+END_IF
+
+(*Emergency*)
+IF NOT bEMYOK THEN
+	nState := 0;
+	bBusy:= FALSE;
+	bDone:= FALSE;
+END_IF
+
+IF bHalt THEN
+	Halt.Execute := TRUE;
+ELSE
+	Halt.Execute := FALSE;
+END_IF
+
+(*Error*)
+sError := '';
+bError := FALSE;
+
+IF Axis.Status.Error OR Axis.Status.DriveDeviceError OR PowerAxisOut.Error OR MoveAbsoluteOut1.Error OR MoveAbsoluteOut2.Error OR
+	Halt.Error OR Home.Error OR Jog.Error OR ResetOut.Error
+THEN
+	bError := TRUE;
+	IF (fbAlarm.eConfirmationState <> 2 AND fbAlarm.nTimeCleared <> 0 AND fbAlarm.nTimeConfirmed <> 0) OR //Ha már volt alarm, akkor van bennük érték
+		(fbAlarm.eConfirmationState = 1 AND fbAlarm.nTimeCleared = 0 AND fbAlarm.nTimeConfirmed = 0)	//Első futás esetén
+	THEN
+		//fb_DriveDiag(Execute:= TRUE, Axis:= Axis);
+		//IF NOT fb_DriveDiag.Busy THEN
+			//fb_DriveDiag(Execute:= FALSE, Axis:= Axis);
+			IF Axis.Status.ErrorID <> 0 THEN
+				nGlobalAxisErrorID := Axis.Status.ErrorID;
+			ELSIF PowerAxisOut.ErrorID <> 0 THEN
+				nGlobalAxisErrorID := PowerAxisOut.ErrorID;
+			ELSIF MoveAbsoluteOut1.ErrorID <> 0 THEN
+				nGlobalAxisErrorID := MoveAbsoluteOut1.ErrorID;
+			ELSIF MoveAbsoluteOut2.ErrorID <> 0 THEN
+				nGlobalAxisErrorID := MoveAbsoluteOut2.ErrorID;
+			ELSIF Halt.ErrorID <> 0 THEN
+				nGlobalAxisErrorID := Halt.ErrorID;
+			ELSIF Home.ErrorID <> 0 THEN
+				nGlobalAxisErrorID := Home.ErrorID;
+			ELSIF Jog.ErrorID <> 0 THEN
+				nGlobalAxisErrorID := Jog.ErrorID;	
+			ELSIF ResetOut.ErrorID <> 0 THEN
+				nGlobalAxisErrorID := ResetOut.ErrorID;
+			END_IF
+			//fbAlarm.ipArguments.Clear().AddUDInt(nGlobalAxisErrorID).AddUDInt(fb_DriveDiag.DiagNumber);
+			fbAlarm.ipArguments.Clear().AddUDInt(nGlobalAxisErrorID);
+			fbAlarm.Raise(0);
+		//END_IF
+	END_IF
+END_IF
+
+(* update the axis status at the beginning of each cycle *)
+Axis();
+
+fbRunTrig(CLK:= bGoPosition, Q=> );
+
+CASE nState OF
+	(* Vészkör bontva - Alaphelyzet felvétel *)
+	0:(* Működtetések törlése - Vészkör ellenőrzés *)
+		MoveAxis1.Execute := FALSE;
+		MoveAxis2.Execute := FALSE;
+		Reset.Execute := FALSE;
+		PowerAxis.Enable := FALSE;
+		Home.Execute := FALSE;
+		IF bEMYOK THEN
+			IF Axis.Status.Error
+				OR Axis.Status.DriveDeviceError
+			THEN
+				nState := 15000;
+			ELSE
+				nState := nState + 10;
+			END_IF
+		END_IF
+
+	10: (*Tengely engedélyezése*)
+		PowerAxis.Enable := TRUE;
+		IF PowerAxis.Status THEN
+			IF bIncremental THEN
+				nState := nState + 10;
+			ELSE
+				nState := 1000;
+			END_IF	
+		ELSIF PowerAxis.Error THEN
+			nState := 15000;
+		END_IF		
+
+	20: (*Home OK?*)
+		IF Axis.Status.Homed THEN
+			nState := 1000;
+		END_IF
+		
+	30: (*Parancsra vár*)
+		IF fbRunTrig.Q THEN
+			bDone:= FALSE;
+			bBusy:= TRUE;
+			nState := nState + 10;
+		END_IF
+		
+	40: (*Home-olás*)
+		Home.Execute := TRUE;
+		IF Home.Done THEN
+			Home.Execute := FALSE;
+			bBusy:= FALSE;
+			bDone:= TRUE;
+			nState := 1000;
+		ELSIF Home.CommandAborted OR Home.Error THEN
+			nState := 15000;
+		END_IF		
+		
+	(* Automata mód - Alaphelyzet *)
+	1000: (*Parancsra vár*)
+		IF fbRunTrig.Q THEN
+			bDone:= FALSE;
+			bBusy:= TRUE;
+			nState := nState + 10;
+		END_IF
+		IF NOT bGoPosition AND bDone THEN
+			bDone := false;
+		END_IF
+		(*IF bMaintenance THEN
+			bDone:= FALSE;
+		END_IF*)
+		IF Axis.Status.Error
+			OR Axis.Status.DriveDeviceError
+		THEN
+			nState := 15000;
+		END_IF
+		
+	1010: (*Pozícióra*)
+		MoveAxis1.Position := rPosition1;
+		MoveAxis1.Velocity := rVelocity1;
+		MoveAxis1.BufferMode := MC_Buffered;
+		MoveAxis1.Execute := TRUE;
+		(*Közvetlen pozícióra*)
+		IF NOT bBufferedMove THEN
+			IF MoveAxis1.Done OR MoveAxis1.CommandAborted THEN
+				MoveAxis1.Execute := FALSE;
+				bBusy:= FALSE;
+				bDone:= TRUE;
+				nState := 1000;
+			ELSIF MoveAxis1.Error THEN
+				nState := 15000;
+			END_IF
+		ELSE
+		(*Van buffer parancs*)
+			IF MoveAxis1.Active THEN
+				MoveAxis1.Execute := FALSE;
+				nState := 1020;
+			ELSIF MoveAxis1.Error THEN
+				nState := 15000;
+			END_IF	
+		END_IF
+
+	1020: (*Buffer*)
+		MoveAxis2.Position := rPosition2;
+		MoveAxis2.Velocity := rVelocity2;
+		MoveAxis2.BufferMode := MC_BlendingLow;
+		MoveAxis2.Execute := TRUE;
+		IF MoveAxis2.Done OR MoveAxis2.CommandAborted THEN
+			MoveAxis2.Execute := FALSE;
+			bBusy:= FALSE;
+			bDone:= TRUE;
+			nState := 1000;
+		ELSIF MoveAxis2.Error THEN
+			nState := 15000;
+		END_IF
+
+	15000:(* Hiba *)
+		bBusy := FALSE;
+		nState := 15010;
+
+	15010:(* Hibanyugta *)
+		IF bErrorAck THEN
+			IF Axis.Status.DriveDeviceError THEN (* axis drive error requires reset *)
+				SoEReset.Execute := TRUE;
+				Reset.Execute := TRUE;
+				nState := 15020;
+			ELSIF Axis.Status.Error THEN (* axis error requires reset *)
+				Reset.Execute := TRUE;
+				nState := 15030;
+			ELSE
+				nState := 0;
+			END_IF
+		END_IF
+		
+	15020: (*Drive Reset*)
+		IF NOT SoEReset.Busy THEN
+			SoEReset.Execute := FALSE;
+			nState := 0;
+		ELSIF SoEReset.Error THEN
+			nState := 0; (* can't do anything here *)
+		END_IF
+		nState := 0;
+		
+	15030: (*Reset*)
+		IF Reset.Done THEN
+			Reset.Execute := FALSE;
+			nState := 0;
+		ELSIF Reset.Error THEN
+			nState := 0; (* can't do anything here *)
+		END_IF	
+END_CASE
+
+ActPower();	(* call the power function block *)
+ActMove();	(* call the move function block *)
+ActReset();	(* call the reset function block *)
+ActSoEReset();	(* call the SoEreset function block *)
+ActHome();	(* call the home function block *)
+ActJog();
+ActHalt();
+ActSetLimits();
+
+//Hiba törlés (nyugtázott és megszűnt)
+IF fbAlarm.eConfirmationState = 3 AND NOT bError THEN
+	fbAlarm.Clear(0, FALSE);
+END_IF]]></ST>
+    </Implementation>
+    <Action Name="ActHalt" Id="{8da64c30-f8ae-487a-a298-f1fa9c9a58f1}">
+      <Implementation>
+        <ST><![CDATA[Halt(
+	Axis:= Axis, 
+	Execute:= Halt.Execute, 
+	Deceleration:= , 
+	Jerk:= , 
+	BufferMode:= , 
+	Options:= , 
+	Done=> HaltOut.Done, 
+	Busy=> HaltOut.Busy, 
+	Active=> HaltOut.Active, 
+	CommandAborted=> HaltOut.CommandAborted, 
+	Error=> HaltOut.Error, 
+	ErrorID=> HaltOut.ErrorID);]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ActHome" Id="{d35b1c94-25f9-42d5-a740-40c6f25341fc}">
+      <Implementation>
+        <ST><![CDATA[Home(
+	Axis:= Axis, 
+	Execute:= Home.Execute, 
+	Position:= Home.Position, 
+	HomingMode:= MC_DefaultHoming, 
+	BufferMode:= , 
+	Options:= , 
+	bCalibrationCam:= bCalibrationCam, 
+	Done=> HomeOut.Done, 
+	Busy=> HomeOut.Busy, 
+	Active=> HomeOut.Active, 
+	CommandAborted=> HomeOut.CommandAborted, 
+	Error=> HomeOut.Error, 
+	ErrorID=> HomeOut.ErrorID);]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ActJog" Id="{e65eed0f-bb5f-4d7e-beac-7a0cb646a4c6}">
+      <Implementation>
+        <ST><![CDATA[Jog(
+	Axis:= Axis, 
+	JogForward:= bJogForward,  
+	JogBackwards:= bJogBackwards,  
+	Mode:= MC_JOGMODE_CONTINOUS, 
+	Position:= , 
+	Velocity:= rVelocityJog, 
+	Acceleration:= , 
+	Deceleration:= , 
+	Jerk:= , 
+	Done=> , 
+	Busy=> , 
+	Active=> , 
+	CommandAborted=> , 
+	Error=> , 
+	ErrorID=> );]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ActMove" Id="{13284dda-565e-48c7-80fc-1f273cb20ca1}">
+      <Implementation>
+        <ST><![CDATA[MoveAxis1(
+	Axis:= Axis, 
+	Execute:= MoveAxis1.Execute, 
+	Position:= MoveAxis1.Position, 
+	Velocity:= MoveAxis1.Velocity, 
+	Acceleration:= , 
+	Deceleration:= , 
+	Jerk:= , 
+	BufferMode:= MoveAxis1.BufferMode, 
+	Options:= , 
+	Done=> MoveAbsoluteOut1.Done, 
+	Busy=> MoveAbsoluteOut1.Busy, 
+	Active=> MoveAbsoluteOut1.Active, 
+	CommandAborted=> MoveAbsoluteOut1.CommandAborted, 
+	Error=> MoveAbsoluteOut1.Error, 
+	ErrorID=> MoveAbsoluteOut1.ErrorID);
+	
+MoveAxis2(
+	Axis:= Axis, 
+	Execute:= MoveAxis2.Execute, 
+	Position:= MoveAxis2.Position, 
+	Velocity:= MoveAxis2.Velocity, 
+	Acceleration:= , 
+	Deceleration:= , 
+	Jerk:= , 
+	BufferMode:= MoveAxis2.BufferMode, 
+	Options:= , 
+	Done=> MoveAbsoluteOut2.Done, 
+	Busy=> MoveAbsoluteOut2.Busy, 
+	Active=> MoveAbsoluteOut2.Active, 
+	CommandAborted=> MoveAbsoluteOut2.CommandAborted, 
+	Error=> MoveAbsoluteOut2.Error, 
+	ErrorID=> MoveAbsoluteOut2.ErrorID);]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ActPower" Id="{840880e9-dc29-499c-a788-f95373b21b47}">
+      <Implementation>
+        <ST><![CDATA[PowerAxis(
+	Axis:= Axis, 
+	Enable:= PowerAxis.Enable, 
+	Enable_Positive:= PowerAxis.Enable AND bEnablePositive, 
+	Enable_Negative:= PowerAxis.Enable AND bEnableNegative, 
+	Override:= 100, 
+	BufferMode:= , 
+	Options:= , 
+	Status=> PowerAxisOut.Done, 
+	Busy=> PowerAxisOut.Busy, 
+	Active=> PowerAxisOut.Active, 
+	Error=> PowerAxisOut.Error, 
+	ErrorID=> PowerAxisOut.ErrorID);]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ActReset" Id="{38fcf758-a20e-4455-b82a-b538f5e95322}">
+      <Implementation>
+        <ST><![CDATA[Reset(
+	Axis:= Axis, 
+	Execute:= Reset.Execute, 
+	Done=> ResetOut.Done, 
+	Busy=> ResetOut.Busy, 
+	Error=> ResetOut.Error, 
+	ErrorID=> ResetOut.ErrorID);]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ActSetLimits" Id="{d0d2f50b-7b7d-4551-bc26-7ab39e5dffe1}">
+      <Implementation>
+        <ST><![CDATA[GetSoft_PosLimit(
+	Axis:= Axis, 
+	Enable:= NOT GetSoft_PosLimit.Busy AND NOT GetSoft_PosLimit.Error AND NOT SetSoft_PosLimit.Execute, 
+	ParameterNumber:= 2, 
+	ReadMode:= Tc2_MC2.READMODE_CYCLIC );
+
+GetSoft_NegLimit(
+	Axis:= Axis, 
+	Enable:= NOT GetSoft_NegLimit.Busy AND NOT GetSoft_NegLimit.Error AND NOT SetSoft_NegLimit.Execute, 
+	ParameterNumber:= 3, 
+	ReadMode:= Tc2_MC2.READMODE_CYCLIC );
+
+SetSoft_PosLimit(
+	Axis:= Axis, 
+	Execute:= NOT GetSoft_PosLimit.Busy AND GetSoft_PosLimit.Valid AND GetSoft_PosLimit.Value <> lrPosLimit, 
+	ParameterNumber:= 2, 
+	Value:= lrPosLimit);
+	
+SetSoft_NegLimit(
+	Axis:= Axis, 
+	Execute:= NOT GetSoft_NegLimit.Busy AND GetSoft_NegLimit.Valid AND GetSoft_NegLimit.Value <> lrNegLimit, 
+	ParameterNumber:= 3, 
+	Value:= lrNegLimit);]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="ActSoEReset" Id="{c3731c99-83fc-4a94-a26f-8b094eb75def}">
+      <Implementation>
+        <ST><![CDATA[SoEReset(
+	Axis:= Axis, 
+	Execute:= SoEReset.Execute, 
+	Busy=> SoEResetOut.Busy, 
+	Error=> SoEResetOut.Error, 
+	AdsErrId=> SoEResetOut.ErrorID, 
+	SercosErrId=> );]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="OldCodes" Id="{02abb81d-f7fd-42d8-97f7-43bbf594ca79}">
+      <Implementation>
+        <ST><![CDATA[(*IF Axis.Status.DriveDeviceError THEN
+	bError := TRUE;
+	sError :=  CONCAT(STR1:= sError, STR2:= (CONCAT(STR1:= sName, STR2:= ' drive hiba$N')));
+END_IF
+IF Axis.Status.Error THEN
+	bError := TRUE;
+	sError :=  CONCAT(STR1:= sError, STR2:= (CONCAT(STR1:= sName, STR2:= ' hiba$N')));
+END_IF
+IF PowerAxisOut.Error THEN
+	bError := TRUE;
+	sError :=  CONCAT(STR1:= sError, STR2:= (CONCAT(STR1:= sName, STR2:= ' engedély hiba$N')));
+END_IF
+IF MoveAbsoluteOut1.CommandAborted OR MoveAbsoluteOut1.Error THEN
+	bError := TRUE;
+	sError :=  CONCAT(STR1:= sError, STR2:= (CONCAT(STR1:= sName, STR2:= ' mozgás hiba$N')));
+END_IF
+IF ResetOut.Error (*OR SoEResetOut.Error*) THEN
+	bError := TRUE;
+	sError :=  CONCAT(STR1:= sError, STR2:= (CONCAT(STR1:= sName, STR2:= ' nyugta hiba$N')));
+END_IF*)]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="FB_Motor">
+      <LineId Id="1581" Count="3" />
+      <LineId Id="918" Count="0" />
+      <LineId Id="1593" Count="1" />
+      <LineId Id="1600" Count="2" />
+      <LineId Id="1587" Count="0" />
+      <LineId Id="1607" Count="0" />
+      <LineId Id="1586" Count="0" />
+      <LineId Id="919" Count="8" />
+      <LineId Id="1296" Count="0" />
+      <LineId Id="1246" Count="0" />
+      <LineId Id="928" Count="0" />
+      <LineId Id="1508" Count="0" />
+      <LineId Id="929" Count="0" />
+      <LineId Id="1509" Count="0" />
+      <LineId Id="1513" Count="1" />
+      <LineId Id="1510" Count="0" />
+      <LineId Id="1512" Count="0" />
+      <LineId Id="930" Count="2" />
+      <LineId Id="1840" Count="0" />
+      <LineId Id="1851" Count="0" />
+      <LineId Id="1948" Count="0" />
+      <LineId Id="1947" Count="0" />
+      <LineId Id="1852" Count="0" />
+      <LineId Id="1859" Count="0" />
+      <LineId Id="1868" Count="0" />
+      <LineId Id="1867" Count="0" />
+      <LineId Id="1862" Count="2" />
+      <LineId Id="1973" Count="15" />
+      <LineId Id="1972" Count="0" />
+      <LineId Id="1865" Count="0" />
+      <LineId Id="2095" Count="0" />
+      <LineId Id="1866" Count="0" />
+      <LineId Id="1860" Count="1" />
+      <LineId Id="1753" Count="0" />
+      <LineId Id="1950" Count="0" />
+      <LineId Id="955" Count="25" />
+      <LineId Id="1126" Count="1" />
+      <LineId Id="1129" Count="1" />
+      <LineId Id="1128" Count="0" />
+      <LineId Id="982" Count="5" />
+      <LineId Id="1133" Count="0" />
+      <LineId Id="990" Count="0" />
+      <LineId Id="1152" Count="0" />
+      <LineId Id="1146" Count="4" />
+      <LineId Id="991" Count="0" />
+      <LineId Id="1151" Count="0" />
+      <LineId Id="992" Count="0" />
+      <LineId Id="1134" Count="0" />
+      <LineId Id="1138" Count="6" />
+      <LineId Id="1136" Count="1" />
+      <LineId Id="993" Count="1" />
+      <LineId Id="998" Count="0" />
+      <LineId Id="1079" Count="0" />
+      <LineId Id="999" Count="2" />
+      <LineId Id="2270" Count="2" />
+      <LineId Id="1002" Count="0" />
+      <LineId Id="1248" Count="1" />
+      <LineId Id="1343" Count="3" />
+      <LineId Id="1247" Count="0" />
+      <LineId Id="1349" Count="0" />
+      <LineId Id="1003" Count="46" />
+      <LineId Id="2150" Count="0" />
+      <LineId Id="1050" Count="16" />
+      <LineId Id="2041" Count="0" />
+      <LineId Id="1067" Count="11" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="1199" Count="0" />
+      <LineId Id="1399" Count="0" />
+      <LineId Id="1455" Count="0" />
+      <LineId Id="2210" Count="0" />
+      <LineId Id="1676" Count="0" />
+      <LineId Id="1678" Count="3" />
+    </LineIds>
+    <LineIds Name="FB_Motor.ActHalt">
+      <LineId Id="2" Count="11" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Motor.ActHome">
+      <LineId Id="2" Count="12" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Motor.ActJog">
+      <LineId Id="3" Count="14" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Motor.ActMove">
+      <LineId Id="2" Count="31" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Motor.ActPower">
+      <LineId Id="2" Count="11" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Motor.ActReset">
+      <LineId Id="2" Count="5" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Motor.ActSetLimits">
+      <LineId Id="44" Count="3" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="16" Count="4" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="2" Count="4" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="51" Count="3" />
+      <LineId Id="50" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Motor.ActSoEReset">
+      <LineId Id="10" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="15" Count="2" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Motor.OldCodes">
+      <LineId Id="2" Count="18" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

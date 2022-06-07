@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_Bistabil" Id="{c4648a8e-24b0-425b-9ce0-b7ae202e1789}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Bistabil
+VAR_INPUT
+	sName				:STRING(30);
+	sBasePosSensor		:STRING(10);		(*Alaphelyzet szenzor tervjel*)
+	sWorkPosSensor		:STRING(10);		(*Munkahelyzet szenzor tervjel*)
+	bEn					:BOOL;				(*Enable - Engedély jel*)
+	bEHA				:BOOL; 				(*Error-handling active - Hibafigyelés aktív*)
+	nEHMode				:BYTE;				(*0: Delete output commant, 1: Control device to the opposite direction*)
+	bDisableManualCmd	:BOOL;				(*Manual control disable*)
+	bBasePosCmd			:BOOL;				(*Control to Base pos - vezérlés parancs alaphelyzetbe*)
+	bWorkPosCmd			:BOOL;				(*Control to work pos - vezérlés parancs munkahelyzetbe*)
+	bAck				:BOOL; 				(*Acknowledge - Hibanyugta*)
+	timBasePos			:TIME:=T#5S;		(*alaphelyzet felvételi idő*)
+	timWorkPos			:TIME:=T#5S;		(*munkahelyzet felvételi idő*)
+	timBasePosStab		:TIME:=T#200MS;		(*alaphelyzet felvételi idő*)
+	timWorkPosStab		:TIME:=T#200MS;		(*munkahelyzet felvételi idő*)
+	i_bBasePos			AT %I*	:BOOL;		(*Base position - alaphelyzet*)
+	i_bWorkPos			AT %I*	:BOOL;		(*Work position - munkahelyzet*)
+	//stEventEntry		:TcEventEntry;		(*Event definition*)
+	stBasePosEvent		:TcEventEntry;	(*Event definition*)
+	stWorkPosEvent		:TcEventEntry;	(*Event definition*)
+END_VAR
+VAR_OUTPUT
+	bBasePosStab		:BOOL;				(*alaphelyzet stabil*)
+	bWorkPosStab		:BOOL;				(*alaphelyzet stabil*)
+	bError				:BOOL;				(*hiba van*)
+	sError				:STRING(255);		(*hiba string*)
+	q_bBasePos			AT %Q*	:BOOL;		(*vezérlés alaphelyzetbe*)
+	q_bWorkPos			AT %Q*	:BOOL;		(*vezérlés munkahelyzetbe*)
+END_VAR
+VAR
+	tBP, tWP, tDPWP		:TON;
+	tBPS, tWPS			:TON;
+	bErrBasePos0		:BOOL;				(*alaphelyzet hiba0: nem szünt meg a jel munkahelyzetbe mozgáskor*)
+	bErrBasePos1		:BOOL;				(*alaphelyzet hiba1: nem jött meg a jel alaphelyzetbe mozgáskor*)
+	bErrWorkPos0		:BOOL; 				(*munkahelyzet hiba0: nem szünt meg a jel alaphelyzetbe mozgáskor*)
+	bErrWorkPos1		:BOOL; 				(*munkahelyzet hiba1: nem jött meg a jel munkahelyzetbe mozgáskor*)
+	bErrBPWP			:BOOL;				(*két végállás egyszerre hiba*)
+	bIsInitalized		:BOOL;
+	fbBasePosAlarm		:FB_TcAlarm;
+	fbWorkPosAlarm		:FB_TcAlarm;
+	//fbAlarm				:FB_TcAlarm;
+	//fbErrorRTrig		:R_Trig;
+	//fbAckRTrig			:R_Trig;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*	Dokumentáció
+	--------------------------------------------------------------------------------
+	Leírás		:	FB hengerekhez, bistabil, monostabilhoz is jó. 
+	Név			:	FB_Bistabil
+	Módosító	:	Gyarmati Péter
+	Dátum		:	2020.06.11
+	Revízió		:	1.3
+	--------------------------------------------------------------------------------
+	Feltételek	:	-
+	Változók	:	-
+	Visu		:	van valahol
+	UserControl	:	van
+	--------------------------------------------------------------------------------
+	Részletek	:	Alarmkezelést is tartalmazza.
+					Stringek módosítva, hogy kisebb legyen az FB mérete linkelés miatt.
+					Nyelvváltás miatt hibakezelés átalakítva, csak alaphelyzet/véghelyzet hiba.
+	--------------------------------------------------------------------------------
+	Használat	:	Pl.:
+					fbPaletteLift(
+						sName:= 'Paletta kiemelő', 
+						bEn:= bEmyOK, 
+						bEHA:= bGlobalEHA, 
+						bDisableManualCmd:= NOT bManualMode, 
+						bAck:= bAckP,  
+						stBasePosEvent:= TC_Events.MyEvents.Valve_1,
+						stWorkPosEvent:= TC_Events.MyEvents.Valve_2);
+*)
+
+(*Hiba kezelés Tc3_EventLogger*)
+IF NOT bIsInitalized THEN
+	bIsInitalized := TRUE;
+	fbBasePosAlarm.CreateEx(stBasePosEvent, TRUE, 0);
+	fbWorkPosAlarm.CreateEx(stWorkPosEvent, TRUE, 0);
+END_IF
+
+(*Hibanyugta*)
+IF bAck OR NOT bEHA THEN
+	bErrBasePos0 := FALSE;
+	bErrWorkPos0 := FALSE;
+	bErrBasePos1 := FALSE;
+	bErrWorkPos1 := FALSE;
+	bErrBPWP := FALSE;
+	IF fbBasePosAlarm.eConfirmationState = 2 THEN
+		fbBasePosAlarm.Confirm(0);
+	END_IF	
+	IF fbWorkPosAlarm.eConfirmationState = 2 THEN
+		fbWorkPosAlarm.Confirm(0);
+	END_IF
+END_IF
+
+(*Alaphelyzet felvételi hiba*)
+tBP(IN:= bEn AND bEHA AND q_bBasePos AND NOT q_bWorkPos, PT:= timBasePos);
+
+IF tBP.Q AND NOT i_bBasePos THEN
+	bErrBasePos1 := TRUE;
+	IF (fbBasePosAlarm.eConfirmationState <> 2 AND fbBasePosAlarm.nTimeCleared <> 0 AND fbBasePosAlarm.nTimeConfirmed <> 0) OR //Ha már volt alarm, akkor van bennük érték
+		(fbBasePosAlarm.eConfirmationState = 1 AND fbBasePosAlarm.nTimeCleared = 0 AND fbBasePosAlarm.nTimeConfirmed = 0)	//Első futás esetén
+	THEN
+		fbBasePosAlarm.Raise(0);
+	END_IF
+END_IF
+
+IF tBP.Q AND i_bWorkPos THEN
+	//bErrWorkPos0 := TRUE;
+END_IF
+
+(*munkahelyzet felvételi hiba*)
+tWP(IN:= bEn AND bEHA AND q_bWorkPos AND NOT q_bBasePos , PT:= timWorkPos);
+
+IF tWP.Q AND NOT i_bWorkPos THEN
+	bErrWorkPos1 := TRUE;
+	IF (fbWorkPosAlarm.eConfirmationState <> 2 AND fbWorkPosAlarm.nTimeCleared <> 0 AND fbWorkPosAlarm.nTimeConfirmed <> 0) OR //Ha már volt alarm, akkor van bennük érték
+		(fbWorkPosAlarm.eConfirmationState = 1 AND fbWorkPosAlarm.nTimeCleared = 0 AND fbWorkPosAlarm.nTimeConfirmed = 0)	//Első futás esetén
+	THEN
+		fbWorkPosAlarm.Raise(0);
+	END_IF
+END_IF
+
+IF tWP.Q AND i_bBasePos THEN
+	//bErrBasePos0 := TRUE;
+END_IF
+
+(*két munkahelyzet egyszerre*)
+tDPWP(In:= bEn AND bEHA AND i_bBasePos AND i_bWorkPos, PT:= T#600MS);
+
+IF tDPWP.q THEN
+	//bErrBPWP := TRUE;
+END_IF;
+
+bError := bErrBasePos0 OR bErrWorkPos0 
+	OR bErrBasePos1 OR bErrWorkPos1
+	OR bErrBPWP;
+
+(*Vezérlés*)
+CASE nEHMode OF
+	0:	(*Hiba esetén leveszi a parancsot*)
+		IF bEn AND bBaseposCmd AND (NOT bEHA OR NOT bError) THEN
+			q_bBasePos := TRUE;
+		ELSE
+			q_bBasePos := FALSE;
+		END_IF
+		IF bEn  AND bWorkPosCmd AND (NOT bEHA OR NOT bError) THEN
+			q_bWorkPos := TRUE;
+		ELSE
+			q_bWorkPos := FALSE;
+		END_IF
+	1:	(*Hiba esetén visszavezérli az eredeti irányba, majd leveszi a parancsot*)
+		IF (bEn AND bBaseposCmd AND (NOT bEHA OR NOT bError))
+			OR (bEn AND bWorkPosCmd AND bEHA AND bErrWorkPos1 AND NOT i_bBasePos) THEN
+			q_bBasePos := TRUE;
+		ELSE
+			q_bBasePos := FALSE;
+		END_IF
+		IF bEn AND bWorkPosCmd AND (NOT bEHA OR NOT bError)
+			OR (bEn AND bBasePosCmd AND bEHA AND bErrBasePos1 AND NOT i_bWorkPos) THEN
+			q_bWorkPos := TRUE;
+		ELSE
+			q_bWorkPos := FALSE;
+		END_IF
+END_CASE
+
+(*Alaphelyzet stabil*)
+tBPS(IN:= q_bBasePos AND i_bBasePos AND NOT bError, PT:= timBasePosStab, Q=>  bBasePosStab);
+
+(*Munkahelyzet stabil*)
+tWPS(IN:= q_bWorkPos AND i_bWorkPos AND NOT bError, PT:= timWorkPosStab, Q=>  bWorkPosStab);
+
+(*Hiba string*)
+IF bErrBasePos0 OR bErrBasePos1 OR bErrWorkPos0 OR bErrWorkPos1 OR bErrBPWP THEN
+	sError := sName;
+	IF bErrBasePos0 THEN
+		sError := CONCAT(sError, CONCAT(' alaphelyzet hiba: munkahelyzetbe mozgáskor nem szünt meg a jel ', sBasePosSensor));
+	END_IF
+	IF bErrBasePos1 THEN
+		sError := CONCAT(sError, CONCAT(' alaphelyzet hiba: alaphelyzetbe mozgáskor nem jött meg a jel ', sBasePosSensor));
+	END_IF
+	IF bErrWorkPos0 THEN
+		sError := CONCAT(sError,  CONCAT(' munkahelyzet hiba: alaphelyzetbe mozgáskor nem szünt meg a jel ', sWorkPosSensor));
+	END_IF
+	IF bErrWorkPos1 THEN
+		sError := CONCAT(sError, CONCAT(' munkahelyzet hiba: munkahelyzetbe mozgáskor nem jött meg a jel ', sWorkPosSensor));
+	END_IF
+	IF bErrBPWP THEN
+		sError := CONCAT(sError, CONCAT(' két végállás egyszerre jelez ', CONCAT(sBasePosSensor, CONCAT('-',sWorkPosSensor))));
+	END_IF
+ELSE
+	sError := '';
+END_IF
+
+//Hiba törlés (nyugtázott és megszűnt)
+IF fbBasePosAlarm.eConfirmationState = 3 AND NOT bError THEN
+	fbBasePosAlarm.Clear(0, FALSE);
+END_IF	
+IF fbWorkPosAlarm.eConfirmationState = 3 AND NOT bError THEN
+	fbWorkPosAlarm.Clear(0, FALSE);
+END_IF	
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Bistabil">
+      <LineId Id="1496" Count="12" />
+      <LineId Id="1523" Count="0" />
+      <LineId Id="1540" Count="0" />
+      <LineId Id="1636" Count="0" />
+      <LineId Id="1524" Count="1" />
+      <LineId Id="1681" Count="0" />
+      <LineId Id="1688" Count="5" />
+      <LineId Id="1539" Count="0" />
+      <LineId Id="1495" Count="0" />
+      <LineId Id="1617" Count="0" />
+      <LineId Id="1611" Count="4" />
+      <LineId Id="1610" Count="0" />
+      <LineId Id="1616" Count="0" />
+      <LineId Id="1093" Count="6" />
+      <LineId Id="1605" Count="4" />
+      <LineId Id="1604" Count="0" />
+      <LineId Id="1100" Count="0" />
+      <LineId Id="1600" Count="0" />
+      <LineId Id="1102" Count="1" />
+      <LineId Id="1105" Count="2" />
+      <LineId Id="1619" Count="3" />
+      <LineId Id="1618" Count="0" />
+      <LineId Id="1108" Count="7" />
+      <LineId Id="1117" Count="2" />
+      <LineId Id="1624" Count="3" />
+      <LineId Id="1623" Count="0" />
+      <LineId Id="1120" Count="7" />
+      <LineId Id="1129" Count="38" />
+      <LineId Id="1170" Count="2" />
+      <LineId Id="1175" Count="0" />
+      <LineId Id="1183" Count="0" />
+      <LineId Id="1265" Count="0" />
+      <LineId Id="1445" Count="0" />
+      <LineId Id="1419" Count="1" />
+      <LineId Id="1422" Count="1" />
+      <LineId Id="1439" Count="0" />
+      <LineId Id="1426" Count="1" />
+      <LineId Id="1440" Count="0" />
+      <LineId Id="1430" Count="1" />
+      <LineId Id="1441" Count="0" />
+      <LineId Id="1434" Count="1" />
+      <LineId Id="1442" Count="0" />
+      <LineId Id="1438" Count="0" />
+      <LineId Id="1446" Count="1" />
+      <LineId Id="1444" Count="0" />
+      <LineId Id="1027" Count="0" />
+      <LineId Id="1630" Count="5" />
+      <LineId Id="1628" Count="0" />
+      <LineId Id="311" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

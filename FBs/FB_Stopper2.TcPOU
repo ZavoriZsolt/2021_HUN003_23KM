@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_Stopper2" Id="{1e519197-e74e-47ea-b26e-ab56df4d6d70}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Stopper2
+VAR_INPUT
+	bNextReady			:BOOL;			(*Következő stopper fogadókész*)
+	bMotorRun			:BOOL;			(*Pályamotor jár*)
+	tToNextStopper		:TIME := T#5S;	(*Ennél sűrűbben nem engedhet ki palettát*)
+	bStationReady		:BOOL;			(*Állomás fogadókész/kiemelő lent van(ha van a stopperhez)*)
+	bStationFinished	:BOOL;			(*Állomás kész, mehet a paletta(ha van a stopperhez)*)
+	i_bPalettSensor		AT %I* :BOOL;	(*Paletta érzékelő*)
+	i_bPalettSensor2	AT %I* :BOOL;	(*Paletta érzékelő torlasztási maximum*)
+END_VAR
+VAR_OUTPUT
+	bReady				:BOOL;
+	q_bStopperDown		AT %Q* :BOOL;
+END_VAR
+VAR_IN_OUT
+END_VAR
+VAR
+	tPalettOut			:TIME := T#100MS;	(*Paletta kiengedéshez *)
+	fbToNextStopper		:TON;
+	fbPalettOut			:TON;
+	fbEmpty				:TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*	Dokumentáció
+	--------------------------------------------------------------------------------
+	Leírás		:	Funkció blokk stopperekhez telítettség érzékelővel. 
+	Név			:	FB_Stopper2
+	Módosító	:	Gyarmati Péter
+	Dátum		:	2020.07.31
+	Revízió		:	1.3
+	--------------------------------------------------------------------------------
+	Feltételek	:	-
+	Változók	:	-
+	Visu		:	-
+	UserControl	:	-
+	--------------------------------------------------------------------------------
+	Részletek	:	-
+	--------------------------------------------------------------------------------
+	Használat	:	Allomas_nelkuli_stopper(
+					bNextReady:= Stopper_allomassal.bReady, 
+					bMotorRun:= i_bEMYOK, 
+					bStationReady:= TRUE, 
+					bStationFinished:= TRUE);
+	
+					Stopper_allomassal(
+						bNextReady:= Kovistopper.bReady, 
+						bMotorRun:= i_bEMYOK, 
+						bStationReady:= nState = 10000, //ha ki van emelve a paletta, a bStationReady-t vegyük el, hogy ne engedjen rá még újat, itt csak alaphelyzetben jöhet
+						bStationFinished:= nState = 95020 //ebben a státuszban az állomás végzett, paletta elengedésre vár);
+*)
+
+fbToNextStopper(IN:= bMotorRun AND NOT q_bStopperDown, PT:= tToNextStopper);
+fbPalettOut(IN:= q_bStopperDown AND NOT i_bPalettSensor AND bMotorRun, PT:= tPalettOut);
+fbEmpty(IN:= NOT i_bPalettSensor2 AND NOT q_bStopperDown AND bMotorRun AND bStationReady, PT:= T#10MS, Q=> bReady);
+
+(*Paletta továbbengedés*)
+IF bNextReady AND fbToNextStopper.Q AND i_bPalettSensor AND bMotorRun AND bStationFinished THEN
+	q_bStopperDown := TRUE;
+END_IF
+
+IF fbPalettOut.Q THEN 
+	q_bStopperDown := FALSE;
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Stopper2">
+      <LineId Id="423" Count="14" />
+      <LineId Id="456" Count="2" />
+      <LineId Id="460" Count="5" />
+      <LineId Id="467" Count="0" />
+      <LineId Id="438" Count="14" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

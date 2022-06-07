@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_TcEvent" Id="{b22169a4-b9e3-4549-a1f5-1ec0749d241c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TcEvent
+VAR_INPUT
+	sName							:STRING;
+	stPosData						:ST_PosData;
+	bAck							:BOOL;
+	stEventEntry					:TcEventEntry;				(*Event definition*)
+	aErrorDesc					:ARRAY [0..31] OF STRING;
+END_VAR
+VAR_OUTPUT
+	sError						:STRING(255);					(*hiba string*)
+END_VAR
+VAR
+	i							:INT;
+	nErrorCodeTmp				:UDINT;
+	bIsInitalized				:BOOL;
+	fbAlarm						:FB_TcAlarm;
+	fbErrorRTrig				:R_Trig;
+	fbAckRTrig					:R_Trig;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF stPosData.bError THEN
+	sError := sName;
+	nErrorCodeTmp :=  stPosData.nErrorCode;
+	FOR i:=0 TO 31 DO
+		IF nErrorCodeTmp.0 THEN
+			sError :=  CONCAT(sError, aErrorDesc[i]);
+		END_IF
+		nErrorCodeTmp := SHR(nErrorCodeTmp,1);
+	END_FOR
+ELSE
+	sError := '';
+END_IF
+
+(*Hiba kezelés Tc3_EventLogger*)
+IF NOT bIsInitalized THEN
+	bIsInitalized := TRUE;
+	fbAlarm.CreateEx(stEventEntry, TRUE, 0);
+END_IF
+
+fbErrorRTrig(CLK:= stPosData.bError);
+fbAckRTrig(CLK:= bAck);
+
+(*Hiba generálás*)
+IF fbErrorRTrig.Q THEN
+	fbAlarm.ipArguments.Clear().AddString(sError);
+	fbAlarm.Raise(0);
+END_IF
+(*Hiba nyugtázás*)
+IF fbAckRTrig.Q THEN
+	fbAlarm.Confirm(0);
+END_IF
+(*Hiba törlés (nyugtázott és megszűnt)*)
+IF fbAlarm.eConfirmationState = 3 AND NOT stPosData.bError THEN
+	fbAlarm.Clear(0, FALSE);
+END_IF	
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_TcEvent">
+      <LineId Id="588" Count="0" />
+      <LineId Id="570" Count="0" />
+      <LineId Id="584" Count="0" />
+      <LineId Id="582" Count="0" />
+      <LineId Id="571" Count="2" />
+      <LineId Id="586" Count="0" />
+      <LineId Id="564" Count="0" />
+      <LineId Id="587" Count="0" />
+      <LineId Id="589" Count="1" />
+      <LineId Id="569" Count="0" />
+      <LineId Id="133" Count="21" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

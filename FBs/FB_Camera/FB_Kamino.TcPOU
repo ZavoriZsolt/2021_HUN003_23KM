@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_Kamino" Id="{2cc432eb-ad34-4a72-888d-396cb80ab21d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Kamino
+VAR_INPUT
+	sName				:STRING;
+	bEn					:BOOL;				(* Engedély jel *)
+	bEHA				:BOOL; 				(* Hibafigyelés aktív *)
+	bAck				:BOOL; 				(* Hibanyugta *)
+	nProgNr				:UINT := 0;
+	bStart				:BOOL;
+	timConnection		:TIME:=T#500MS;		(* Kapcsolat időtúllépés *)
+	timReady			:TIME:=T#500MS;		(* Üzemkész idő*)
+	timProgChange		:TIME:=T#500MS;		(* Programváltási idő*)
+	timProgRun			:TIME:=T#2S;		(* Program futási idő*)
+	stCAM_IN			:ST_Camera_IN;		(* Kamera változó *)
+	stComErrEvent		:TcEventEntry;		(* Event definition *)
+	stReadyErrEvent		:TcEventEntry;		(* Event definition *)
+	stProgErrEvent		:TcEventEntry;		(* Event definition *)
+	stRunErrEvent		:TcEventEntry;		(* Event definition *)
+END_VAR
+VAR_OUTPUT
+	bReady				:BOOL;				(* A kamera üzemkész *)
+	bBusy				:BOOL;				(* A kamera aktív *)
+	bPass				:BOOL;				(* A kiértékelés OK *)
+	bFail				:BOOL;				(* A kiértékelés NOK *)
+	bError				:BOOL;				(* Hiba jelző bit *)
+	sError				:STRING(255);		(* Hiba string *)
+	stCAM_OUT			:ST_Camera_OUT;		(* Kamera változó *)
+END_VAR
+VAR
+	bComErr				:BOOL;
+	bReadyErr			:BOOL;
+	bProgChangeErr		:BOOL;
+	bProgRunErr			:BOOL;
+	tCom				:TON;
+	tReady				:TON;
+	tProgChange			:TON;
+	tProgRun			:TON;
+	nLifeSignalTmp		:UINT;
+	aErrorDesc			:ARRAY [0..3] OF STRING := [
+	' a kamera rendszer nem elérhető ',
+	' a kamera nem üzemkész ', 
+	' a kiválasztott program nem létezik ', 
+	' a kamera nem válaszol '];
+	sEmpty				:STRING:='';
+	bIsInitalized		:BOOL;
+	fbComAlarm			:FB_TcAlarm;
+	fbReadyAlarm		:FB_TcAlarm;
+	fbProgAlarm			:FB_TcAlarm;
+	fbRunAlarm			:FB_TcAlarm;
+
+	fbErrorRTrig		:R_Trig;
+	fbAckRTrig			:R_Trig;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*Hiba kezelés Tc3_EventLogger*)
+IF NOT bIsInitalized THEN
+	bIsInitalized := TRUE;
+	fbComAlarm.CreateEx(stComErrEvent, TRUE, 0);
+	fbReadyAlarm.CreateEx(stReadyErrEvent, TRUE, 0);
+	fbProgAlarm.CreateEx(stProgErrEvent, TRUE, 0);
+	fbRunAlarm.CreateEx(stRunErrEvent, TRUE, 0);
+END_IF
+
+(*Hibanyugta*)
+IF bAck OR NOT(bEHA) THEN
+	bComErr := FALSE;
+	bReadyErr := FALSE;
+	bProgChangeErr := FALSE;
+	bProgRunErr := FALSE;
+	IF fbComAlarm.eConfirmationState = 2 THEN
+		fbComAlarm.Confirm(0);
+	END_IF	
+	IF fbReadyAlarm.eConfirmationState = 2 THEN
+		fbReadyAlarm.Confirm(0);
+	END_IF	
+	IF fbProgAlarm.eConfirmationState = 2 THEN
+		fbProgAlarm.Confirm(0);
+	END_IF	
+	IF fbRunAlarm.eConfirmationState = 2 THEN
+		fbRunAlarm.Confirm(0);
+	END_IF	
+END_IF;
+
+(*-----=== Life signal ellenőrzés ===-----*)
+tCom(IN:= stCAM_IN.nLifeSignal = nLifeSignalTmp, PT:= timConnection, Q=> , ET=> );
+IF stCAM_IN.nLifeSignal <> nLifeSignalTmp THEN
+	nLifeSignalTmp := stCAM_IN.nLifeSignal;
+END_IF
+IF tCom.Q THEN
+	bComErr := TRUE;
+	IF (fbComAlarm.eConfirmationState <> 2 AND fbComAlarm.nTimeCleared <> 0 AND fbComAlarm.nTimeConfirmed <> 0) OR //Ha már volt alarm, akkor van bennük érték
+		(fbComAlarm.eConfirmationState = 1 AND fbComAlarm.nTimeCleared = 0 AND fbComAlarm.nTimeConfirmed = 0)	//Első futás esetén
+	THEN
+		fbComAlarm.Raise(0);
+	END_IF
+END_IF
+
+(*-----=== Ready signal ellenőrzés ===-----*)
+tReady(IN:= NOT bComErr AND NOT stCAM_IN.nResponse.0 AND NOT stCAM_OUT.nControlStatus.0, PT:= timReady, Q=> , ET=> );
+IF tReady.Q THEN						
+	bReadyErr := TRUE;
+	IF (fbReadyAlarm.eConfirmationState <> 2 AND fbReadyAlarm.nTimeCleared <> 0 AND fbReadyAlarm.nTimeConfirmed <> 0) OR //Ha már volt alarm, akkor van bennük érték
+		(fbReadyAlarm.eConfirmationState = 1 AND fbReadyAlarm.nTimeCleared = 0 AND fbReadyAlarm.nTimeConfirmed = 0)	//Első futás esetén
+	THEN
+		fbReadyAlarm.Raise(0);
+	END_IF		
+END_IF
+
+(*-----= Program váltás =-----*)
+stCAM_OUT.nPLCType := nProgNr;
+tProgChange(IN:= NOT bComErr AND stCAM_OUT.nPLCType <> stCAM_IN.nCAMType, PT:= timProgChange, Q=> , ET=> );
+IF tProgChange.Q THEN
+	bProgChangeErr := TRUE;
+	IF (fbProgAlarm.eConfirmationState <> 2 AND fbProgAlarm.nTimeCleared <> 0 AND fbProgAlarm.nTimeConfirmed <> 0) OR //Ha már volt alarm, akkor van bennük érték
+		(fbProgAlarm.eConfirmationState = 1 AND fbProgAlarm.nTimeCleared = 0 AND fbProgAlarm.nTimeConfirmed = 0)	//Első futás esetén
+	THEN
+		fbProgAlarm.Raise(0);
+	END_IF
+END_IF
+
+(*-----= Kamera indítása =-----*)
+IF	bStart AND										// Trigger aktív
+	NOT bError AND									// Nincs hiba
+	stCAM_OUT.nPLCType = stCAM_IN.nCAMType AND		// Programszám visszaigazolva
+	stCAM_IN.nResponse.0 THEN						// Kamera üzemkész
+		stCAM_OUT.nControlStatus.0 := TRUE;
+END_IF
+
+(*-----=== Busy signal ellenőrzés ===-----*)
+tProgRun(IN:= NOT bComErr AND stCAM_OUT.nControlStatus.1, PT:= timProgRun, Q=> , ET=> );
+IF tProgRun.Q THEN
+	bProgRunErr:= TRUE;
+	IF (fbRunAlarm.eConfirmationState <> 2 AND fbRunAlarm.nTimeCleared <> 0 AND fbRunAlarm.nTimeConfirmed <> 0) OR //Ha már volt alarm, akkor van bennük érték
+		(fbRunAlarm.eConfirmationState = 1 AND fbRunAlarm.nTimeCleared = 0 AND fbRunAlarm.nTimeConfirmed = 0)	//Első futás esetén
+	THEN
+		fbRunAlarm.Raise(0);
+	END_IF
+END_IF
+
+
+(*-----= Kamera indítás törlése =-----*)
+IF stCAM_OUT.nControlStatus.0 AND NOT bStart THEN
+	stCAM_OUT.nControlStatus.0 := FALSE;
+END_IF
+	
+(*-----= Kimenetek írása =-----*)
+IF NOT bError THEN
+	bReady		:= stCAM_IN.nResponse.0;
+	bBusy		:= stCAM_IN.nResponse.1;
+	bPass		:= stCAM_IN.nResponse.2;
+	bFail		:= stCAM_IN.nResponse.3;
+ELSE
+	bReady		:= FALSE;
+	bBusy		:= FALSE;
+	bPass		:= FALSE;
+	bFail		:= FALSE;
+END_IF
+
+(*Hiba string*)
+IF bComErr OR bReadyErr OR bProgChangeErr OR bProgRunErr THEN
+	sError := sName;
+	IF bComErr THEN
+		sError :=  CONCAT(sError, aErrorDesc[0]);
+	END_IF
+	IF bReadyErr THEN
+		sError :=  CONCAT(sError, aErrorDesc[1]);
+	END_IF
+	IF bProgChangeErr THEN
+		sError :=  CONCAT(sError, aErrorDesc[2]);
+	END_IF
+	IF bProgRunErr THEN
+		sError :=  CONCAT(sError, aErrorDesc[3]);
+	END_IF
+ELSE
+	sError := sEmpty;
+END_IF
+
+fbErrorRTrig(CLK:= bError);
+fbAckRTrig(CLK:= bAck);
+
+//Hiba törlés (nyugtázott és megszűnt)
+IF fbComAlarm.eConfirmationState = 3 AND NOT bError THEN
+	fbComAlarm.Clear(0, FALSE);
+END_IF	
+IF fbReadyAlarm.eConfirmationState = 3 AND NOT bError THEN
+	fbReadyAlarm.Clear(0, FALSE);
+END_IF	
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Kamino">
+      <LineId Id="335" Count="4" />
+      <LineId Id="341" Count="1" />
+      <LineId Id="332" Count="0" />
+      <LineId Id="334" Count="0" />
+      <LineId Id="161" Count="2" />
+      <LineId Id="196" Count="0" />
+      <LineId Id="164" Count="1" />
+      <LineId Id="348" Count="11" />
+      <LineId Id="159" Count="1" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="28" Count="1" />
+      <LineId Id="184" Count="1" />
+      <LineId Id="371" Count="3" />
+      <LineId Id="370" Count="0" />
+      <LineId Id="186" Count="0" />
+      <LineId Id="210" Count="1" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="212" Count="0" />
+      <LineId Id="214" Count="0" />
+      <LineId Id="366" Count="3" />
+      <LineId Id="365" Count="0" />
+      <LineId Id="215" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="49" Count="1" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="187" Count="1" />
+      <LineId Id="361" Count="3" />
+      <LineId Id="360" Count="0" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="266" Count="0" />
+      <LineId Id="265" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="193" Count="0" />
+      <LineId Id="317" Count="3" />
+      <LineId Id="316" Count="0" />
+      <LineId Id="194" Count="0" />
+      <LineId Id="192" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="68" Count="3" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="35" Count="1" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="44" Count="3" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="111" Count="3" />
+      <LineId Id="198" Count="11" />
+      <LineId Id="130" Count="3" />
+      <LineId Id="140" Count="2" />
+      <LineId Id="326" Count="5" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="110" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

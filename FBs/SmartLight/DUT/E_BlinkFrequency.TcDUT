@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="E_BlinkFrequency" Id="{ea8e5f94-1d11-4706-8d0b-9bfba4cbf4b3}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_BlinkFrequency :
+(
+	f05HZ := 1,
+	f1HZ := 2,
+	f2HZ := 3,
+	f5HZ := 4,
+	f10HZ := 5
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

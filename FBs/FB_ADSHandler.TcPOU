@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="FB_ADSHandler" Id="{6786233a-db71-4d2c-a638-1d74234acd96}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ADSHandler
+VAR_IN_OUT
+	stPalletData			:ST_PalletData;
+END_VAR
+VAR_INPUT
+	sName					:STRING;
+	bAck					:BOOL; 				(* Error acknoledge pulse*)
+	sAMSNetId				:T_AmsNetID;		(* AMS Net ID *)
+	eCommand				:E_ADS_Cmd;			(* ADS command *)
+	nIndex					:INT := 1;			(* The index read from the RFID Tag *)
+	stEventEntry			:TcEventEntry;		(* Event definition *)	
+END_VAR
+VAR_OUTPUT
+	bBusy					:BOOL;
+	bDone					:BOOL;
+	bError					:BOOL;
+	sError					:STRING(255);		(* Error string *)
+	nErrorID				:UDINT;
+END_VAR
+VAR
+	fbReadPalletData		:FB_ReadAdsSymByName;
+	fbWritePalletData		:FB_WriteAdsSymByName;
+	sPath					:STRING;
+	sPathOriginal			:STRING := 'GVL_Persistent.arPaletteData[]'; 
+	sEmpty					:STRING:='';
+	bIsInitalized			:BOOL;
+	fbAlarm					:FB_TcAlarm;
+	fbErrorRTrig			:R_Trig;
+	fbAckRTrig				:R_Trig;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*Vezérlés*)
+CASE eCommand OF
+	NoCmd:		
+			fbReadPalletData.bRead := FALSE;
+			fbWritePalletData.bWrite := FALSE;
+			
+	Read:
+			fbReadPalletData.bRead := TRUE;
+			fbWritePalletData.bWrite := FALSE;
+				
+	Write:
+			fbReadPalletData.bRead := FALSE;
+			fbWritePalletData.bWrite := TRUE;				
+END_CASE
+
+(*Változónév generálása*)
+sPath := INSERT(STR1 := sPathOriginal,
+				STR2 := INT_TO_STRING(nIndex),
+				POS := FIND(sPathOriginal,'[')
+				);
+
+(*ADS kommunikáció*)
+fbReadPalletData(
+	sNetId:= sAMSNetId, 
+	nPort:= 851, 
+	sVarName:= sPath , 
+	nDestAddr:= ADR(stPalletData), 
+	nLen:= SIZEOF(stPalletData));
+		
+fbWritePalletData( 
+	sNetId:= sAMSNetId,
+	nPort:= 851, 
+	sVarName:= sPath , 
+	nSrcAddr:= ADR(stPalletData), 
+	nLen:= SIZEOF(stPalletData));
+
+(*Kimenetek beállítása*)
+bBusy := fbReadPalletData.bBusy OR fbWritePalletData.bBusy;
+bDone :=	(fbReadPalletData.bRead AND NOT fbReadPalletData.bBusy) OR
+			(fbWritePalletData.bWrite AND NOT fbWritePalletData.bBusy);
+
+(*Hibaállapotok ellenőrzése*)
+IF (fbReadPalletData.bError and fbReadPalletData.bRead) OR (fbWritePalletData.bError and fbWritePalletData.bWrite) THEN
+		bError := TRUE;
+END_IF
+			   
+(*Hiba string*)
+IF bError THEN
+	sError := sName;
+	IF		fbReadPalletData.bError THEN
+				sError :=  CONCAT(sError, CONCAT('ADS read error. Error code: ',TO_STRING(fbReadPalletData.nErrorId)));
+	ELSIF	fbWritePalletData.bError THEN
+				sError :=  CONCAT(sError, CONCAT('ADS write error. Error code : ',TO_STRING(fbWritePalletData.nErrorId)));
+	END_IF
+ELSE
+	sError := sEmpty;
+END_IF
+
+(*Hiba nyugta*)
+IF bAck THEN
+	bError := FALSE;
+END_IF;
+
+(*Hiba kezelés Tc3_EventLogger*)
+IF NOT bIsInitalized THEN
+	bIsInitalized := TRUE;
+	fbAlarm.CreateEx(stEventEntry, TRUE, 0);
+END_IF
+
+fbErrorRTrig(CLK:= bError);
+fbAckRTrig(CLK:= bAck);
+
+(*Hiba generálás*)
+IF fbErrorRTrig.Q THEN
+	fbAlarm.ipArguments.Clear().AddString(sError);
+	fbAlarm.Raise(0);
+END_IF
+(*Hiba nyugtázás*)
+IF fbAckRTrig.Q THEN
+	fbAlarm.Confirm(0);
+END_IF
+(*Hiba törlés (nyugtázott és megszűnt)*)
+IF fbAlarm.eConfirmationState = 3 AND NOT bError THEN
+	fbAlarm.Clear(0, FALSE);
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ADSHandler">
+      <LineId Id="300" Count="0" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="223" Count="0" />
+      <LineId Id="225" Count="0" />
+      <LineId Id="227" Count="1" />
+      <LineId Id="232" Count="6" />
+      <LineId Id="224" Count="0" />
+      <LineId Id="317" Count="0" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="316" Count="0" />
+      <LineId Id="278" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="18" Count="3" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="121" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="64" Count="3" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="315" Count="0" />
+      <LineId Id="164" Count="0" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="295" Count="0" />
+      <LineId Id="297" Count="0" />
+      <LineId Id="296" Count="0" />
+      <LineId Id="314" Count="0" />
+      <LineId Id="287" Count="0" />
+      <LineId Id="290" Count="0" />
+      <LineId Id="288" Count="0" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="179" Count="5" />
+      <LineId Id="186" Count="4" />
+      <LineId Id="308" Count="1" />
+      <LineId Id="312" Count="1" />
+      <LineId Id="310" Count="0" />
+      <LineId Id="191" Count="22" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
